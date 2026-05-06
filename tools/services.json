@@ -1,0 +1,16 @@
+{
+  "$comment": "Services scanned by build.js. order = sidebar order on the index page. frontendPrefix(es) match URLs in the Angular endpoints.ts; xref.js strips them and matches the path tail against the service spec.",
+  "services": [
+    { "id": "reports-service",      "dir": "medlern_reports_service",      "displayName": "Reports",       "blurb": "Tabular reporting service — compliance, training, sessions, exports.", "frontendPrefix": ["/reports/v1"] },
+    { "id": "report-gen-service",   "dir": "medlern-report-gen-service",   "displayName": "Report Gen",    "blurb": "Asynchronous report generation orchestrator.",                          "frontendPrefix": ["/report-gen/v1"] },
+    { "id": "reports-etl-service",  "dir": "medlern-reports-etl-service",  "displayName": "Reports ETL",   "blurb": "ETL ingestion of reporting data; mostly schedulers.",                   "frontendPrefix": [] },
+    { "id": "indicator-service",    "dir": "medlern-indicator-service",    "displayName": "Indicator",     "blurb": "Quality indicator metrics and dashboards.",                             "frontendPrefix": ["/indicator/v1"] },
+    { "id": "exam-service",         "dir": "medlern-exam-service",         "displayName": "Exam",          "blurb": "Examination, attempts, proctoring, results.",                           "frontendPrefix": ["/exam/v1"] },
+    { "id": "assessment-service",   "dir": "medlern-assessment-service",   "displayName": "Assessment",    "blurb": "Assessment authoring and grading.",                                     "frontendPrefix": ["/assessment/v1"] },
+    { "id": "account-service",      "dir": "medlern-account-service",      "displayName": "Account",       "blurb": "Identity, institutions, users, organisations.",                         "frontendPrefix": ["/account/v1", "/account/v2"] },
+    { "id": "catalog-service",      "dir": "medlern-catalog-service",      "displayName": "Catalog",       "blurb": "Course / product catalogue and learner-facing browsing.",               "frontendPrefix": ["/catalog/v1", "/catalog/v2"] }
+  ],
+  "$unmappedPrefixes": [
+    "/analytics/v1", "/reader/v1", "/notification/v1", "/site/v1"
+  ]
+}

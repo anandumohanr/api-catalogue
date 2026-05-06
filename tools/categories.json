@@ -1,0 +1,70 @@
+{
+  "$comment": "Category overrides for endpoints. Heuristic order: override > pre-login (auth=null + login-ish path) > admin > my-team-space > dashboard > uncategorized. Override key = '<serviceId>:<METHOD>:<path>'. Value: 'pre-login' | 'dashboard' | 'admin' | 'my-team-space' | 'none'.",
+  "overrides": {},
+  "routePrefixes": {
+    "admin": [
+      "/admin/"
+    ],
+    "my-team-space": [
+      "/privileging-",
+      "/competency-reportees",
+      "/reportees",
+      "/my-team"
+    ],
+    "dashboard": [
+      "/home",
+      "/dashboard",
+      "/my-library",
+      "/my-competency",
+      "/leaderboard",
+      "/courses",
+      "/training-records",
+      "/training",
+      "/enrollments",
+      "/product",
+      "/reader",
+      "/self-paced",
+      "/exams",
+      "/sessions",
+      "/learners",
+      "/onboarding",
+      "/tutorials"
+    ]
+  },
+  "preLoginPathPattern": "/(?:login|register|otp|tempLogin|guestToken|emailVerify|userVerify|tokenRefresh|forgotPassword|resetpassword|examCodeOtp|institutionAuth|kekalogin|domainToken|launchToken|samlLogin|shibbolethLogin|idpLogin|idpLoginCallback|identityLogin|signup|tokenExchange)\\b",
+  "preLoginAreas": [
+    "Auth",
+    "Login",
+    "Identity",
+    "Token",
+    "Otp",
+    "Authentication",
+    "Sso"
+  ],
+  "adminPathPattern": "(?:^/admin\\b|/adminProducts|/adminReport|/adminStats|/adminUser|/administrator|:export\\b|^/batch|^/bulk|/audit|/tenant\\b|/institutionUploader|/accessMethodsUploader|^/imports?\\b|/uploads?:|/configurations?\\b|/setting\\b|/settings\\b)",
+  "adminAreaPattern": "(?:Admin|Bulk|Import|Tenant|Institution Admin|Audit|User Audit|Configuration|Setting)",
+  "adminAreas": [
+    "Admin Export",
+    "Admin Product",
+    "Kpi Reports",
+    "Bulk",
+    "Audit",
+    "User Audit",
+    "Configuration",
+    "Tenant"
+  ],
+  "dashboardAreas": [
+    "Dashboard",
+    "Home",
+    "My Library",
+    "My Competency",
+    "Leaderboard"
+  ],
+  "categoryDescriptions": {
+    "pre-login":     "Authentication and onboarding endpoints reachable without an active session — login, registration, OTP, token refresh, password reset.",
+    "dashboard":     "Endpoints consumed by learner-facing post-login screens: home, dashboards, course lists, training records, exams, the reader.",
+    "admin":         "Endpoints consumed by administrative screens — user/role/institution management, configuration, exports, bulk operations.",
+    "my-team-space": "Endpoints used by team-management screens — privileging, competency reportees, my-team views.",
+    "uncategorized": "Endpoints with no matching UI consumer or category signal yet. Tighten heuristics in tools/categories.json or add an override."
+  }
+}
