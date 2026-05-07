@@ -161,6 +161,11 @@ function splitArgs(s) {
 // ───────────────────────────────────────────────────────────────────────────
 
 /** Walk backwards from `at` over whitespace, collecting all @Annotations (with bodies). */
+const JAVA_MODIFIERS = new Set([
+  'public', 'protected', 'private', 'abstract', 'final', 'static',
+  'sealed', 'non-sealed', 'default', 'synchronized', 'native', 'strictfp'
+]);
+
 function collectLeadingAnnotations(src, at) {
   let i = at;
   // step back over any whitespace
@@ -200,12 +205,17 @@ function collectLeadingAnnotations(src, at) {
       annotations.unshift({ raw: src.slice(m, endIdx), at: m });
       i = m;
     } else if (/[A-Za-z0-9_]/.test(src[j])) {
-      // bare annotation like @Override (no parens)
+      // bare annotation like @Override (no parens), or a Java modifier
+      // (public/abstract/...) sitting between annotations and the class/method.
       let m = j;
-      while (m >= 0 && /[A-Za-z0-9_.]/.test(src[m])) m--;
-      if (src[m] !== '@') break;
-      annotations.unshift({ raw: src.slice(m, j + 1), at: m });
-      i = m;
+      while (m >= 0 && /[A-Za-z0-9_.-]/.test(src[m])) m--;
+      if (src[m] === '@') {
+        annotations.unshift({ raw: src.slice(m, j + 1), at: m });
+        i = m;
+      } else if (JAVA_MODIFIERS.has(src.slice(m + 1, j + 1))) {
+        // skip past the modifier and keep walking back for more annotations
+        i = m + 1;
+      } else break;
     } else break;
     while (i > 0 && /\s/.test(src[i - 1])) i--;
   }
@@ -1220,7 +1230,7 @@ function operationSummary(anns) {
 
 /** Are we likely a controller class? */
 function controllerInfo(src) {
-  const cls = src.match(/^(\s*@[A-Za-z_][\w.]*(?:\([^)]*\))?\s*)*(?:public\s+|abstract\s+)*\b(class|record)\s+([A-Za-z_]\w*)/m);
+  const cls = src.match(/^(\s*@[A-Za-z_][\w.]*(?:\([^)]*\))?\s*)*(?:(?:public|protected|private|abstract|final|static|sealed|non-sealed)\s+)*\b(class|record)\s+([A-Za-z_]\w*)/m);
   if (!cls) return null;
   const head = src.slice(0, cls.index);
   const isController = /@(Rest)?Controller\b/.test(head) || /@(Rest)?Controller\b/.test(src.slice(0, cls.index + cls[0].length));

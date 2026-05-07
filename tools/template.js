@@ -661,6 +661,10 @@ table.t td:nth-child(2) {
   font-family: 'JetBrains Mono', monospace; flex-shrink: 0;
   white-space: nowrap;
 }
+.ep-used-badge--twin {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
 .endpoint .body {
   padding: 14px 18px 18px 86px;
   background: var(--panel-soft);
@@ -929,6 +933,33 @@ aside.toc a.active {
   font-style: italic;
   padding: 6px 0;
 }
+.used-by .ub-via a { color: inherit; text-decoration: underline; text-decoration-color: var(--rule-strong); }
+.used-by .ub-via a:hover { color: var(--accent); }
+.ub-twins {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule-soft);
+}
+.ub-twin-title {
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 5px;
+}
+.ub-twin {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--ink-soft);
+  font-size: 11.5px;
+}
+.ub-twin span:last-child {
+  color: var(--ink-faint);
+  text-align: right;
+}
+.ub-twin:hover { color: var(--accent); }
 
 /* ============================== PAGES PAGE ============================== */
 

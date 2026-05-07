@@ -300,18 +300,68 @@ function renderParamTable(rows, columns) {
   return `<table class="t"><thead>${head}</thead><tbody>${body}</tbody></table>`;
 }
 
-function renderUsedBy(usage) {
-  if (!usage || usage.length === 0) {
-    return `<div class="used-by"><h4>Used by</h4><div class="ub-empty">No UI pages found in the Angular theme that consume this endpoint.</div></div>`;
-  }
-  // Dedup by route so a page injecting two services that both use this endpoint shows once
+function dedupeUsageByRoute(usage) {
   const dedup = new Map();
-  for (const u of usage) {
+  for (const u of usage || []) {
     const k = u.route;
     if (!dedup.has(k)) dedup.set(k, { route: u.route, title: u.title, vias: new Set([u.viaService]), pageId: u.pageId });
     else dedup.get(k).vias.add(u.viaService);
   }
-  const entries = Array.from(dedup.values()).sort((a, b) => a.route.localeCompare(b.route));
+  return Array.from(dedup.values()).sort((a, b) => a.route.localeCompare(b.route));
+}
+
+function twinUsagePageCount(twins) {
+  const seen = new Set();
+  for (const t of twins || []) {
+    for (const p of t.pages || []) seen.add(p.pageId || p.route);
+  }
+  return seen.size;
+}
+
+function renderTwinSummary(twins) {
+  if (!twins || twins.length === 0) return '';
+  return `<div class="ub-twins">
+    <div class="ub-twin-title">Also implemented in</div>
+    ${twins.map(t => {
+      const count = twinUsagePageCount([t]);
+      return `<a class="ub-twin" href="${escapeAttr(t.service)}.html#${escapeAttr(t.endpointId)}">
+        <span>${escapeHtml(t.serviceName || t.service)}</span>
+        <span>${escapeHtml(t.area || '')}${count ? ` · ${count} UI page${count === 1 ? '' : 's'}` : ' · no direct UI pages'}</span>
+      </a>`;
+    }).join('\n    ')}
+  </div>`;
+}
+
+function renderUsedBy(usage, twins) {
+  const entries = dedupeUsageByRoute(usage);
+  const siblingEntries = [];
+  for (const t of twins || []) {
+    for (const e of dedupeUsageByRoute(t.pages || [])) {
+      siblingEntries.push({ ...e, twin: t });
+    }
+  }
+  siblingEntries.sort((a, b) => a.route.localeCompare(b.route) || a.twin.service.localeCompare(b.twin.service));
+  const twinSummary = renderTwinSummary(twins);
+
+  if (entries.length === 0 && siblingEntries.length === 0) {
+    return `<div class="used-by"><h4>Used by</h4><div class="ub-empty">No UI pages found in the Angular theme that consume this endpoint directly.</div>${twinSummary}</div>`;
+  }
+
+  if (entries.length === 0) {
+    const siblingPageCount = twinUsagePageCount(twins);
+    return `<div class="used-by">
+  <h4>Used by · <span class="ub-meta">${siblingPageCount} UI page${siblingPageCount === 1 ? '' : 's'} via same method/path</span></h4>
+  <div class="ub-empty">No direct UI route targets this service endpoint; these pages call a sibling implementation with the same method and path.</div>
+  <ul class="ub-list">
+    ${siblingEntries.map(e => `<li>
+      <span class="ub-route"><a href="pages.html#${escapeAttr(e.pageId)}">${escapeHtml(e.route)}</a>${e.title ? ` <span style="color:var(--ink-faint)">· ${escapeHtml(e.title)}</span>` : ''}</span>
+      <span class="ub-via">via <a href="${escapeAttr(e.twin.service)}.html#${escapeAttr(e.twin.endpointId)}">${escapeHtml(e.twin.serviceName || e.twin.service)}</a> · ${escapeHtml(Array.from(e.vias).join(', '))}</span>
+    </li>`).join('\n    ')}
+  </ul>
+  ${twinSummary}
+</div>`;
+  }
+
   return `<div class="used-by">
   <h4>Used by · <span class="ub-meta">${entries.length} UI page${entries.length === 1 ? '' : 's'}</span></h4>
   <ul class="ub-list">
@@ -320,10 +370,11 @@ function renderUsedBy(usage) {
       <span class="ub-via">via ${escapeHtml(Array.from(e.vias).join(', '))}</span>
     </li>`).join('\n    ')}
   </ul>
+  ${twinSummary}
 </div>`;
 }
 
-function renderEndpoint(e, hasPaginationSection, usage) {
+function renderEndpoint(e, hasPaginationSection, usage, twins) {
   const path = pathHTML(e.path);
   const summary = escapeHtml(e.summary || '');
 
@@ -410,13 +461,16 @@ function renderEndpoint(e, hasPaginationSection, usage) {
     sections.push('<p style="color:var(--ink-faint);font-size:13px">No additional parameters.</p>');
   }
 
-  const usedBy = renderUsedBy(usage);
+  const usedBy = renderUsedBy(usage, twins);
   const categoryBadge = e.category && e.category !== 'uncategorized'
     ? `<a class="ep-cat-badge cat-${e.category}" href="${escapeAttr(categoryHref(e.category))}" title="${escapeAttr(e.categoryReason || '')}" onclick="event.stopPropagation()">${escapeHtml(CATEGORY_LABELS[e.category])}</a>`
     : '';
   const usageCount = (usage || []).length;
+  const siblingUsageCount = usageCount > 0 ? 0 : twinUsagePageCount(twins);
   const usageBadge = usageCount > 0
     ? `<span class="ep-used-badge" title="Consumed by ${usageCount} UI page${usageCount === 1 ? '' : 's'}">${usageCount} page${usageCount === 1 ? '' : 's'}</span>`
+    : siblingUsageCount > 0
+      ? `<span class="ep-used-badge ep-used-badge--twin" title="Same method/path is consumed through another service">${siblingUsageCount} sibling page${siblingUsageCount === 1 ? '' : 's'}</span>`
     : '';
 
   // ── Build tabbed body ─────────────────────────────────────────────────
@@ -514,7 +568,7 @@ function renderEndpoint(e, hasPaginationSection, usage) {
 </details>`;
 }
 
-function renderArea(area, hasPagination, endpointUsage) {
+function renderArea(area, hasPagination, endpointUsage, endpointTwins) {
   const slug = `area-${tagSlug(area.name)}`;
   const areaDisplayName = area.name || area.sourceClass || 'Uncategorized';
   return `
@@ -524,7 +578,7 @@ function renderArea(area, hasPagination, endpointUsage) {
     <span class="area-meta"><b>${area.endpoints.length}</b> endpoint${area.endpoints.length === 1 ? '' : 's'}</span>
     <span class="area-source">${escapeHtml(area.sourceClass)}</span>
   </header>
-  ${area.endpoints.map(e => renderEndpoint(e, hasPagination, endpointUsage[e.id])).join('\n')}
+  ${area.endpoints.map(e => renderEndpoint(e, hasPagination, endpointUsage[e.id], endpointTwins[e.id])).join('\n')}
 </section>`;
 }
 
@@ -673,6 +727,7 @@ function renderService(spec, services, currentServiceId, xref, totals) {
   spec._hasPagination = paginated.length > 0;
 
   const endpointUsage = (xref && xref.endpointUsage) || {};
+  const endpointTwins = (xref && xref.endpointTwins) || {};
   const totalPages = xref && xref.pages ? xref.pages.length : 0;
   const railHTML = renderRailNav(spec, services, currentServiceId, totalPages);
   const tocHTML  = renderRightToc(spec);
@@ -760,7 +815,7 @@ ${foundCards.join('\n')}
 </div>
 
 <h2 class="section" id="endpoints"><span class="num">§</span>Endpoints by area<button class="expand-all-btn" id="expand-all" type="button">Expand all</button></h2>
-${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage)).join('\n')}
+${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointTwins)).join('\n')}
 
 <footer class="colophon">
   <div>Generated from source · <code>${escapeHtml(spec.serviceDir)}</code></div>

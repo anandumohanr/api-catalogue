@@ -96,6 +96,30 @@ function buildPathIndex(spec) {
   return buckets;
 }
 
+function buildEndpointGroups(svcIndexes) {
+  const byMethodPath = new Map();
+  for (const [svcId, { svc, spec }] of svcIndexes) {
+    for (const a of spec.areas || []) {
+      for (const e of a.endpoints || []) {
+        const rec = {
+          service: svcId,
+          serviceName: svc.displayName || svcId,
+          endpointId: e.id,
+          method: e.method,
+          path: e.path,
+          area: a.name || null,
+          summary: e.summary || null
+        };
+        const key = `${e.method} ${e.path}`;
+        const group = byMethodPath.get(key) || [];
+        group.push(rec);
+        byMethodPath.set(key, group);
+      }
+    }
+  }
+  return { byMethodPath };
+}
+
 function lookupPath(buckets, frontendTail) {
   const { count, segs } = splitPath(frontendTail || '/');
   const bucket = buckets.get(count) || [];
@@ -117,6 +141,7 @@ function buildXref() {
     if (!spec) continue;
     svcIndexes.set(s.id, { svc: s, spec, idx: buildPathIndex(spec) });
   }
+  const endpointGroups = buildEndpointGroups(svcIndexes);
 
   // For each endpoint key in endpoints.ts, resolve to (service, endpointId) if possible.
   // Some keys may match no service (e.g. /analytics/v1) — record under "unrouted".
@@ -269,10 +294,54 @@ function buildXref() {
   const resolvedCalls = pages.reduce((n, p) => n + p.apiCalls.filter(c => !c.unrouted).length, 0);
   const matchRate = totalCalls ? (resolvedCalls / totalCalls * 100).toFixed(1) : '–';
 
+  const endpointUsageObj = Object.fromEntries(endpointUsage);
+  const endpointTwins = {};
+  const duplicateGroups = [];
+  for (const [key, group] of endpointGroups.byMethodPath) {
+    if (group.length <= 1) continue;
+    const entries = group.map(g => ({
+      ...g,
+      pages: endpointUsageObj[g.endpointId] || []
+    }));
+    duplicateGroups.push({
+      key,
+      method: entries[0].method,
+      path: entries[0].path,
+      endpoints: entries.map(e => ({
+        service: e.service,
+        serviceName: e.serviceName,
+        endpointId: e.endpointId,
+        area: e.area,
+        summary: e.summary,
+        pageCount: e.pages.length
+      }))
+    });
+    for (const e of entries) {
+      endpointTwins[e.endpointId] = entries
+        .filter(other => other.endpointId !== e.endpointId)
+        .map(other => ({
+          service: other.service,
+          serviceName: other.serviceName,
+          endpointId: other.endpointId,
+          method: other.method,
+          path: other.path,
+          area: other.area,
+          summary: other.summary,
+          pages: other.pages
+        }));
+    }
+  }
+  duplicateGroups.sort((a, b) => {
+    const au = a.endpoints.reduce((n, e) => n + e.pageCount, 0);
+    const bu = b.endpoints.reduce((n, e) => n + e.pageCount, 0);
+    return bu - au || a.key.localeCompare(b.key);
+  });
+
   return {
     xref: {
       pages,
-      endpointUsage: Object.fromEntries(endpointUsage),
+      endpointUsage: endpointUsageObj,
+      endpointTwins,
       stats: { totalPages, totalCalls, resolvedCalls, matchRate, totalEndpointKeys: Object.keys(endpointMap).length }
     },
     keyResolution,
@@ -280,7 +349,8 @@ function buildXref() {
       unmappedPrefixCounts,
       mappedPrefixCounts,
       unroutedUsageTopN: Array.from(unroutedUsage.entries()).sort((a,b)=>b[1]-a[1]).slice(0, 30),
-      serviceCalls: Array.from(serviceClassToCalls.entries()).map(([cls, arr]) => ({ class: cls, calls: arr.length, resolved: arr.filter(a => a.endpointId).length })).sort((a,b)=>b.calls-a.calls).slice(0,15)
+      serviceCalls: Array.from(serviceClassToCalls.entries()).map(([cls, arr]) => ({ class: cls, calls: arr.length, resolved: arr.filter(a => a.endpointId).length })).sort((a,b)=>b.calls-a.calls).slice(0,15),
+      duplicateGroups
     }
   };
 }
@@ -336,6 +406,21 @@ function renderReport(result) {
   if (noMatch.length === 0) lines.push('_None._');
   else for (const [k, v] of noMatch.slice(0, 30)) {
     lines.push(`- \`${k}\` → \`${v.urlPath}\` (would be routed to \`${v.service}\`)`);
+  }
+  lines.push('');
+  lines.push('## Same METHOD + path implemented more than once');
+  lines.push('');
+  const dupes = diagnostics.duplicateGroups || [];
+  if (dupes.length === 0) lines.push('_None._');
+  else {
+    lines.push(`Found ${dupes.length} duplicate method/path group${dupes.length === 1 ? '' : 's'}. These are kept as direct-service matches, but the rendered endpoint cards show sibling usage so near-identical implementations are not mistaken for parser misses.`);
+    lines.push('');
+    for (const d of dupes.slice(0, 30)) {
+      lines.push(`- \`${d.key}\``);
+      for (const e of d.endpoints) {
+        lines.push(`  - \`${e.service}\` · \`${e.endpointId}\` · ${e.pageCount} UI page${e.pageCount === 1 ? '' : 's'}`);
+      }
+    }
   }
   return lines.join('\n');
 }
