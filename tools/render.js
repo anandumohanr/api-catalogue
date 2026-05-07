@@ -7,10 +7,67 @@
  *   renderIndex(servicesWithSpecs, totals)          → string
  */
 
-const { FONTS, CSS, SCRIPT, APPBAR, PALETTE, escapeHtml, escapeAttr } = require('./template');
+const { FONTS, CSS, SCRIPT, APPBAR, PALETTE, ICONS, TOAST, SHORTCUTS_SHEET, escapeHtml, escapeAttr } = require('./template');
 
 function pathHTML(p) { return escapeHtml(p).replace(/\{([^}]+)\}/g, '<span class="ph">{$1}</span>'); }
 function tagSlug(t)  { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-'); }
+
+/** Synthesize a copy-pasteable cURL command for an endpoint.
+ * Uses the catalogue host as a base placeholder; users can swap in their environment. */
+function synthesizeCurl(e) {
+  const lines = [];
+  const method = e.method;
+  // Resolve sample path values for {placeholders} so the cURL is runnable as-is.
+  let path = e.path.replace(/\{([^}]+)\}/g, (_, name) => {
+    const lc = name.toLowerCase();
+    if (/(id|uuid)$/i.test(name))   return ':' + name;
+    if (/page/i.test(name))         return '0';
+    if (/size/i.test(name))         return '20';
+    return ':' + name;
+  });
+  const qs = (e.queryParams || []).filter(p => p.required).slice(0, 3).map(p => p.name + '=:' + p.name);
+  if (qs.length) path += (path.includes('?') ? '&' : '?') + qs.join('&');
+  lines.push('curl --request ' + method + ' \\\n  --url "https://api.medlern.example' + path + '"');
+  // Headers
+  for (const h of (e.headers || [])) {
+    if (!h.name) continue;
+    if (/auth/i.test(h.name)) lines.push('  --header "' + h.name + ': Bearer $TOKEN"');
+    else lines.push('  --header "' + h.name + ': ' + (h.default || ':' + h.name) + '"');
+  }
+  if (e.requestBody && e.requestBody.sample) {
+    lines.push('  --header "Content-Type: application/json"');
+    lines.push("  --data '" + JSON.stringify(e.requestBody.sample, null, 2).replace(/'/g, "'\\''") + "'");
+  }
+  return lines.join(' \\\n');
+}
+
+function renderEndpointActions(e, curl) {
+  const enc = encodeURIComponent(curl || '');
+  return `<div class="ep-actions" onclick="event.stopPropagation()">
+    <button class="ep-action" data-action="copy-path" data-path="${escapeAttr(e.path)}" type="button" aria-label="Copy path">
+      <svg class="i"><use href="#i-copy"/></svg><span>path</span>
+    </button>
+    <button class="ep-action" data-action="copy-permalink" type="button" aria-label="Copy permalink">
+      <svg class="i"><use href="#i-link"/></svg><span>link</span>
+    </button>
+    <button class="ep-action" data-action="copy-curl" data-curl="${escapeAttr(enc)}" type="button" aria-label="Copy as cURL">
+      <svg class="i"><use href="#i-terminal"/></svg><span>curl</span>
+    </button>
+  </div>`;
+}
+
+function renderCurlCard(curl) {
+  if (!curl) return '';
+  const colored = escapeHtml(curl)
+    .replace(/(curl) /g, '<span class="c-flag">$1</span> ')
+    .replace(/(--request|--url|--header|--data) /g, '<span class="c-flag">$1</span> ')
+    .replace(/(GET|POST|PUT|PATCH|DELETE)/g, '<span class="c-method">$1</span>')
+    .replace(/(&quot;https:[^&]+&quot;)/, '<span class="c-url">$1</span>');
+  return `<div class="curl-card">
+    <button class="curl-copy" type="button" data-curl-source>copy</button>
+    <pre style="margin:0;color:inherit;background:none;border:none;padding:0;font-size:inherit;line-height:inherit;font-family:inherit;white-space:pre">${colored}</pre>
+  </div>`;
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // JSON viewer + schema table
@@ -178,7 +235,34 @@ function buildGlobalIndex(services, xref) {
       href:    categoryHref(cat)
     });
   }
+  // New first-class views
+  out.push(
+    { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/orphans',       summary: 'Endpoints with no Angular page consumer',  href: 'orphans.html' },
+    { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/auth-coverage', summary: 'Authorization matrix — services × auth type', href: 'auth-coverage.html' },
+    { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/tags',          summary: 'Browse by behavioural tag — paginated, export, lookup', href: 'tags.html' }
+  );
   return out;
+}
+
+function buildEpXref(xref) {
+  if (!xref || !xref.endpointUsage) return {};
+  const out = {};
+  for (const [epId, usages] of Object.entries(xref.endpointUsage)) {
+    out[epId] = usages.map(u => ({ pageId: u.pageId, route: u.route, title: u.title || null, via: u.viaService }));
+  }
+  return out;
+}
+
+function buildPageXref(xref) {
+  if (!xref || !xref.pages) return [];
+  return xref.pages
+    .map(p => {
+      const calls = (p.apiCalls || []).filter(c => c.endpointId)
+        .map(c => ({ endpointId: c.endpointId, verb: c.verb, path: c.path, area: c.area, svc: c.service }));
+      return calls.length ? { id: p.id, route: p.route, title: p.title || p.component || '', calls } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.route.localeCompare(b.route));
 }
 
 function topLevelGroup(route) {
@@ -335,18 +419,93 @@ function renderEndpoint(e, hasPaginationSection, usage) {
     ? `<span class="ep-used-badge" title="Consumed by ${usageCount} UI page${usageCount === 1 ? '' : 's'}">${usageCount} page${usageCount === 1 ? '' : 's'}</span>`
     : '';
 
+  // ── Build tabbed body ─────────────────────────────────────────────────
+  const overviewSections = sections.filter(s =>
+    !/<h4>Request body<\/h4>/.test(s) &&
+    !/<h4>Response /.test(s) &&
+    !/<div class="json-card/.test(s) &&
+    !/<details class="schema-card/.test(s) &&
+    !/<div class="envelope-card/.test(s)
+  );
+  const schemaSections = [];
+  const exampleSections = [];
+
+  // Re-derive request and response sections, this time splitting them
+  if (e.requestBody) {
+    const rb = e.requestBody;
+    const reqContentType = (e.consumes && e.consumes[0]) || null;
+    if (rb.resolved && rb.sample !== undefined && rb.sample !== null) {
+      exampleSections.push('<h4>Request body</h4>' + renderJsonCard('Example', rb.resolved, rb.sample, { contentType: reqContentType }));
+      const tbl = renderSchemaTable(rb.resolved, rb.resolved.name || rb.type);
+      if (tbl) schemaSections.push('<h4>Request body</h4>' + tbl);
+    } else if (rb.resolved && rb.resolved.kind === 'unknown') {
+      schemaSections.push('<h4>Request body</h4>' + renderJsonCard('Example', null, null, {
+        emptyMessage: `Type ${rb.type} could not be resolved from source — see the controller for details.`
+      }));
+    } else {
+      schemaSections.push(`<h4>Request body</h4><p style="font-size:13px;color:var(--ink-faint)">Bound type: <code>${escapeHtml(rb.type)}</code></p>`);
+    }
+  }
+  if (e.response && (e.response.resolved || e.response.shape)) {
+    const r = e.response;
+    const respContentType = (e.produces && e.produces[0]) || null;
+    if (r.envelope && r.type) {
+      schemaSections.push(renderEnvelope(r.envelope, r.type));
+    }
+    if (r.resolved && r.sample !== undefined && r.sample !== null) {
+      exampleSections.push('<h4>Response <code>data</code></h4>' + renderJsonCard('Example', r.resolved, r.sample, {
+        contentType: respContentType,
+        paginated: r.paginated,
+        note: r.wrapper ? `inside ${r.wrapper}.data` : null
+      }));
+      const tbl = renderSchemaTable(r.resolved, r.type || (r.resolved && r.resolved.name));
+      if (tbl) schemaSections.push('<h4>Response <code>data</code></h4>' + tbl);
+    } else {
+      schemaSections.push(`<h4>Response <code>data</code></h4><p style="font-size:13px;color:var(--ink-faint)">Detected expression: <code>${escapeHtml(r.shape || '?')}</code> &mdash; could not resolve to a concrete type.</p>`);
+    }
+  }
+
+  const curl = synthesizeCurl(e);
+  const hasSchema  = schemaSections.length > 0;
+  const hasExample = exampleSections.length > 0;
+  const tabsHTML = `<div class="ep-tabs" role="tablist">
+    <button class="ep-tab is-active" data-tab="overview" type="button"><svg class="i"><use href="#i-info"/></svg><span>Overview</span></button>
+    ${hasSchema  ? `<button class="ep-tab" data-tab="schema" type="button"><svg class="i"><use href="#i-layers"/></svg><span>Schema</span></button>` : ''}
+    ${hasExample ? `<button class="ep-tab" data-tab="example" type="button"><svg class="i"><use href="#i-code"/></svg><span>Example</span></button>` : ''}
+    <button class="ep-tab" data-tab="curl" type="button"><svg class="i"><use href="#i-terminal"/></svg><span>cURL</span></button>
+  </div>`;
+
+  const overviewPanel = `<div class="ep-tab-panel is-active" data-tab="overview">
+    ${renderTags(e.tags)}
+    ${overviewSections.join('\n      ')}
+  </div>`;
+  const schemaPanel = hasSchema ? `<div class="ep-tab-panel" data-tab="schema">
+    ${schemaSections.join('\n      ')}
+  </div>` : '';
+  const examplePanel = hasExample ? `<div class="ep-tab-panel" data-tab="example">
+    ${exampleSections.join('\n      ')}
+  </div>` : '';
+  const curlPanel = `<div class="ep-tab-panel" data-tab="curl">
+    <p style="font-size:13px;color:var(--ink-faint);margin:0 0 8px">A runnable cURL skeleton. Replace <code>:placeholder</code> values and <code>$TOKEN</code> with your environment.</p>
+    ${renderCurlCard(curl)}
+  </div>`;
+
   return `<details class="endpoint" id="${escapeAttr(e.id)}">
   <summary>
     <span class="verb-band ${e.method}" aria-hidden="true"></span>
     <span class="verb ${e.method}">${e.method}</span>
-    <span class="e-path">${path}</span>
+    <span class="e-path tt" data-tip="${escapeAttr(e.path)}">${path}</span>
     <span class="e-summary">${summary}</span>
     <span class="ep-badges">${categoryBadge}${usageBadge}</span>
+    ${renderEndpointActions(e, curl)}
   </summary>
   <div class="body body--with-aside">
     <div class="body-main">
-      ${renderTags(e.tags)}
-      ${sections.join('\n      ')}
+      ${tabsHTML}
+      ${overviewPanel}
+      ${schemaPanel}
+      ${examplePanel}
+      ${curlPanel}
     </div>
     <aside class="body-aside">
       ${usedBy}
@@ -455,9 +614,12 @@ ${FONTS}
 <style>${CSS}</style>
 </head>
 <body>
+${ICONS}
 ${APPBAR({ title: brandTitle, brandSub, indexHref, nav })}
 ${body}
 ${PALETTE}
+${SHORTCUTS_SHEET}
+${TOAST}
 <script>window.__GLOBAL_INDEX__ = null;</script>
 <script>${SCRIPT}</script>
 </body>
@@ -581,8 +743,16 @@ ${auth.counts.map(([k, n]) => {
 }</pre>
 </div>`);
 
+  const subnav = `<nav class="subnav" aria-label="Section">
+    <a href="#foundations"><svg class="i"><use href="#i-info"/></svg>Foundations</a>
+    <a href="#endpoints"><svg class="i"><use href="#i-list"/></svg>Endpoints</a>
+    ${spec._hasAuth ? `<a href="#authorization"><svg class="i"><use href="#i-shield"/></svg>Authorization</a>` : ''}
+    ${spec._hasPagination ? `<a href="#pagination"><svg class="i"><use href="#i-layers"/></svg>Pagination</a>` : ''}
+  </nav>`;
+
   const main = `<main class="doc">
 ${hero}
+${subnav}
 
 <h2 class="section" id="foundations"><span class="num">§</span>Foundations</h2>
 <div class="found-grid">
@@ -765,33 +935,6 @@ ${tocHTML}
   });
 }
 
-/** Compute aggregate coverage stats across all loaded specs. */
-function computeCoverage(services, xref) {
-  let totalEp = 0, withReqBody = 0, resolvedReq = 0, resolvedResp = 0;
-  for (const s of services) {
-    if (!s.spec) continue;
-    for (const a of s.spec.areas) for (const e of a.endpoints) {
-      totalEp++;
-      if (e.requestBody) {
-        withReqBody++;
-        if (e.requestBody.resolved && e.requestBody.resolved.kind && e.requestBody.resolved.kind !== 'unknown') resolvedReq++;
-      }
-      if (e.response && e.response.resolved && e.response.resolved.kind && e.response.resolved.kind !== 'unknown') resolvedResp++;
-    }
-  }
-  const consumed = (xref && xref.endpointUsage) ? Object.keys(xref.endpointUsage).length : 0;
-  return {
-    totalEp,
-    withReqBody,
-    resolvedReq,
-    resolvedResp,
-    consumed,
-    pctReq:      withReqBody ? Math.round((resolvedReq  / withReqBody) * 100) : 0,
-    pctResp:     totalEp     ? Math.round((resolvedResp / totalEp)     * 100) : 0,
-    pctConsumed: totalEp     ? Math.round((consumed     / totalEp)     * 100) : 0
-  };
-}
-
 function methodBreakdown(spec) {
   const counts = {};
   for (const a of (spec.areas || [])) for (const e of a.endpoints) counts[e.method] = (counts[e.method] || 0) + 1;
@@ -799,159 +942,95 @@ function methodBreakdown(spec) {
   return order.filter(m => counts[m]).map(m => ({ method: m, count: counts[m] }));
 }
 
-function topAreas(spec, n) {
-  return (spec.areas || []).slice().sort((a, b) => b.endpoints.length - a.endpoints.length).slice(0, n);
-}
-
-/** Per-service breakdown of category coverage. */
-function svcCategoryBreakdown(spec) {
-  const counts = {};
-  for (const a of (spec.areas || [])) for (const e of a.endpoints) {
-    counts[e.category || 'uncategorized'] = (counts[e.category || 'uncategorized'] || 0) + 1;
-  }
-  return counts;
-}
-
-function renderCategoryTile(catId, count, services) {
-  const label = CATEGORY_LABELS[catId];
-  const desc = (services && services._descriptions && services._descriptions[catId]) || '';
-  const topSvcs = (services || []).filter(s => s.spec).map(s => {
-    const c = svcCategoryBreakdown(s.spec)[catId] || 0;
-    return { id: s.id, name: s.displayName, count: c };
-  }).filter(x => x.count > 0).sort((a, b) => b.count - a.count).slice(0, 3);
-  const topHtml = topSvcs.length
-    ? topSvcs.map(t => `<span><a href="${escapeAttr(t.id)}.html">${escapeHtml(t.name)}</a> <span class="ct-svc-count">${t.count}</span></span>`).join(' · ')
-    : '<span style="color:var(--ink-faint)">none yet</span>';
-  return `<a class="cat-tile" href="${escapeAttr(categoryHref(catId))}" data-cat="${catId}">
-    <div class="ct-head">
-      <span class="ct-label">${escapeHtml(label)}</span>
-      <span class="ct-count">${count}</span>
-    </div>
-    <div class="ct-desc">${escapeHtml(desc)}</div>
-    <div class="ct-tops">${topHtml}</div>
-    <div class="ct-cta">Browse →</div>
-  </a>`;
-}
-
-function renderCoveragePanel(cov) {
-  const bar = (pct, label, sub) => `
-    <div class="cov-row">
-      <div class="cov-label">${escapeHtml(label)}</div>
-      <div class="cov-bar"><span class="cov-fill" style="width:${pct}%"></span></div>
-      <div class="cov-pct"><b>${pct}%</b><span>${escapeHtml(sub)}</span></div>
-    </div>`;
-  return `<section class="coverage">
-    <h3>What's covered</h3>
-    <p class="coverage-intro">The build extracts schemas from source. These bars show how complete the introspection is.</p>
-    ${bar(cov.pctReq,      'Resolved request schemas',  `${cov.resolvedReq} / ${cov.withReqBody} endpoints with a body`)}
-    ${bar(cov.pctResp,     'Resolved response schemas', `${cov.resolvedResp} / ${cov.totalEp} endpoints`)}
-    ${bar(cov.pctConsumed, 'Endpoints used by the UI',  `${cov.consumed} / ${cov.totalEp} endpoints have a frontend consumer`)}
-  </section>`;
-}
-
-function renderRichServiceCard(s) {
-  const sp = s.spec;
-  const eps   = sp ? sp.totalEndpoints : '—';
-  const areas = sp ? sp.totalAreas : '—';
-  const blurb = s.blurb || sp?.description || '';
-  if (!sp) {
-    return `<a class="svc-card" href="${escapeAttr(s.id)}.html">
-      <div class="svc-head"><span class="svc-name">${escapeHtml(s.displayName)}</span></div>
-      <div class="svc-blurb">${escapeHtml(blurb)}</div>
-    </a>`;
-  }
-  const methods = methodBreakdown(sp);
-  const tops = topAreas(sp, 3);
-  const cats = svcCategoryBreakdown(sp);
-  const catDots = CATEGORY_ORDER.map(c => {
-    const has = (cats[c] || 0) > 0;
-    return `<span class="svc-cat-dot ${has ? 'has' : ''} cat-${c}" title="${escapeAttr(CATEGORY_LABELS[c] + ': ' + (cats[c] || 0))}">${cats[c] || 0}</span>`;
-  }).join('');
-  return `<a class="svc-card" href="${escapeAttr(s.id)}.html">
-    <div class="svc-head">
-      <span class="svc-name">${escapeHtml(s.displayName)}</span>
-      <span class="svc-art">${escapeHtml(sp.artifactId || s.dir)}</span>
-    </div>
-    <div class="svc-blurb">${escapeHtml(blurb)}</div>
-    <div class="svc-methods">${methods.map(m => `<span class="svc-method svc-method--${m.method}"><span class="svc-method-label">${m.method}</span><span class="svc-method-count">${m.count}</span></span>`).join('')}</div>
-    <div class="svc-areas">
-      <span class="svc-areas-label">Top areas:</span>
-      ${tops.map(a => `<span class="svc-area">${escapeHtml(a.name)} <span class="ct-svc-count">${a.endpoints.length}</span></span>`).join('')}
-    </div>
-    <div class="svc-stats">
-      <span><b>${eps}</b> endpoints</span>
-      <span><b>${areas}</b> areas</span>
-      ${sp.springBoot ? `<span>SB ${escapeHtml(sp.springBoot)}</span>` : ''}
-    </div>
-    <div class="svc-cat-row" title="Category coverage in this service">${catDots}</div>
-  </a>`;
-}
-
 function renderIndex(services, totals, xref) {
   const totalPages = (xref && xref.pages) ? xref.pages.length : 0;
-  const cov = computeCoverage(services, xref);
-  const cats = totals.categories || {};
-  const descriptions = totals.categoryDescriptions || {};
-  const taggedServices = Object.assign([], services, { _descriptions: descriptions });
 
-  const heroSearch = `
-<section class="home-hero">
-  <div class="eyebrow">Medlern platform <span class="sep">·</span> ${services.length} services <span class="sep">·</span> ${totals.endpoints} endpoints${totalPages ? ` <span class="sep">·</span> ${totalPages} UI pages` : ''}</div>
-  <h1>API <span style="color:var(--ink-faint);font-weight:400">catalogue</span></h1>
-  <p class="lede">Discover any backend endpoint and the UI page that calls it. Schemas, examples, auth, and cross-references — all generated from source.</p>
-  <button class="hero-search" id="hero-search-trigger">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14" y2="14" stroke-linecap="round"/></svg>
-    <span>Search every endpoint by URL, summary, or service…</span>
-    <span class="kbd"><span class="kbd-meta-2">⌘</span>K</span>
-  </button>
-  <div class="stat-row">
-    <span class="stat"><b>${services.length}</b> services</span>
-    <span class="stat"><b>${totals.areas}</b> areas</span>
-    <span class="stat"><b>${totals.endpoints}</b> endpoints</span>
-    ${totalPages ? `<span class="stat"><b>${totalPages}</b> UI pages</span>` : ''}
+  // ── HERO ────────────────────────────────────────────────────────────
+  const hero = `
+<section class="h2-hero">
+  <div class="h2-hero-grid">
+    <div class="h2-hero-main">
+      <span class="h2-eyebrow"><span class="pulse" aria-hidden="true"></span>Medlern platform · live from source</span>
+      <h1>One catalogue.<br>Every <span class="accent">API</span>.</h1>
+      <p class="h2-lede">Find the backend endpoint behind any feature, and the UI page behind any endpoint. Generated from <code>${services.length}</code> Spring services and the Angular theme — no manual upkeep.</p>
+      <button class="h2-search-btn" id="hero-search-btn" type="button" aria-label="Search APIs and pages">
+        <svg class="i"><use href="#i-search"/></svg>
+        <span class="h2-search-btn-text">Search APIs and pages…</span>
+        <span class="kbd"><span id="kbd-meta-hero">⌘</span>K</span>
+      </button>
+      <div class="h2-hero-quick">
+        <span class="h2-hero-quick-label">Try</span>
+        <button class="h2-hero-chip" data-search-seed="institution" type="button">institution</button>
+        <button class="h2-hero-chip" data-search-seed="login" type="button">login</button>
+        <button class="h2-hero-chip" data-search-seed="report" type="button">report</button>
+        <button class="h2-hero-chip" data-search-seed="course" type="button">course</button>
+        <button class="h2-hero-chip" data-search-seed="export" type="button">export</button>
+      </div>
+    </div>
+    <div class="h2-snap" aria-label="Catalogue snapshot">
+      <a class="h2-snap-cell is-link" href="#services">
+        <span class="sn-label"><svg class="i"><use href="#i-server"/></svg>Services</span>
+        <span class="sn-num">${services.length}</span>
+        <span class="sn-sub">microservices</span>
+      </a>
+      <a class="h2-snap-cell is-link" href="#services">
+        <span class="sn-label"><svg class="i"><use href="#i-layers"/></svg>Endpoints</span>
+        <span class="sn-num">${totals.endpoints.toLocaleString()}</span>
+        <span class="sn-sub">${totals.areas} areas</span>
+      </a>
+      <a class="h2-snap-cell is-link" href="pages.html">
+        <span class="sn-label"><svg class="i"><use href="#i-page"/></svg>UI pages</span>
+        <span class="sn-num">${totalPages.toLocaleString()}</span>
+        <span class="sn-sub">${xref && xref.stats ? xref.stats.resolvedCalls + ' xref calls' : 'angular routes'}</span>
+      </a>
+    </div>
   </div>
 </section>`;
 
-  const tiles = `
-<section class="cat-tiles">
-  <h2 class="section" id="categories"><span class="num">§</span>Browse by category</h2>
-  <p class="section-intro">Every endpoint is tagged based on auth, path, and the UI screens that consume it. Click into a category to filter across all services.</p>
-  <div class="cat-grid">
-    ${CATEGORY_ORDER.map(id => renderCategoryTile(id, cats[id] || 0, taggedServices)).join('\n')}
+  // ── SERVICES DIRECTORY ─────────────────────────────────────────────
+  const directoryRows = services.map(s => {
+    const sp = s.spec;
+    const eps   = sp ? sp.totalEndpoints : 0;
+    const areas = sp ? sp.totalAreas : 0;
+    const blurb = s.blurb || sp?.description || '';
+    const initial = s.displayName.charAt(0);
+    const total = eps || 1;
+    const methods = sp ? methodBreakdown(sp) : [];
+    const segs = methods.map(m =>
+      `<span class="dr-method-seg ${m.method}" style="width:${(m.count / total * 100).toFixed(1)}%" title="${m.method} ${m.count}"></span>`
+    ).join('');
+    return `<a class="h2-dir-row" href="${escapeAttr(s.id)}.html">
+      <span class="dr-mark">${escapeHtml(initial)}</span>
+      <span class="dr-name">
+        <span class="nm">${escapeHtml(s.displayName)}</span>
+        <span class="art">${escapeHtml(sp?.artifactId || s.dir)}</span>
+      </span>
+      <span class="dr-blurb">${escapeHtml(blurb)}</span>
+      <span class="dr-methods" aria-label="Method breakdown">${segs}</span>
+      <span class="dr-stats"><b>${eps}</b>&nbsp;endpoints<span>${areas} areas</span></span>
+      <svg class="i dr-go"><use href="#i-arrow-right"/></svg>
+    </a>`;
+  }).join('');
+
+  const directory = `
+<section class="h2-section" id="services">
+  <div class="h2-section-head">
+    <h2>Services</h2>
+    <span class="h2-section-meta">${services.length} services · ${totals.endpoints} endpoints</span>
   </div>
-  ${cats.uncategorized ? `<p class="cat-uncat-note">${cats.uncategorized} endpoint${cats.uncategorized === 1 ? '' : 's'} are not categorized — internal/utility endpoints with no UI consumer. Browse those by service.</p>` : ''}
+  <div class="h2-dir">
+    ${directoryRows}
+  </div>
 </section>`;
-
-  const coverage = renderCoveragePanel(cov);
-
-  const cards = services.map(renderRichServiceCard).join('\n');
-  const pagesCard = totalPages ? `
-<a class="svc-card svc-card--pages" href="pages.html">
-  <div class="svc-head">
-    <span class="svc-name">UI Pages</span>
-    <span class="svc-art">Angular theme</span>
-  </div>
-  <div class="svc-blurb">Every Angular route, with the backend APIs each page consumes. Cross-linked into every endpoint card.</div>
-  <div class="svc-stats">
-    <span><b>${totalPages}</b> pages</span>
-    ${xref?.stats ? `<span><b>${xref.stats.resolvedCalls}</b> resolved API references</span>` : ''}
-  </div>
-</a>` : '';
 
   const main = `<main class="doc home">
-${heroSearch}
-${tiles}
-${coverage}
-<h2 class="section" id="services"><span class="num">§</span>Services</h2>
-<p class="section-intro">Eight microservices share the platform. Cards show the method breakdown, top areas, and category coverage at a glance.</p>
-<div class="svc-grid">
-${cards}
-${pagesCard}
+${hero}
+${directory}
+<div class="h2-foot">
+  <div>Generated from source by <code>tools/build.js</code></div>
+  <div>${totals.endpoints}&nbsp;endpoints · ${totals.areas}&nbsp;areas · ${services.length}&nbsp;services</div>
 </div>
-<footer class="colophon">
-  <div>Generated from source by <code>tools/build.js</code> · <code>${escapeHtml('node tools/build.js')}</code> rebuilds the entire estate.</div>
-  <div class="meta">${totals.endpoints}&nbsp;endpoints · ${totals.areas}&nbsp;areas · ${services.length}&nbsp;services</div>
-</footer>
+<script>window.__EP_XREF__ = null; window.__PAGE_XREF__ = null;</script>
 </main>`;
 
   const body = `<div class="shell shell--home">${main}</div>`;
@@ -1169,4 +1248,223 @@ ${viewToggle}
   });
 }
 
-module.exports = { renderService, renderIndex, renderPages, renderCategoryPage, buildGlobalIndex };
+// ─────────────────────────────────────────────────────────────────────────
+// New first-class views: orphans, auth-coverage, tags
+// All three reuse the same compact endpoint-link component as category pages.
+// ─────────────────────────────────────────────────────────────────────────
+
+function compactEpLink(e, svc, area, extraHaystack) {
+  const auth = e.auth ? `<span class="cat-ep-auth">${escapeHtml(e.auth)}</span>` : '';
+  const tags = (e.tags || []).slice(0, 4).map(t => `<span class="cat-ep-tag">${escapeHtml(t)}</span>`).join('');
+  const haystack = escapeAttr((e.path + ' ' + (e.summary || '') + ' ' + (area && area.name || '') + (extraHaystack ? ' ' + extraHaystack : '')).toLowerCase());
+  return `<a class="cat-ep" href="${escapeAttr(svc.id)}.html#${escapeAttr(e.id)}" data-method="${e.method}" data-svc="${escapeAttr(svc.id)}" data-haystack="${haystack}">
+    <span class="verb-band ${e.method}" aria-hidden="true"></span>
+    <span class="verb ${e.method}">${e.method}</span>
+    <span class="cat-ep-path">${pathHTML(e.path)}</span>
+    <span class="cat-ep-summary">${escapeHtml(e.summary || '')}</span>
+    <span class="cat-ep-meta">${auth}${tags}</span>
+  </a>`;
+}
+
+function emptyState(iconId, title, body) {
+  return `<div class="empty">
+    <svg class="i"><use href="#${iconId}"/></svg>
+    <div class="empty-title">${escapeHtml(title)}</div>
+    <div>${escapeHtml(body)}</div>
+  </div>`;
+}
+
+function renderOrphans(services, xref, totals) {
+  const used = (xref && xref.endpointUsage) || {};
+  const blocks = [];
+  let total = 0;
+  for (const s of services) {
+    if (!s.spec) continue;
+    const orphans = [];
+    for (const a of s.spec.areas) {
+      const eps = a.endpoints.filter(e => !(used[e.id] && used[e.id].length));
+      if (eps.length) orphans.push({ area: a, eps });
+    }
+    if (!orphans.length) continue;
+    const cnt = orphans.reduce((n, x) => n + x.eps.length, 0);
+    total += cnt;
+    blocks.push(`<section class="cat-svc" data-svc="${escapeAttr(s.id)}">
+      <header class="cat-svc-head">
+        <a class="cat-svc-name" href="${escapeAttr(s.id)}.html">${escapeHtml(s.displayName)}</a>
+        <span class="cat-svc-meta">${cnt} endpoint${cnt === 1 ? '' : 's'}</span>
+      </header>
+      ${orphans.map(o => `
+        <div class="cat-area">
+          <div class="cat-area-label">${escapeHtml(o.area.name || o.area.sourceClass || 'Uncategorized')}</div>
+          ${o.eps.map(e => compactEpLink(e, s, o.area, '')).join('')}
+        </div>`).join('')}
+    </section>`);
+  }
+  const main = `<main class="doc category">
+    <section class="cat-hero">
+      <div class="eyebrow"><svg class="i"><use href="#i-orphan"/></svg> Coverage gap</div>
+      <h1>Orphan endpoints</h1>
+      <p class="lede">Backend endpoints with no Angular page in our index that calls them. Either the consumer lives outside the catalogued theme, the endpoint is dead code, or the cross-reference missed the call site (see <code>_data/xref-report.md</code>).</p>
+      <div class="stat-row">
+        <span class="stat"><b>${total}</b> orphaned</span>
+        <span class="stat"><b>${blocks.length}</b> service${blocks.length === 1 ? '' : 's'} affected</span>
+        <span class="stat"><b>${totals.endpoints}</b> total endpoints</span>
+      </div>
+    </section>
+    ${blocks.length ? blocks.join('\n') : emptyState('i-check-circle', 'No orphans', 'Every endpoint in the catalogue has at least one UI page that consumes it.')}
+    <footer class="colophon">
+      <div>Computed against <code>_data/xref.json</code>'s <code>endpointUsage</code> reverse index.</div>
+      <div class="meta">${total}&nbsp;orphan endpoints</div>
+    </footer>
+  </main>`;
+  const body = `<div class="shell shell--home">${main}</div>`;
+  return pageShell({
+    title:      'Medlern · Orphan endpoints',
+    body,
+    brandTitle: 'Medlern',
+    brandSub:   '/ orphans',
+    indexHref:  'index.html',
+    nav: buildNav({ services, totals, xref })
+  });
+}
+
+function renderAuthCoverage(services, xref, totals) {
+  // Build matrix: rows = services, cols = auth types (canonicalised)
+  const canonical = (auth) => {
+    if (!auth) return 'none';
+    const a = auth.toLowerCase();
+    if (a.includes('preauthorize') || a.includes('hasrole') || a.includes('hasauthority')) return 'role';
+    if (a.includes('isvalid') || a.includes('institution') || a.includes('roster')) return 'session';
+    if (a === 'custom') return 'custom';
+    return 'custom';
+  };
+  const labels = { session: 'Session', role: 'Role / Authority', custom: 'Custom', none: 'No gate' };
+  const cols = ['session', 'role', 'custom', 'none'];
+  const rows = [];
+  let totalEp = 0;
+  const colTotals = { session: 0, role: 0, custom: 0, none: 0 };
+  for (const s of services) {
+    if (!s.spec) continue;
+    const counts = { session: 0, role: 0, custom: 0, none: 0 };
+    let svcTotal = 0;
+    for (const a of s.spec.areas) for (const e of a.endpoints) {
+      const k = canonical(e.auth);
+      counts[k]++; colTotals[k]++; svcTotal++; totalEp++;
+    }
+    rows.push({ svc: s, counts, total: svcTotal });
+  }
+  const heatClass = (n, max) => {
+    if (!n) return '';
+    const pct = max ? n / max : 0;
+    if (pct > 0.5) return ' heat--hi';
+    if (pct > 0.2) return ' heat--md';
+    return ' heat--lo';
+  };
+  const maxCell = rows.reduce((m, r) => Math.max(m, ...cols.map(c => r.counts[c])), 0) || 1;
+  const tableHTML = `<table class="matrix">
+    <thead><tr>
+      <th>Service</th>
+      ${cols.map(c => `<th style="text-align:center">${labels[c]}</th>`).join('')}
+      <th style="text-align:right">Total</th>
+    </tr></thead>
+    <tbody>
+      ${rows.map(r => `<tr>
+        <td><a href="${escapeAttr(r.svc.id)}.html">${escapeHtml(r.svc.displayName)}</a></td>
+        ${cols.map(c => `<td class="cell">${r.counts[c]
+          ? `<a class="heat${heatClass(r.counts[c], maxCell)}" href="${escapeAttr(r.svc.id)}.html" title="${r.counts[c]} endpoint${r.counts[c]===1?'':'s'}">${r.counts[c]}</a>`
+          : '<span class="heat" style="opacity:.4">·</span>'}</td>`).join('')}
+        <td style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--ink-faint)">${r.total}</td>
+      </tr>`).join('')}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td style="font-weight:600">All services</td>
+        ${cols.map(c => `<td class="cell" style="font-family:'JetBrains Mono',monospace;color:var(--ink-soft);font-weight:600">${colTotals[c]}</td>`).join('')}
+        <td style="text-align:right;font-family:'JetBrains Mono',monospace;font-weight:600">${totalEp}</td>
+      </tr>
+    </tfoot>
+  </table>`;
+  const main = `<main class="doc category">
+    <section class="cat-hero">
+      <div class="eyebrow"><svg class="i"><use href="#i-shield"/></svg> Authorization</div>
+      <h1>Auth coverage matrix</h1>
+      <p class="lede">How each service gates its endpoints. <strong>Session</strong> = <code>requestMeta.isValid*(...)</code>. <strong>Role</strong> = Spring <code>@PreAuthorize</code>, <code>hasRole</code>, or <code>hasAuthority</code>. <strong>Custom</strong> = bespoke matchers. <strong>No gate</strong> = no detected auth check (review carefully — many are pre-login, some are mistakes).</p>
+      <div class="stat-row">
+        <span class="stat"><b>${totalEp}</b> endpoints</span>
+        <span class="stat"><b>${colTotals.none}</b> with no detected gate</span>
+        <span class="stat"><b>${colTotals.session + colTotals.role + colTotals.custom}</b> gated</span>
+      </div>
+    </section>
+    <div class="matrix-card">${tableHTML}</div>
+    <p style="font-size:12.5px;color:var(--ink-faint);margin-top:var(--s-4)">Detection lives in <code>parse.js:detectAuth</code>. The "No gate" column is a shortcut for "the parser couldn't find a check" — read the source before assuming the endpoint is genuinely public.</p>
+    <footer class="colophon">
+      <div>Heat shading is relative to the largest cell in the matrix.</div>
+      <div class="meta">${rows.length}&nbsp;services · ${totalEp}&nbsp;endpoints</div>
+    </footer>
+  </main>`;
+  const body = `<div class="shell shell--home">${main}</div>`;
+  return pageShell({
+    title:      'Medlern · Auth coverage',
+    body,
+    brandTitle: 'Medlern',
+    brandSub:   '/ auth coverage',
+    indexHref:  'index.html',
+    nav: buildNav({ services, totals, xref })
+  });
+}
+
+function renderTagsView(services, xref, totals) {
+  // Inventory of every tag → list of endpoints
+  const tagMap = new Map();
+  for (const s of services) {
+    if (!s.spec) continue;
+    for (const a of s.spec.areas) for (const e of a.endpoints) {
+      for (const t of (e.tags || [])) {
+        if (!tagMap.has(t)) tagMap.set(t, []);
+        tagMap.get(t).push({ e, svc: s, area: a });
+      }
+    }
+  }
+  const tagEntries = Array.from(tagMap.entries()).sort((a, b) => b[1].length - a[1].length);
+  const facets = tagEntries.map(([tag, list]) =>
+    `<a class="facet" href="#tag-${tagSlug(tag)}"><span>${escapeHtml(tag)}</span><span class="facet-count">${list.length}</span></a>`
+  ).join('');
+  const sections = tagEntries.map(([tag, list]) => `
+    <section class="cat-svc" id="tag-${tagSlug(tag)}">
+      <header class="cat-svc-head">
+        <span class="cat-svc-name"><svg class="i"><use href="#i-tag"/></svg> ${escapeHtml(tag)}</span>
+        <span class="cat-svc-meta">${list.length} endpoint${list.length === 1 ? '' : 's'}</span>
+      </header>
+      <div class="cat-area">
+        ${list.map(({ e, svc, area }) => compactEpLink(e, svc, area, tag)).join('')}
+      </div>
+    </section>`).join('\n');
+  const main = `<main class="doc category">
+    <section class="cat-hero">
+      <div class="eyebrow"><svg class="i"><use href="#i-tag"/></svg> Tag facets</div>
+      <h1>Browse by tag</h1>
+      <p class="lede">Every behavioural tag inferred during parsing — paginated, export, lookup, time-zone-header — across all services. Click a chip to jump to its section.</p>
+      <div class="stat-row">
+        <span class="stat"><b>${tagEntries.length}</b> tags</span>
+        <span class="stat"><b>${totals.endpoints}</b> total endpoints</span>
+      </div>
+    </section>
+    <div class="facet-grid">${facets}</div>
+    ${sections.length ? sections : emptyState('i-tag', 'No tags', 'No endpoints have tags yet.')}
+    <footer class="colophon">
+      <div>Tags are inferred from path/method/parameters in <code>parse.js:inferTags</code>.</div>
+      <div class="meta">${tagEntries.length}&nbsp;tags</div>
+    </footer>
+  </main>`;
+  const body = `<div class="shell shell--home">${main}</div>`;
+  return pageShell({
+    title:      'Medlern · Tags',
+    body,
+    brandTitle: 'Medlern',
+    brandSub:   '/ tags',
+    indexHref:  'index.html',
+    nav: buildNav({ services, totals, xref })
+  });
+}
+
+module.exports = { renderService, renderIndex, renderPages, renderCategoryPage, renderOrphans, renderAuthCoverage, renderTagsView, buildGlobalIndex, buildEpXref, buildPageXref };

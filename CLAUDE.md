@@ -71,6 +71,20 @@ node build.js --service=catalog-service  # parse + render one backend; does not 
 
 There is no test suite, no linter config, no formatter. `package.json`'s `test` script intentionally errors. There is no CI. Open the resulting `index.html` (or any `<service>.html`) in a browser to verify changes.
 
+## Deploying to the live site
+
+The catalogue is hosted on GitHub Pages at `https://anandumohanr.github.io/api-catalogue/`.
+
+After rebuilding (running `node build.js` in `tools/`), push the updated HTML to make it live:
+
+```bash
+git add -u
+git commit -m "Rebuild"
+git push
+```
+
+Run this from the repo root (`api-catalogue/`), not from `tools/`. GitHub Pages updates within a minute or two of the push. When the user says "push the changes to live" or similar, run these three commands.
+
 ## End-to-end pipeline
 
 `build.js` runs six stages sequentially. Each writes to `_data/`; later stages read from earlier stages, so they can be skipped via flags once intermediates are cached.

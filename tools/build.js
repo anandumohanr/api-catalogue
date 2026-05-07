@@ -17,7 +17,7 @@ const path = require('path');
 const { parseService, buildRegistry, walkJava }           = require('./parse');
 const { parseTheme }                                      = require('./parse-frontend');
 const { buildXref, renderReport }                         = require('./xref');
-const { renderService, renderIndex, renderPages, renderCategoryPage, buildGlobalIndex } = require('./render');
+const { renderService, renderIndex, renderPages, renderCategoryPage, renderOrphans, renderAuthCoverage, renderTagsView, buildGlobalIndex, buildEpXref, buildPageXref } = require('./render');
 const { categorizeAll }                                   = require('./categorize');
 
 const ROOT      = path.resolve(__dirname, '..');
@@ -159,6 +159,8 @@ function renderAll(xref) {
   const fmt = c => `${c}=${catSummary.counts[c] || 0}`;
   console.log(`[categorize] ${total} endpoints · ` + ['pre-login','dashboard','admin','my-team-space','uncategorized'].map(fmt).join(' · '));
   const globalIndex = buildGlobalIndex(services, xref);
+  const epXref      = xref ? buildEpXref(xref)   : {};
+  const pageXref    = xref ? buildPageXref(xref)  : [];
   const totals = {
     endpoints: services.reduce((n, s) => n + (s.spec?.totalEndpoints ?? 0), 0),
     areas:     services.reduce((n, s) => n + (s.spec?.totalAreas ?? 0), 0),
@@ -167,6 +169,10 @@ function renderAll(xref) {
   };
   const replaceIndex = html =>
     html.replace('window.__GLOBAL_INDEX__ = null;', `window.__GLOBAL_INDEX__ = ${JSON.stringify(globalIndex)};`);
+  const replaceHomeData = html =>
+    html
+      .replace('window.__EP_XREF__ = null;',   `window.__EP_XREF__ = ${JSON.stringify(epXref)};`)
+      .replace('window.__PAGE_XREF__ = null;',  `window.__PAGE_XREF__ = ${JSON.stringify(pageXref)};`);
 
   // Per-service pages
   for (const s of services) {
@@ -193,8 +199,22 @@ function renderAll(xref) {
     console.log(`[render]  category-${cat}.html · ${(html.length/1024).toFixed(1)}KB · ${totals.categories[cat] || 0} endpoints`);
   }
 
+  // New first-class views (require xref for orphans; the others gracefully degrade)
+  if (xref) {
+    const orphansHtml = replaceIndex(renderOrphans(services, xref, totals));
+    fs.writeFileSync(path.join(OUT_DIR, 'orphans.html'), orphansHtml);
+    console.log(`[render]  orphans.html · ${(orphansHtml.length/1024).toFixed(1)}KB`);
+  }
+  const authHtml = replaceIndex(renderAuthCoverage(services, xref, totals));
+  fs.writeFileSync(path.join(OUT_DIR, 'auth-coverage.html'), authHtml);
+  console.log(`[render]  auth-coverage.html · ${(authHtml.length/1024).toFixed(1)}KB`);
+
+  const tagsHtml = replaceIndex(renderTagsView(services, xref, totals));
+  fs.writeFileSync(path.join(OUT_DIR, 'tags.html'), tagsHtml);
+  console.log(`[render]  tags.html · ${(tagsHtml.length/1024).toFixed(1)}KB`);
+
   // Index
-  const html = replaceIndex(renderIndex(services, totals, xref));
+  const html = replaceHomeData(replaceIndex(renderIndex(services, totals, xref)));
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), html);
   console.log(`[render]  index.html · ${(html.length/1024).toFixed(1)}KB · ${globalIndex.length} entries in global index`);
 }
