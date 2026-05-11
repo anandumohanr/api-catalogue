@@ -1232,11 +1232,13 @@ function operationSummary(anns) {
 function controllerInfo(src) {
   const cls = src.match(/^(\s*@[A-Za-z_][\w.]*(?:\([^)]*\))?\s*)*(?:(?:public|protected|private|abstract|final|static|sealed|non-sealed)\s+)*\b(class|record)\s+([A-Za-z_]\w*)/m);
   if (!cls) return null;
-  const head = src.slice(0, cls.index);
-  const isController = /@(Rest)?Controller\b/.test(head) || /@(Rest)?Controller\b/.test(src.slice(0, cls.index + cls[0].length));
-  if (!isController) return null;
   // Extract class-level @RequestMapping (base path)
   const classAnns = collectLeadingAnnotations(src, src.indexOf(cls[2] + ' ' + cls[3]));
+  const isController = classAnns.some(a => {
+    const n = annName(a.raw);
+    return n === 'Controller' || n === 'RestController';
+  });
+  if (!isController) return null;
   let basePath = '';
   for (const a of classAnns) {
     if (annName(a.raw) === 'RequestMapping') {
@@ -1578,7 +1580,7 @@ function parseService(serviceDir, serviceId, registry) {
 
   for (const file of javaFiles) {
     const raw = readSafe(file);
-    if (!/@(Rest)?Controller\b/.test(raw)) continue;
+    if (!/@(?:[A-Za-z_]\w*\.)*(?:RestController|Controller)\b/.test(raw)) continue;
     const src = stripComments(raw);
     const ctrl = controllerInfo(src);
     if (!ctrl) continue;

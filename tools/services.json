@@ -7,10 +7,11 @@
     { "id": "indicator-service",    "dir": "medlern-indicator-service",    "displayName": "Indicator",     "blurb": "Quality indicator metrics and dashboards.",                             "frontendPrefix": ["/indicator/v1"] },
     { "id": "exam-service",         "dir": "medlern-exam-service",         "displayName": "Exam",          "blurb": "Examination, attempts, proctoring, results.",                           "frontendPrefix": ["/exam/v1"] },
     { "id": "assessment-service",   "dir": "medlern-assessment-service",   "displayName": "Assessment",    "blurb": "Assessment authoring and grading.",                                     "frontendPrefix": ["/assessment/v1"] },
+    { "id": "notification-service", "dir": "medlern-notification-service", "displayName": "Notification",  "blurb": "Notifications, activity feeds, announcements, device registrations.",    "frontendPrefix": ["/notification/v1"], "parser": "express" },
     { "id": "account-service",      "dir": "medlern-account-service",      "displayName": "Account",       "blurb": "Identity, institutions, users, organisations.",                         "frontendPrefix": ["/account/v1", "/account/v2"] },
     { "id": "catalog-service",      "dir": "medlern-catalog-service",      "displayName": "Catalog",       "blurb": "Course / product catalogue and learner-facing browsing.",               "frontendPrefix": ["/catalog/v1", "/catalog/v2"] }
   ],
   "$unmappedPrefixes": [
-    "/analytics/v1", "/reader/v1", "/notification/v1", "/site/v1"
+    "/analytics/v1", "/reader/v1", "/site/v1"
   ]
 }

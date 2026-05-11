@@ -412,18 +412,21 @@
               "verb": "POST",
               "endpointKey": "userVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/userVerify",
               "line": 29
             },
             {
               "verb": "POST",
               "endpointKey": "otp",
               "transforms": [],
+              "urlPattern": "/account/v1/otp",
               "line": 38
             },
             {
               "verb": "POST",
               "endpointKey": "otpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/otpVerify",
               "line": 47
             },
             {
@@ -432,6 +435,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/passwordByOtp",
               "line": 56
             },
             {
@@ -440,6 +444,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 65
             },
             {
@@ -448,6 +453,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userEmailInvitations",
               "line": 76
             }
           ]
@@ -464,6 +470,7 @@
               "verb": "GET",
               "endpointKey": "managerReviews",
               "transforms": [],
+              "urlPattern": "/catalog/v1/managerReviews",
               "line": 30
             }
           ]
@@ -482,12 +489,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/approvers/{id}/requests",
               "line": 36
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 56
             },
             {
@@ -496,6 +505,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency",
               "line": 75
             },
             {
@@ -504,6 +514,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists",
               "line": 94
             },
             {
@@ -512,30 +523,35 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/approvers/{id}/requests",
               "line": 106
             },
             {
               "verb": "GET",
               "endpointKey": "ojtAssessments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/ojtAssessments",
               "line": 125
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 134
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 149
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 184
             }
           ]
@@ -561,6 +577,7 @@
               "verb": "GET",
               "endpointKey": "certificates",
               "transforms": [],
+              "urlPattern": "/catalog/v1/certificates",
               "line": 25
             }
           ]
@@ -577,6 +594,7 @@
               "verb": "GET",
               "endpointKey": "dynamicProductStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v1/dynamicProductStatus",
               "line": 39
             },
             {
@@ -585,12 +603,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/assignments/{id}",
               "line": 49
             },
             {
               "verb": "PATCH",
               "endpointKey": "assignmentStatusQR",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatus",
               "line": 66
             }
           ]
@@ -607,12 +627,14 @@
               "verb": "GET",
               "endpointKey": "productFacets",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productFacets",
               "line": 123
             },
             {
               "verb": "GET",
               "endpointKey": "productFacets",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productFacets",
               "line": 248
             }
           ]
@@ -631,6 +653,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/objectives",
               "line": 20
             },
             {
@@ -639,6 +662,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/assignments/{assignmentId}/productObjectives",
               "line": 30
             },
             {
@@ -647,6 +671,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/assignments/{id}",
               "line": 39
             }
           ]
@@ -663,6 +688,7 @@
               "verb": "GET",
               "endpointKey": "leaderboards",
               "transforms": [],
+              "urlPattern": "/catalog/v1/leaderboards",
               "line": 14
             },
             {
@@ -671,6 +697,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/leaderboards",
               "line": 40
             },
             {
@@ -679,6 +706,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 50
             }
           ]
@@ -697,6 +725,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/launchToken/{nounce}",
               "line": 17
             },
             {
@@ -705,6 +734,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/ssoLogin",
               "line": 27
             }
           ]
@@ -721,6 +751,7 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 23
             }
           ]
@@ -737,6 +768,7 @@
               "verb": "POST",
               "endpointKey": "webPushNotificationToken",
               "transforms": [],
+              "urlPattern": "/notification/v1/userDeviceInstances",
               "line": 62
             },
             {
@@ -745,6 +777,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/notification/v1/userDeviceInstances/{token}",
               "line": 72
             }
           ]
@@ -761,6 +794,7 @@
               "verb": "GET",
               "endpointKey": "subscriptionProductStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v1/subscriptionProductStatus",
               "line": 28
             }
           ]
@@ -777,6 +811,7 @@
               "verb": "GET",
               "endpointKey": "productDisplaySettings",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productDisplaySettings",
               "line": 52
             }
           ]
@@ -795,6 +830,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v2/products/{id}",
               "line": 17
             },
             {
@@ -803,12 +839,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/products/{id}/assets",
               "line": 27
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentReports",
               "transforms": [],
+              "urlPattern": "/catalog/v2/assignmentReports",
               "line": 38
             },
             {
@@ -817,18 +855,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/trainingPlans/{trainingPlanId}/assignmentStatus",
               "line": 50
             },
             {
               "verb": "GET",
               "endpointKey": "sessionEnrollments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionEnrollments",
               "line": 67
             },
             {
               "verb": "PATCH",
               "endpointKey": "enrollmentAction",
               "transforms": [],
+              "urlPattern": "/catalog/v1/enrollments",
               "line": 99
             },
             {
@@ -837,6 +878,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/wishlist",
               "line": 112
             },
             {
@@ -845,12 +887,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v2/homepageSections/{id}",
               "line": 125
             },
             {
               "verb": "GET",
               "endpointKey": "searchProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/searchProducts",
               "line": 145
             }
           ]
@@ -879,6 +923,7 @@
               "verb": "GET",
               "endpointKey": "ipAddress",
               "transforms": [],
+              "urlPattern": "/reader/v1/ip",
               "line": 110
             },
             {
@@ -887,6 +932,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/tenantSettings",
               "line": 1732
             },
             {
@@ -895,6 +941,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{tokenOrgId}/departments",
               "line": 1748
             }
           ]
@@ -917,24 +964,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/emailVerify",
               "line": 31
             },
             {
               "verb": "POST",
               "endpointKey": "userVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/userVerify",
               "line": 45
             },
             {
               "verb": "POST",
               "endpointKey": "otp",
               "transforms": [],
+              "urlPattern": "/account/v1/otp",
               "line": 54
             },
             {
               "verb": "POST",
               "endpointKey": "otpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/otpVerify",
               "line": 63
             },
             {
@@ -943,6 +994,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/passwordByOtp",
               "line": 72
             },
             {
@@ -951,6 +1003,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/consent",
               "line": 82
             },
             {
@@ -959,6 +1012,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/consent",
               "line": 91
             },
             {
@@ -967,6 +1021,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/consent",
               "line": 100
             },
             {
@@ -975,6 +1030,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/consent",
               "line": 109
             },
             {
@@ -983,6 +1039,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 117
             },
             {
@@ -991,6 +1048,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userEmailInvitations",
               "line": 128
             }
           ]
@@ -1009,6 +1067,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userVerify",
               "line": 18
             },
             {
@@ -1017,12 +1076,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/otp",
               "line": 28
             },
             {
               "verb": "POST",
               "endpointKey": "otpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/otpVerify",
               "line": 37
             },
             {
@@ -1031,24 +1092,28 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/passwordByOtp",
               "line": 46
             },
             {
               "verb": "PUT",
               "endpointKey": "tempResetPassword",
               "transforms": [],
+              "urlPattern": "/account/v1/passwords",
               "line": 55
             },
             {
               "verb": "PUT",
               "endpointKey": "temporaryPasswords",
               "transforms": [],
+              "urlPattern": "/account/v1/tempPasswords",
               "line": 64
             },
             {
               "verb": "GET",
               "endpointKey": "userTempPasswords",
               "transforms": [],
+              "urlPattern": "/account/v1/userTempPasswords:export",
               "line": 80
             }
           ]
@@ -1065,6 +1130,7 @@
               "verb": "GET",
               "endpointKey": "domainToken",
               "transforms": [],
+              "urlPattern": "/account/v1/domainToken",
               "line": 22
             }
           ]
@@ -1083,6 +1149,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{tenantInstId}",
               "line": 17
             }
           ]
@@ -1099,24 +1166,28 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 31
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 51
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 78
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentProducts",
               "line": 128
             },
             {
@@ -1125,12 +1196,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}",
               "line": 142
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentProductsExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentProducts:export",
               "line": 200
             }
           ]
@@ -1149,6 +1222,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{id}/subscriptionContentUrl",
               "line": 18
             },
             {
@@ -1157,12 +1231,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v2/products/{id}/launcher",
               "line": 39
             },
             {
               "verb": "GET",
               "endpointKey": "guestToken",
               "transforms": [],
+              "urlPattern": "/account/v1/guestToken",
               "line": 51
             },
             {
@@ -1171,12 +1247,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{id}/reviewContentUrl",
               "line": 67
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 86
             }
           ]
@@ -1193,18 +1271,21 @@
               "verb": "POST",
               "endpointKey": "userVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/userVerify",
               "line": 17
             },
             {
               "verb": "POST",
               "endpointKey": "otp",
               "transforms": [],
+              "urlPattern": "/account/v1/otp",
               "line": 26
             },
             {
               "verb": "POST",
               "endpointKey": "otpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/otpVerify",
               "line": 35
             }
           ]
@@ -1221,12 +1302,14 @@
               "verb": "GET",
               "endpointKey": "trainingProgramList",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingProgramReports",
               "line": 39
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentReports",
               "transforms": [],
+              "urlPattern": "/catalog/v2/assignmentReports",
               "line": 49
             },
             {
@@ -1235,6 +1318,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/surveys/{surveyId}/questions",
               "line": 60
             },
             {
@@ -1243,6 +1327,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/surveys/{surveyId}/answers",
               "line": 88
             }
           ]
@@ -1261,6 +1346,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklistPrivilegingReportees",
               "line": 39
             },
             {
@@ -1269,6 +1355,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/proficiencyLevels",
               "line": 48
             },
             {
@@ -1277,6 +1364,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/user/{uId}/checklist/{checklistId}/approverSignOffDetails",
               "line": 58
             },
             {
@@ -1285,6 +1373,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{id}/checklists/{checklistId}",
               "line": 73
             },
             {
@@ -1293,6 +1382,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/signOff",
               "line": 82
             },
             {
@@ -1301,6 +1391,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/proficiencies",
               "line": 95
             },
             {
@@ -1309,6 +1400,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/trainings",
               "line": 104
             },
             {
@@ -1317,6 +1409,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{id}/proficiencyLevels",
               "line": 113
             },
             {
@@ -1325,6 +1418,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{id}/checklists/{checklistId}:export",
               "line": 126
             },
             {
@@ -1333,6 +1427,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/comments",
               "line": 131
             },
             {
@@ -1341,6 +1436,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/comments",
               "line": 140
             },
             {
@@ -1349,6 +1445,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/comments",
               "line": 149
             },
             {
@@ -1357,6 +1454,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/trainings",
               "line": 169
             },
             {
@@ -1365,6 +1463,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}",
               "line": 178
             },
             {
@@ -1373,6 +1472,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists:signOff",
               "line": 187
             },
             {
@@ -1381,6 +1481,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists",
               "line": 205
             }
           ]
@@ -1399,6 +1500,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{id}/checklists",
               "line": 22
             },
             {
@@ -1407,6 +1509,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{uId}/checklists/{checklistId}",
               "line": 37
             },
             {
@@ -1415,6 +1518,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{uId}/checklists/{checklistId}/notifyApprovers",
               "line": 47
             },
             {
@@ -1423,6 +1527,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/user/{uId}/checklist/{checklistId}/approverSignOffDetails",
               "line": 56
             },
             {
@@ -1431,6 +1536,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{uId}/checklists/{checklistId}:export",
               "line": 68
             },
             {
@@ -1439,6 +1545,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklistPrivilegingReportees",
               "line": 73
             },
             {
@@ -1447,12 +1554,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/approvers",
               "line": 92
             },
             {
               "verb": "PATCH",
               "endpointKey": "raiseRequestPrivileging",
               "transforms": [],
+              "urlPattern": "/account/v1/raisePrivilegingRequest",
               "line": 103
             }
           ]
@@ -1471,6 +1580,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/login",
               "line": 16
             },
             {
@@ -1479,6 +1589,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/switchUnitLogin",
               "line": 26
             },
             {
@@ -1487,6 +1598,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userEmailInvitations",
               "line": 31
             },
             {
@@ -1495,18 +1607,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/loginAttemptDetails",
               "line": 41
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 59
             },
             {
               "verb": "POST",
               "endpointKey": "userSelfRegister",
               "transforms": [],
+              "urlPattern": "/account/v1/userSelfRegister",
               "line": 70
             }
           ]
@@ -1523,12 +1638,14 @@
               "verb": "GET",
               "endpointKey": "learnerWelcome",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/learner-welcome",
               "line": 13
             },
             {
               "verb": "POST",
               "endpointKey": "learnerChat",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/learner-chat",
               "line": 17
             }
           ]
@@ -1556,6 +1673,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userVerify",
               "line": 18
             },
             {
@@ -1564,12 +1682,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/otp",
               "line": 28
             },
             {
               "verb": "POST",
               "endpointKey": "otpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/otpVerify",
               "line": 37
             },
             {
@@ -1578,24 +1698,28 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/passwordByOtp",
               "line": 46
             },
             {
               "verb": "PUT",
               "endpointKey": "tempResetPassword",
               "transforms": [],
+              "urlPattern": "/account/v1/passwords",
               "line": 55
             },
             {
               "verb": "PUT",
               "endpointKey": "temporaryPasswords",
               "transforms": [],
+              "urlPattern": "/account/v1/tempPasswords",
               "line": 64
             },
             {
               "verb": "GET",
               "endpointKey": "userTempPasswords",
               "transforms": [],
+              "urlPattern": "/account/v1/userTempPasswords:export",
               "line": 80
             }
           ]
@@ -1657,12 +1781,14 @@
               "verb": "GET",
               "endpointKey": "userCourseSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userCourseSummary",
               "line": 19
             },
             {
               "verb": "GET",
               "endpointKey": "userAssignmentStatusSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userAssignmentStatusSummary",
               "line": 48
             },
             {
@@ -1671,42 +1797,63 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{id}",
               "line": 58
             },
             {
               "verb": "GET",
               "endpointKey": "productStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v2/productStatus",
               "line": 72
             },
             {
               "verb": "GET",
               "endpointKey": "subscriptionProductStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v1/subscriptionProductStatus",
               "line": 88
             },
             {
               "verb": "GET",
               "endpointKey": "productStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v2/productStatus",
+              "line": 150
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "subscriptionProductStatus",
+              "transforms": [],
+              "urlPattern": "/catalog/v1/subscriptionProductStatus",
               "line": 150
             },
             {
               "verb": "GET",
               "endpointKey": "userAssignmentStatusSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userAssignmentStatusSummary",
               "line": 164
             },
             {
               "verb": "GET",
               "endpointKey": "leaderboards",
               "transforms": [],
+              "urlPattern": "/catalog/v1/leaderboards",
+              "line": 192
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "accountLeaderboards",
+              "transforms": [],
+              "urlPattern": "/account/v1/leaderboards",
               "line": 192
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramReports",
               "transforms": [],
+              "urlPattern": "/trainingProgramReports",
               "line": 204
             },
             {
@@ -1715,12 +1862,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/trainingPlans/{trainingPlanId}/assignmentStatus",
               "line": 215
             },
             {
               "verb": "GET",
               "endpointKey": "productStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v2/productStatus",
               "line": 237
             },
             {
@@ -1729,6 +1878,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/tenantSettings",
               "line": 250
             },
             {
@@ -1737,6 +1887,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/userAssignmentCredits",
               "line": 265
             },
             {
@@ -1745,6 +1896,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/trainingCalendarAssignmentsSummary",
               "line": 277
             },
             {
@@ -1753,12 +1905,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/trainingCalendarAssignments",
               "line": 292
             },
             {
               "verb": "PATCH",
               "endpointKey": "bulkUserAssignmentExports",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userAssignments:export",
               "line": 310
             },
             {
@@ -1767,6 +1921,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v2/products/{id}",
               "line": 321
             },
             {
@@ -1775,18 +1930,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/assignments:export",
               "line": 372
             },
             {
               "verb": "GET",
               "endpointKey": "productStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v2/productStatus",
               "line": 398
             },
             {
               "verb": "GET",
               "endpointKey": "sessionEnrollments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionEnrollments",
               "line": 416
             },
             {
@@ -1795,6 +1953,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{competencyRoles}",
               "line": 432
             },
             {
@@ -1803,6 +1962,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{competencyRoles}",
               "line": 440
             },
             {
@@ -1811,6 +1971,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/microEvaluation",
               "line": 461
             },
             {
@@ -1819,6 +1980,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/microEvaluationItems",
               "line": 470
             },
             {
@@ -1827,6 +1989,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/userEvaluationStatusHistory/{history_id}",
               "line": 480
             },
             {
@@ -1835,6 +1998,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/items/{itemId}",
               "line": 489
             },
             {
@@ -1843,6 +2007,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{user_id}/points",
               "line": 501
             },
             {
@@ -1851,6 +2016,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{user_id}/streaks",
               "line": 517
             },
             {
@@ -1859,6 +2025,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/badges",
               "line": 529
             },
             {
@@ -1867,6 +2034,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/approvers/{id}/requests",
               "line": 543
             },
             {
@@ -1875,18 +2043,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/approvers/{id}/requests",
               "line": 554
             },
             {
               "verb": "GET",
               "endpointKey": "ojtAssessments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/ojtAssessments",
               "line": 563
             },
             {
               "verb": "GET",
               "endpointKey": "accountLeaderboards",
               "transforms": [],
+              "urlPattern": "/account/v1/leaderboards",
               "line": 576
             },
             {
@@ -1895,6 +2066,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/info",
               "line": 586
             },
             {
@@ -1903,6 +2075,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/info",
               "line": 599
             },
             {
@@ -1911,6 +2084,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/user/{userId}/institutions",
               "line": 608
             }
           ]
@@ -1929,6 +2103,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/site/v1/locales",
               "line": 19
             },
             {
@@ -1937,6 +2112,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/locales",
               "line": 28
             }
           ]
@@ -1953,36 +2129,49 @@
               "verb": "POST",
               "endpointKey": "userUpload",
               "transforms": [],
+              "urlPattern": "/account/v1/userUploader",
+              "line": 41
+            },
+            {
+              "verb": "POST",
+              "endpointKey": "bulkUserUpdate",
+              "transforms": [],
+              "urlPattern": "/account/v1/bulkUserUpdate",
               "line": 41
             },
             {
               "verb": "POST",
               "endpointKey": "importUsersUploader",
               "transforms": [],
+              "urlPattern": "/account/v1/importUsers/session",
               "line": 52
             },
             {
               "verb": "POST",
               "endpointKey": "skillUploader",
               "transforms": [],
+              "urlPattern": "/account/v1/skillUploader",
               "line": 61
             },
             {
               "verb": "POST",
               "endpointKey": "questionsImport",
               "transforms": [],
+              "urlPattern": "/exam/v1/questionsImport",
               "line": 69
             },
             {
               "verb": "POST",
               "endpointKey": "importAssignments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/importAssignments",
               "line": 78
             },
             {
               "verb": "GET",
               "endpointKey": "importAssignmentsStatus",
               "transforms": [],
+              "urlPattern": "/catalog/v1/imports",
               "line": 88
             },
             {
@@ -1991,6 +2180,34 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/imports/{importId}/files",
+              "line": 109
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "importAssignmentList",
+              "transforms": [
+                "concat"
+              ],
+              "urlPattern": "/catalog/v1/imports/{importId}/files",
+              "line": 109
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "importsSkill",
+              "transforms": [
+                "concat"
+              ],
+              "urlPattern": "/account/v1/imports/{importId}/files",
+              "line": 109
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "importsQuestion",
+              "transforms": [
+                "concat"
+              ],
+              "urlPattern": "/exam/v1/imports/{importId}/files",
               "line": 109
             },
             {
@@ -1999,24 +2216,28 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/imports/{importId}/files",
               "line": 121
             },
             {
               "verb": "POST",
               "endpointKey": "bulkUserUpdate",
               "transforms": [],
+              "urlPattern": "/account/v1/bulkUserUpdate",
               "line": 133
             },
             {
               "verb": "POST",
               "endpointKey": "bulkUserUpdate",
               "transforms": [],
+              "urlPattern": "/account/v1/bulkUserUpdate",
               "line": 140
             },
             {
               "verb": "POST",
               "endpointKey": "bulkUsers",
               "transforms": [],
+              "urlPattern": "/account/v1/bulkUsers",
               "line": 148
             },
             {
@@ -2025,6 +2246,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/imports/{importId}",
               "line": 157
             },
             {
@@ -2033,18 +2255,21 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/exam/v1/imports/{importId}",
               "line": 165
             },
             {
               "verb": "GET",
               "endpointKey": "userTypes",
               "transforms": [],
+              "urlPattern": "/account/v1/userTypes",
               "line": 174
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 196
             },
             {
@@ -2053,6 +2278,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{instId}/competencyRoles",
               "line": 208
             },
             {
@@ -2061,6 +2287,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 222
             },
             {
@@ -2069,6 +2296,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{tokenOrgId}/departments",
               "line": 243
             },
             {
@@ -2077,6 +2305,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{tokenOrgId}/departments",
               "line": 259
             },
             {
@@ -2085,6 +2314,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/assignment-template",
               "line": 269
             },
             {
@@ -2093,24 +2323,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/pastTrainingProgram:import",
               "line": 283
             },
             {
               "verb": "POST",
               "endpointKey": "CBQuestionsImport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/questionsImport",
               "line": 295
             },
             {
               "verb": "POST",
               "endpointKey": "importUsersGroup",
               "transforms": [],
+              "urlPattern": "/account/v1/importUsers/group",
               "line": 309
             },
             {
               "verb": "POST",
               "endpointKey": "importUsersGroup",
               "transforms": [],
+              "urlPattern": "/account/v1/importUsers/group",
               "line": 328
             }
           ]
@@ -2136,6 +2370,7 @@
               "verb": "POST",
               "endpointKey": "tokenRefresh",
               "transforms": [],
+              "urlPattern": "/account/v1/tokenRefresh",
               "line": 40
             }
           ]
@@ -2154,6 +2389,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/users/{userId}/assessments",
               "line": 22
             },
             {
@@ -2162,6 +2398,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/info",
               "line": 31
             },
             {
@@ -2170,6 +2407,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skills/{skillId}/subSkills",
               "line": 47
             },
             {
@@ -2178,6 +2416,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/ratingScale",
               "line": 55
             },
             {
@@ -2186,6 +2425,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/institution/{institutionId}/ratingScale",
               "line": 65
             },
             {
@@ -2194,6 +2434,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/ratings",
               "line": 75
             },
             {
@@ -2202,6 +2443,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/bulkRatings",
               "line": 88
             },
             {
@@ -2210,6 +2452,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skillRatingSummary",
               "line": 100
             },
             {
@@ -2218,6 +2461,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/remarks",
               "line": 108
             },
             {
@@ -2226,6 +2470,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments:publish",
               "line": 116
             },
             {
@@ -2234,6 +2479,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/self-rating-comments",
               "line": 124
             },
             {
@@ -2242,6 +2488,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/frequencySummary",
               "line": 137
             },
             {
@@ -2250,6 +2497,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skills",
               "line": 155
             },
             {
@@ -2258,6 +2506,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/remarks",
               "line": 166
             },
             {
@@ -2266,6 +2515,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/frequencies",
               "line": 174
             },
             {
@@ -2274,6 +2524,16 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/trainings",
+              "line": 190
+            },
+            {
+              "verb": "POST",
+              "endpointKey": "assessmentReport",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/comments",
               "line": 190
             },
             {
@@ -2282,6 +2542,16 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/trainings",
+              "line": 204
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "assessmentReport",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/comments",
               "line": 204
             },
             {
@@ -2290,6 +2560,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/trainings",
               "line": 215
             }
           ]
@@ -2308,12 +2579,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/competencyReportees",
               "line": 45
             },
             {
               "verb": "GET",
               "endpointKey": "competencyV2Assessment",
               "transforms": [],
+              "urlPattern": "/assessment/v1/assessments",
               "line": 63
             }
           ]
@@ -2330,6 +2603,7 @@
               "verb": "GET",
               "endpointKey": "sessionEnrollments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionEnrollments",
               "line": 46
             }
           ]
@@ -2346,24 +2620,28 @@
               "verb": "POST",
               "endpointKey": "examCodeOtp",
               "transforms": [],
+              "urlPattern": "/account/v1/examCodeOtp",
               "line": 22
             },
             {
               "verb": "POST",
               "endpointKey": "examCodeOtpVerify",
               "transforms": [],
+              "urlPattern": "/account/v1/examCodeOtpVerify",
               "line": 37
             },
             {
               "verb": "POST",
               "endpointKey": "tempLogin",
               "transforms": [],
+              "urlPattern": "/account/v1/tempLogin",
               "line": 47
             },
             {
               "verb": "GET",
               "endpointKey": "examCodeProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/examCodeProducts",
               "line": 58
             },
             {
@@ -2372,6 +2650,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 69
             }
           ]
@@ -2390,6 +2669,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/auditors/{id}/auditees",
               "line": 38
             },
             {
@@ -2398,12 +2678,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/auditors/{id}/auditees",
               "line": 50
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramAssessments",
               "transforms": [],
+              "urlPattern": "/account/v1/trainingProgramAssessments",
               "line": 64
             },
             {
@@ -2412,12 +2694,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/auditors/{id}/assessmentCount",
               "line": 73
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramAssessments",
               "transforms": [],
+              "urlPattern": "/account/v1/trainingProgramAssessments",
               "line": 103
             },
             {
@@ -2426,6 +2710,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{auditId}/auditees/{auditeeId}/summary",
               "line": 116
             },
             {
@@ -2434,6 +2719,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{id}",
               "line": 126
             },
             {
@@ -2442,12 +2728,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{auditId}/auditees/{auditeeId}",
               "line": 140
             },
             {
               "verb": "GET",
               "endpointKey": "audit",
               "transforms": [],
+              "urlPattern": "/account/v1/audits",
               "line": 158
             }
           ]
@@ -2464,18 +2752,21 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 124
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 175
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 198
             },
             {
@@ -2484,6 +2775,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 307
             },
             {
@@ -2492,6 +2784,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 316
             },
             {
@@ -2500,6 +2793,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 325
             },
             {
@@ -2508,6 +2802,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutionTransfer/{id}",
               "line": 333
             },
             {
@@ -2516,6 +2811,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 341
             },
             {
@@ -2524,6 +2820,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userInvitations",
               "line": 350
             },
             {
@@ -2532,6 +2829,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userStatus",
               "line": 359
             },
             {
@@ -2540,6 +2838,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/assignments",
               "line": 484
             },
             {
@@ -2548,6 +2847,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/assignments",
               "line": 496
             },
             {
@@ -2556,24 +2856,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/productTypes",
               "line": 504
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 562
             },
             {
               "verb": "GET",
               "endpointKey": "traininghoursSummaryForUserServc",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingSummary",
               "line": 617
             },
             {
               "verb": "GET",
               "endpointKey": "scormReports",
               "transforms": [],
+              "urlPattern": "/reader/v1/scormReports",
               "line": 629
             },
             {
@@ -2582,6 +2886,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v2/products/{id}",
               "line": 637
             },
             {
@@ -2590,6 +2895,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/assignmentMetaValues",
               "line": 645
             },
             {
@@ -2598,6 +2904,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/assignments:export",
               "line": 759
             },
             {
@@ -2606,24 +2913,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/assignmentDetails:export",
               "line": 770
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 801
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 819
             },
             {
               "verb": "GET",
               "endpointKey": "userExports",
               "transforms": [],
+              "urlPattern": "/account/v1/users:export",
               "line": 868
             },
             {
@@ -2632,30 +2943,35 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audits/{auditId}/exports",
               "line": 892
             },
             {
               "verb": "REQUEST",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": null,
               "line": 904
             },
             {
               "verb": "PATCH",
               "endpointKey": "bulkUserAssignmentExports",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userAssignments:export",
               "line": 934
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 953
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 978
             },
             {
@@ -2664,6 +2980,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/competency",
               "line": 1003
             },
             {
@@ -2672,12 +2989,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/competency",
               "line": 1014
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 1076
             },
             {
@@ -2686,12 +3005,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/competencySummary",
               "line": 1089
             },
             {
               "verb": "GET",
               "endpointKey": "competencyUserCycles",
               "transforms": [],
+              "urlPattern": "/account/v1/competencyUserCycles",
               "line": 1101
             },
             {
@@ -2700,6 +3021,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/competencySummary",
               "line": 1116
             },
             {
@@ -2708,6 +3030,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/users/{userId}/competencyCategories",
               "line": 1132
             },
             {
@@ -2716,6 +3039,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/competency/{competencyId}/proficiencyLevels",
               "line": 1141
             },
             {
@@ -2724,6 +3048,16 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/userCompetency/{userCompId}/comments",
+              "line": 1154
+            },
+            {
+              "verb": "PATCH",
+              "endpointKey": "userCompetency",
+              "transforms": [
+                "concat"
+              ],
+              "urlPattern": "/account/v1/userCompetency/{userCompId}/trainings",
               "line": 1154
             },
             {
@@ -2732,24 +3066,37 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/userCompetency/{userCompId}/comments",
+              "line": 1167
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "userCompetency",
+              "transforms": [
+                "concat"
+              ],
+              "urlPattern": "/account/v1/userCompetency/{userCompId}/trainings",
               "line": 1167
             },
             {
               "verb": "GET",
               "endpointKey": "idpExport",
               "transforms": [],
+              "urlPattern": "/account/v1/idpReport",
               "line": 1181
             },
             {
               "verb": "GET",
               "endpointKey": "competencyUserCycles",
               "transforms": [],
+              "urlPattern": "/account/v1/competencyUserCycles",
               "line": 1195
             },
             {
               "verb": "PATCH",
               "endpointKey": "competencyUserCycles",
               "transforms": [],
+              "urlPattern": "/account/v1/competencyUserCycles",
               "line": 1218
             },
             {
@@ -2758,6 +3105,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userPrivilegeStatus",
               "line": 1228
             },
             {
@@ -2766,12 +3114,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userPrivilegeStatus",
               "line": 1237
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 1254
             },
             {
@@ -2780,6 +3130,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1265
             },
             {
@@ -2788,6 +3139,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1282
             },
             {
@@ -2796,6 +3148,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1299
             },
             {
@@ -2804,6 +3157,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1316
             },
             {
@@ -2812,6 +3166,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1333
             },
             {
@@ -2820,24 +3175,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1350
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 1372
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 1394
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 1416
             },
             {
@@ -2846,6 +3205,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/topics",
               "line": 1424
             },
             {
@@ -2854,6 +3214,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/microEvaluation",
               "line": 1433
             },
             {
@@ -2862,6 +3223,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/microEvaluationItems",
               "line": 1442
             },
             {
@@ -2870,6 +3232,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/points",
               "line": 1459
             },
             {
@@ -2878,6 +3241,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/streaks",
               "line": 1468
             },
             {
@@ -2886,6 +3250,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/points",
               "line": 1478
             },
             {
@@ -2894,6 +3259,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/streaks",
               "line": 1489
             },
             {
@@ -2902,6 +3268,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{userId}/badges",
               "line": 1498
             },
             {
@@ -2910,6 +3277,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/assignments/{id}",
               "line": 1512
             },
             {
@@ -2918,6 +3286,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/exam/v1/testInstances/{id}",
               "line": 1524
             },
             {
@@ -2926,6 +3295,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/user/{userId}/trainingAnalysis",
               "line": 1534
             },
             {
@@ -2934,6 +3304,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/notifyManagerForTna",
               "line": 1543
             },
             {
@@ -2942,6 +3313,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/user/{userId}/trainingAnalysis",
               "line": 1553
             },
             {
@@ -2950,6 +3322,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{userId}/trainingAnalysis",
               "line": 1587
             },
             {
@@ -2958,6 +3331,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}",
               "line": 1608
             },
             {
@@ -2966,12 +3340,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/users/{userId}/campaigns",
               "line": 1622
             },
             {
               "verb": "POST",
               "endpointKey": "userApp",
               "transforms": [],
+              "urlPattern": "/account/v1/users:notification",
               "line": 1632
             },
             {
@@ -2980,6 +3356,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/users/{userId}/registrationStatus",
               "line": 1641
             },
             {
@@ -2988,6 +3365,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/users/{id}/userCertificates:export",
               "line": 1673
             },
             {
@@ -2996,6 +3374,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/adminUnits",
               "line": 1687
             },
             {
@@ -3004,6 +3383,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/adminUnits",
               "line": 1696
             },
             {
@@ -3012,6 +3392,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}/adminUnits",
               "line": 1709
             }
           ]
@@ -3037,18 +3418,21 @@
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 30
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 70
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 88
             },
             {
@@ -3057,12 +3441,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/user/{userId}/institutions",
               "line": 96
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 119
             },
             {
@@ -3071,6 +3457,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/hierarchyTree",
               "line": 132
             }
           ]
@@ -3089,6 +3476,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{unitId}",
               "line": 16
             }
           ]
@@ -3107,6 +3495,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/usersChecklistSummary",
               "line": 117
             },
             {
@@ -3115,6 +3504,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/campaignReportsSummary",
               "line": 132
             },
             {
@@ -3123,84 +3513,98 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklistsUserReport",
               "line": 178
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 231
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 251
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 276
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 301
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 320
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 372
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 404
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 420
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentStatusSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatusSummary",
               "line": 480
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentStatusSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatusSummary",
               "line": 537
             },
             {
               "verb": "GET",
               "endpointKey": "traininghoursSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingSummary",
               "line": 591
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByProduct",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByProduct",
               "line": 619
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 1051
             },
             {
@@ -3209,18 +3613,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{selectedUserId}",
               "line": 1064
             },
             {
               "verb": "GET",
               "endpointKey": "userAssignmentsStatusCount",
               "transforms": [],
+              "urlPattern": "/catalog/v1/userAssignmentsStatusCount",
               "line": 1112
             },
             {
               "verb": "GET",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 1145
             },
             {
@@ -3229,6 +3636,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/userEvaluationStatusSummary",
               "line": 1185
             },
             {
@@ -3237,102 +3645,119 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/leaderboards",
               "line": 1223
             },
             {
               "verb": "GET",
               "endpointKey": "kpiSessionSummary",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiSessionSummary",
               "line": 1257
             },
             {
               "verb": "GET",
               "endpointKey": "kpiUsers",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiUsers",
               "line": 1289
             },
             {
               "verb": "GET",
               "endpointKey": "kpiUsers",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiUsers",
               "line": 1321
             },
             {
               "verb": "GET",
               "endpointKey": "microEvaluationEngagementReports",
               "transforms": [],
+              "urlPattern": "/exam/v1/microEvaluationEngagementReports",
               "line": 1340
             },
             {
               "verb": "GET",
               "endpointKey": "sessionStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionStats",
               "line": 1360
             },
             {
               "verb": "GET",
               "endpointKey": "privilegingSummary",
               "transforms": [],
+              "urlPattern": "/account/v1/privilegingSummary",
               "line": 1395
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStats",
               "line": 1416
             },
             {
               "verb": "GET",
               "endpointKey": "adminStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminStats",
               "line": 1440
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 1461
             },
             {
               "verb": "GET",
               "endpointKey": "adminStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminStats",
               "line": 1490
             },
             {
               "verb": "GET",
               "endpointKey": "userIds",
               "transforms": [],
+              "urlPattern": "/account/v1/userIds",
               "line": 1519
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentReports:export",
               "line": 1591
             },
             {
               "verb": "POST",
               "endpointKey": "kpiAllExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminReport:export",
               "line": 1621
             },
             {
               "verb": "GET",
               "endpointKey": "usageStatsExports",
               "transforms": [],
+              "urlPattern": "/account/v1/activeUsers:export",
               "line": 1646
             },
             {
               "verb": "GET",
               "endpointKey": "usageStatsExports",
               "transforms": [],
+              "urlPattern": "/account/v1/activeUsers:export",
               "line": 1671
             },
             {
               "verb": "GET",
               "endpointKey": "usageStatsExports",
               "transforms": [],
+              "urlPattern": "/account/v1/activeUsers:export",
               "line": 1698
             },
             {
@@ -3341,6 +3766,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{id}",
               "line": 1709
             },
             {
@@ -3349,6 +3775,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/evaluationSummary",
               "line": 1718
             },
             {
@@ -3357,6 +3784,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/topics",
               "line": 1729
             },
             {
@@ -3365,12 +3793,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/users/{user_id}/topics:export",
               "line": 1742
             },
             {
               "verb": "GET",
               "endpointKey": "exportEvaluationReports",
               "transforms": [],
+              "urlPattern": "/exam/v1/userEvaluationReports:export",
               "line": 1760
             },
             {
@@ -3379,6 +3809,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/userEvaluationReports",
               "line": 1779
             },
             {
@@ -3387,6 +3818,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/microLearningReports",
               "line": 1795
             },
             {
@@ -3395,6 +3827,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{cId}/users",
               "line": 1833
             },
             {
@@ -3403,6 +3836,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 1847
             }
           ]
@@ -3419,24 +3853,28 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 22
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 37
             },
             {
               "verb": "GET",
               "endpointKey": "trainingHoursTrend",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingHoursTrend",
               "line": 53
             },
             {
               "verb": "GET",
               "endpointKey": "trainingHoursLeaderboard",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingHoursLeaderboard",
               "line": 83
             },
             {
@@ -3445,18 +3883,21 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/reportHistory/{id}",
               "line": 92
             },
             {
               "verb": "GET",
               "endpointKey": "departmentUsers",
               "transforms": [],
+              "urlPattern": "/account/v2/groupedUserIds",
               "line": 108
             },
             {
               "verb": "POST",
               "endpointKey": "activeUserByUserId",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiActiveUsersByUserIds",
               "line": 123
             }
           ]
@@ -3473,12 +3914,14 @@
               "verb": "GET",
               "endpointKey": "filterHistory",
               "transforms": [],
+              "urlPattern": "/catalog/v1/filterHistory",
               "line": 37
             },
             {
               "verb": "PUT",
               "endpointKey": "filterHistory",
               "transforms": [],
+              "urlPattern": "/catalog/v1/filterHistory",
               "line": 47
             },
             {
@@ -3487,6 +3930,16 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/adminReports",
+              "line": 73
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "instructorReports",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/catalog/v1/instructorReports",
               "line": 73
             },
             {
@@ -3495,6 +3948,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{id}",
               "line": 82
             },
             {
@@ -3503,6 +3957,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/trainingImpactReports",
               "line": 103
             },
             {
@@ -3511,6 +3966,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/reportHistory/{id}",
               "line": 113
             },
             {
@@ -3519,24 +3975,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 126
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 147
             },
             {
               "verb": "GET",
               "endpointKey": "usageStatsExports",
               "transforms": [],
+              "urlPattern": "/account/v1/activeUsers:export",
               "line": 179
             },
             {
               "verb": "POST",
               "endpointKey": "kpiAllExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminReport:export",
               "line": 201
             },
             {
@@ -3545,18 +4005,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/trainingReports:export",
               "line": 261
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 280
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 300
             },
             {
@@ -3565,6 +4028,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/usersChecklistSummary",
               "line": 332
             },
             {
@@ -3573,6 +4037,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessionReportSummary",
               "line": 355
             },
             {
@@ -3581,6 +4046,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessionProgressionReport",
               "line": 458
             },
             {
@@ -3589,6 +4055,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/sessionReportSummary",
               "line": 481
             },
             {
@@ -3597,6 +4064,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/sessionProgressionReport",
               "line": 511
             },
             {
@@ -3605,6 +4073,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/sessionProgressionReport:export",
               "line": 539
             },
             {
@@ -3613,6 +4082,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/reportHistory/{id}",
               "line": 549
             },
             {
@@ -3621,6 +4091,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklistsUserReport",
               "line": 594
             },
             {
@@ -3629,12 +4100,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists",
               "line": 617
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 708
             },
             {
@@ -3643,18 +4116,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{id}",
               "line": 720
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
+              "line": 747
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "organisationUsersInstructor",
+              "transforms": [],
+              "urlPattern": "/account/v1/organisationUsers",
               "line": 747
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 767
             },
             {
@@ -3663,6 +4146,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/learnerComplianceReport",
               "line": 793
             },
             {
@@ -3671,6 +4155,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/learnerComplianceReport",
               "line": 840
             },
             {
@@ -3679,6 +4164,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/trainingStatusSummary",
               "line": 908
             },
             {
@@ -3687,24 +4173,28 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/trainingReports",
               "line": 977
             },
             {
               "verb": "GET",
               "endpointKey": "kpiSessionSummary",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiSessionSummary",
               "line": 992
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 1007
             },
             {
               "verb": "GET",
               "endpointKey": "sessionStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionStats",
               "line": 1021
             },
             {
@@ -3713,6 +4203,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/microLearningReports",
               "line": 1045
             },
             {
@@ -3721,18 +4212,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/campaignReportsSummary",
               "line": 1064
             },
             {
               "verb": "GET",
               "endpointKey": "kpiUsers",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiUsers",
               "line": 1089
             },
             {
               "verb": "GET",
               "endpointKey": "exportEvaluationReports",
               "transforms": [],
+              "urlPattern": "/exam/v1/userEvaluationReports:export",
               "line": 1109
             },
             {
@@ -3741,18 +4235,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/userEvaluationReports",
               "line": 1137
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStats",
               "line": 1151
             },
             {
               "verb": "GET",
               "endpointKey": "adminStats",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminStats",
               "line": 1165
             },
             {
@@ -3761,6 +4258,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/learnerUsageReports",
               "line": 1197
             },
             {
@@ -3769,6 +4267,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/assignmentsDetailReport",
               "line": 1256
             },
             {
@@ -3777,42 +4276,58 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/reports/v1/assignmentReports",
+              "line": 1361
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "assignmentsDetailReport",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/catalog/v1/assignmentsDetailReport",
               "line": 1361
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentsReportLastSync",
               "transforms": [],
+              "urlPattern": "/reports/v1/etlJobs/ASSIGNMENT_REPORTS/lastSync",
               "line": 1372
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentsSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentsSummary",
               "line": 1415
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentsSummaryNew",
               "transforms": [],
+              "urlPattern": "/reports/v1/assignmentReports:summary",
               "line": 1487
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentReports:export",
               "line": 1521
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentReports:export",
               "line": 1589
             },
             {
               "verb": "GET",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 1612
             },
             {
@@ -3821,6 +4336,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/learnerUsageSummary",
               "line": 1643
             },
             {
@@ -3829,18 +4345,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/reportHistory/{id}:export",
               "line": 1653
             },
             {
               "verb": "GET",
               "endpointKey": "reportExportHistoryV2",
               "transforms": [],
+              "urlPattern": "/reports/v1/learnerComplianceReport:export",
               "line": 1698
             },
             {
               "verb": "GET",
               "endpointKey": "indicatorInstitutions",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicatorInstitutions",
               "line": 1715
             },
             {
@@ -3849,6 +4368,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/summary",
               "line": 1738
             },
             {
@@ -3857,24 +4377,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/detailedReports",
               "line": 1758
             },
             {
               "verb": "GET",
               "endpointKey": "indicatorsReport",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicatorsReport",
               "line": 1777
             },
             {
               "verb": "GET",
               "endpointKey": "indicatorsReportSummary",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicatorsReportSummary",
               "line": 1796
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 1835
             },
             {
@@ -3883,6 +4407,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/userDepartments",
               "line": 1845
             },
             {
@@ -3891,6 +4416,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/userDepartments",
               "line": 1856
             },
             {
@@ -3899,6 +4425,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}",
               "line": 1865
             },
             {
@@ -3907,12 +4434,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/summary",
               "line": 1876
             },
             {
               "verb": "GET",
               "endpointKey": "costImpact",
               "transforms": [],
+              "urlPattern": "/indicator/v1/costImpact",
               "line": 1896
             },
             {
@@ -3921,18 +4450,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/indicators/{indicatorInstitutionId}/costImpact",
               "line": 1913
             },
             {
               "verb": "GET",
               "endpointKey": "costImpactIndicators",
               "transforms": [],
+              "urlPattern": "/indicator/v1/costImpactIndicators",
               "line": 1931
             },
             {
               "verb": "GET",
               "endpointKey": "productClassificationType",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productClassificationType",
               "line": 1941
             }
           ]
@@ -3951,6 +4483,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/leaderboards",
               "line": 38
             },
             {
@@ -3959,6 +4492,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/assignmentsSummary",
               "line": 61
             },
             {
@@ -3967,6 +4501,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessionImpactReport",
               "line": 83
             }
           ]
@@ -3983,30 +4518,35 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 22
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 37
             },
             {
               "verb": "GET",
               "endpointKey": "kpiActiveUsers",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiActiveUsers",
               "line": 51
             },
             {
               "verb": "GET",
               "endpointKey": "departmentUsers",
               "transforms": [],
+              "urlPattern": "/account/v2/groupedUserIds",
               "line": 67
             },
             {
               "verb": "POST",
               "endpointKey": "activeUserByUserId",
               "transforms": [],
+              "urlPattern": "/analytics/v1/kpiActiveUsersByUserIds",
               "line": 82
             }
           ]
@@ -4025,18 +4565,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/leaderboards",
               "line": 38
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 51
             },
             {
               "verb": "GET",
               "endpointKey": "departmentTrainingReports",
               "transforms": [],
+              "urlPattern": "/catalog/v1/departmentTrainingReports",
               "line": 92
             },
             {
@@ -4045,6 +4588,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/reportHistory/{id}",
               "line": 101
             }
           ]
@@ -4061,24 +4605,28 @@
               "verb": "GET",
               "endpointKey": "aiReportHealth",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/health",
               "line": 75
             },
             {
               "verb": "POST",
               "endpointKey": "aiReportChat",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/chat",
               "line": 82
             },
             {
               "verb": "POST",
               "endpointKey": "aiReportExportCsv",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/export-csv",
               "line": 92
             },
             {
               "verb": "POST",
               "endpointKey": "aiReportExportExcel",
               "transforms": [],
+              "urlPattern": "/report-gen/v1/export-excel",
               "line": 102
             }
           ]
@@ -4095,12 +4643,14 @@
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 36
             },
             {
               "verb": "PUT",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 48
             }
           ]
@@ -4117,30 +4667,35 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 45
             },
             {
               "verb": "GET",
               "endpointKey": "surveyDetails",
               "transforms": [],
+              "urlPattern": "/catalog/v1/surveys",
               "line": 110
             },
             {
               "verb": "GET",
               "endpointKey": "surveyQests",
               "transforms": [],
+              "urlPattern": "/catalog/v1/surveys/{id}/questions",
               "line": 122
             },
             {
               "verb": "PATCH",
               "endpointKey": "surveyDetails",
               "transforms": [],
+              "urlPattern": "/catalog/v1/surveys",
               "line": 166
             },
             {
               "verb": "PATCH",
               "endpointKey": "patchQuestions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/questions",
               "line": 181
             },
             {
@@ -4149,6 +4704,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/surveys/{surveyId}/questions",
               "line": 195
             },
             {
@@ -4157,12 +4713,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/surveys/{surveyId}/questions",
               "line": 215
             },
             {
               "verb": "PATCH",
               "endpointKey": "actdeactivateSurveys",
               "transforms": [],
+              "urlPattern": "/catalog/v1/surveyStatus",
               "line": 230
             }
           ]
@@ -4179,18 +4737,21 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 166
             },
             {
               "verb": "GET",
               "endpointKey": "audit",
               "transforms": [],
+              "urlPattern": "/account/v1/audits",
               "line": 193
             },
             {
               "verb": "PUT",
               "endpointKey": "audit",
               "transforms": [],
+              "urlPattern": "/account/v1/audits",
               "line": 203
             },
             {
@@ -4199,12 +4760,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/audits/{sikkAuditId}/auditors",
               "line": 214
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 227
             },
             {
@@ -4213,6 +4776,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/audits/{skillAuditId}/auditors",
               "line": 249
             },
             {
@@ -4221,6 +4785,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{skillAuditId}",
               "line": 258
             },
             {
@@ -4229,6 +4794,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{id}",
               "line": 267
             },
             {
@@ -4237,6 +4803,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audit/{id}/question",
               "line": 283
             },
             {
@@ -4245,6 +4812,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audit/{id}/question",
               "line": 292
             },
             {
@@ -4253,6 +4821,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{id}:publish",
               "line": 301
             },
             {
@@ -4261,6 +4830,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audit/{id}/question",
               "line": 312
             },
             {
@@ -4269,6 +4839,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audits/{assesorId}/users",
               "line": 322
             },
             {
@@ -4277,6 +4848,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audits/{cId}/users",
               "line": 346
             },
             {
@@ -4285,6 +4857,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audit/{auditId}/recommend",
               "line": 360
             },
             {
@@ -4293,6 +4866,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audits/{auditId}/copyData",
               "line": 369
             }
           ]
@@ -4309,6 +4883,7 @@
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 50
             },
             {
@@ -4317,12 +4892,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products/{productId}",
               "line": 60
             },
             {
               "verb": "DELETE",
               "endpointKey": "institutionAssetsDelete",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assets",
               "line": 72
             },
             {
@@ -4331,6 +4908,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/uploads/{uploadId}/assets/#uploadAssetId",
               "line": 82
             }
           ]
@@ -4347,6 +4925,7 @@
               "verb": "GET",
               "endpointKey": "searchUsers",
               "transforms": [],
+              "urlPattern": "/account/v1/searchUsers",
               "line": 36
             }
           ]
@@ -4363,24 +4942,42 @@
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
+              "line": 82
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "organisationUsersInstructor",
+              "transforms": [],
+              "urlPattern": "/account/v1/organisationUsers",
               "line": 82
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
+              "line": 139
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "organisationUsersInstructor",
+              "transforms": [],
+              "urlPattern": "/account/v1/organisationUsers",
               "line": 139
             },
             {
               "verb": "GET",
               "endpointKey": "userTypes",
               "transforms": [],
+              "urlPattern": "/account/v1/userTypes",
               "line": 148
             },
             {
               "verb": "GET",
               "endpointKey": "organisationUsers",
               "transforms": [],
+              "urlPattern": "/account/v1/organisationUsers",
               "line": 188
             },
             {
@@ -4389,18 +4986,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/summary",
               "line": 220
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 271
             },
             {
               "verb": "GET",
               "endpointKey": "userGroups",
               "transforms": [],
+              "urlPattern": "/account/v1/userGroups",
               "line": 305
             },
             {
@@ -4409,6 +5009,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userGroupMetaValues",
               "line": 315
             }
           ]
@@ -4425,24 +5026,28 @@
               "verb": "POST",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 59
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 71
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 86
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 101
             },
             {
@@ -4451,6 +5056,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/remindManagers",
               "line": 116
             },
             {
@@ -4459,18 +5065,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/remindManagers",
               "line": 125
             },
             {
               "verb": "PATCH",
               "endpointKey": "productStatusCatalog",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productStatus",
               "line": 136
             },
             {
               "verb": "GET",
               "endpointKey": "notifyManager",
               "transforms": [],
+              "urlPattern": "/catalog/v1/notifyManager",
               "line": 156
             },
             {
@@ -4479,6 +5088,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/uploads",
               "line": 165
             },
             {
@@ -4487,6 +5097,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/uploads/{uploadId}/files",
               "line": 175
             },
             {
@@ -4495,6 +5106,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/uploads",
               "line": 198
             },
             {
@@ -4503,6 +5115,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/uploads/{uploadId}/assets/#uploadAssetId",
               "line": 209
             },
             {
@@ -4511,12 +5124,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/uploads",
               "line": 225
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 263
             },
             {
@@ -4525,42 +5140,49 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}",
               "line": 273
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionUsers",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionUsers",
               "line": 301
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionUserGroups",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionUserGroups",
               "line": 326
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionOrganisationUsers",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionOrganisationUsers",
               "line": 360
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramCourses",
               "transforms": [],
+              "urlPattern": "/catalog/v1/collections/{id}/products",
               "line": 378
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionProducts",
               "line": 447
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionProducts",
               "line": 463
             },
             {
@@ -4569,12 +5191,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/draftProducts",
               "line": 518
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 533
             },
             {
@@ -4583,6 +5207,16 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/zoomMeeting",
+              "line": 546
+            },
+            {
+              "verb": "PATCH",
+              "endpointKey": "zoomWebinar",
+              "transforms": [
+                "replace"
+              ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/zoomWebinar",
               "line": 546
             },
             {
@@ -4591,6 +5225,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": null,
               "line": 556
             },
             {
@@ -4599,6 +5234,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/zoomWebinar:panelists",
               "line": 567
             },
             {
@@ -4607,6 +5243,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/users",
               "line": 580
             },
             {
@@ -4615,6 +5252,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/draftUsers",
               "line": 598
             },
             {
@@ -4623,6 +5261,16 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/users",
+              "line": 633
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "sessions",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/enrolledUsers",
               "line": 633
             },
             {
@@ -4631,6 +5279,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/campaignUsers",
               "line": 660
             },
             {
@@ -4639,6 +5288,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/campaignUsers",
               "line": 673
             },
             {
@@ -4647,6 +5297,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/campaignUserSummary",
               "line": 690
             },
             {
@@ -4655,6 +5306,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/sessions/{sessionIds}/summary",
               "line": 701
             },
             {
@@ -4663,6 +5315,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionIds}",
               "line": 710
             },
             {
@@ -4671,6 +5324,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/sessions/{sessionId}/campaignQuestions",
               "line": 730
             },
             {
@@ -4679,6 +5333,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/exam/v1/sessions/{sessionId}/campaignQuestions",
               "line": 744
             },
             {
@@ -4687,6 +5342,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/products",
               "line": 763
             },
             {
@@ -4695,12 +5351,23 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/draftProducts",
+              "line": 763
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "sessionDraftProducts",
+              "transforms": [
+                "replace"
+              ],
+              "urlPattern": "/catalog/v1/sessions/{id}/draftProducts",
               "line": 781
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionsPublish",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions:publish",
               "line": 799
             },
             {
@@ -4709,6 +5376,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}",
               "line": 809
             },
             {
@@ -4717,6 +5385,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/enrolledUsers:export",
               "line": 828
             },
             {
@@ -4725,36 +5394,42 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}",
               "line": 838
             },
             {
               "verb": "PATCH",
               "endpointKey": "enrollments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/enrollments",
               "line": 857
             },
             {
               "verb": "GET",
               "endpointKey": "notifyLearner",
               "transforms": [],
+              "urlPattern": "/catalog/v1/notifyLearner",
               "line": 871
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 989
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 1052
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 1076
             },
             {
@@ -4763,6 +5438,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/enrollmentSummary",
               "line": 1085
             },
             {
@@ -4771,6 +5447,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/userEvaluationStatusSummary",
               "line": 1136
             },
             {
@@ -4779,6 +5456,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/reports",
               "line": 1160
             },
             {
@@ -4787,6 +5465,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/trainingReports",
               "line": 1170
             },
             {
@@ -4795,18 +5474,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 1182
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 1203
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 1285
             },
             {
@@ -4815,12 +5497,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{id}",
               "line": 1363
             },
             {
               "verb": "GET",
               "endpointKey": "surveyReports",
               "transforms": [],
+              "urlPattern": "/catalog/v1/surveysReports",
               "line": 1391
             },
             {
@@ -4829,6 +5513,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/users",
               "line": 1401
             },
             {
@@ -4837,24 +5522,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/products",
               "line": 1440
             },
             {
               "verb": "POST",
               "endpointKey": "contactSales",
               "transforms": [],
+              "urlPattern": "/catalog/v1/contactSales",
               "line": 1463
             },
             {
               "verb": "PUT",
               "endpointKey": "sessionQuestionTopics",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionQuestions",
               "line": 1505
             },
             {
               "verb": "PUT",
               "endpointKey": "sessionQuestionTopics",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionQuestions",
               "line": 1517
             },
             {
@@ -4863,18 +5552,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/questions",
               "line": 1539
             },
             {
               "verb": "PATCH",
               "endpointKey": "assignmentStatusQR",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatus",
               "line": 1551
             },
             {
               "verb": "PATCH",
               "endpointKey": "assignmentStatusQR",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatus",
               "line": 1562
             }
           ]
@@ -4891,24 +5583,28 @@
               "verb": "GET",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 66
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 89
             },
             {
               "verb": "GET",
               "endpointKey": "sessionSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionSummary",
               "line": 115
             },
             {
               "verb": "GET",
               "endpointKey": "notifyInstructor",
               "transforms": [],
+              "urlPattern": "/catalog/v1/notifyInstructor",
               "line": 126
             },
             {
@@ -4917,6 +5613,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}",
               "line": 142
             },
             {
@@ -4925,12 +5622,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": null,
               "line": 175
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 191
             },
             {
@@ -4939,6 +5638,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}/status",
               "line": 206
             },
             {
@@ -4947,6 +5647,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}",
               "line": 216
             },
             {
@@ -4955,6 +5656,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/audits/{sikkAuditId}/auditors",
               "line": 228
             },
             {
@@ -4963,12 +5665,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/audits/{skillAuditId}/auditors",
               "line": 251
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 264
             },
             {
@@ -4977,6 +5681,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/audits/{id}",
               "line": 275
             },
             {
@@ -4985,12 +5690,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/sessions/{sessionId}/assessments",
               "line": 304
             },
             {
               "verb": "GET",
               "endpointKey": "audit",
               "transforms": [],
+              "urlPattern": "/account/v1/audits",
               "line": 321
             },
             {
@@ -4999,6 +5706,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/audit/{auditId}/recommend",
               "line": 333
             }
           ]
@@ -5015,18 +5723,21 @@
               "verb": "GET",
               "endpointKey": "assignmentStatusSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatusSummary",
               "line": 31
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 55
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByProduct",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByProduct",
               "line": 74
             }
           ]
@@ -5043,12 +5754,14 @@
               "verb": "GET",
               "endpointKey": "assignmentDetails",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentDetails",
               "line": 24
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentDetailsByProduct",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentDetailsByProduct",
               "line": 44
             }
           ]
@@ -5065,18 +5778,21 @@
               "verb": "PUT",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 21
             },
             {
               "verb": "GET",
               "endpointKey": "examItems",
               "transforms": [],
+              "urlPattern": "/exam/v1/items",
               "line": 53
             },
             {
               "verb": "GET",
               "endpointKey": "examItems",
               "transforms": [],
+              "urlPattern": "/exam/v1/items",
               "line": 80
             },
             {
@@ -5085,18 +5801,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/exam/v1/items/{itemId}",
               "line": 89
             },
             {
               "verb": "GET",
               "endpointKey": "examClinicalTopics",
               "transforms": [],
+              "urlPattern": "/exam/v1/topics",
               "line": 105
             },
             {
               "verb": "POST",
               "endpointKey": "generateQuestion",
               "transforms": [],
+              "urlPattern": "/exam/v1/generateItems",
               "line": 118
             }
           ]
@@ -5113,24 +5832,28 @@
               "verb": "GET",
               "endpointKey": "indicatorInstitutions",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicatorInstitutions",
               "line": 56
             },
             {
               "verb": "GET",
               "endpointKey": "fieldInventoryList",
               "transforms": [],
+              "urlPattern": "/indicator/v1/fields",
               "line": 89
             },
             {
               "verb": "GET",
               "endpointKey": "fieldDataTypes",
               "transforms": [],
+              "urlPattern": "/indicator/v1/fieldDataTypes",
               "line": 98
             },
             {
               "verb": "POST",
               "endpointKey": "fieldInventoryList",
               "transforms": [],
+              "urlPattern": "/indicator/v1/fields",
               "line": 109
             },
             {
@@ -5139,6 +5862,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/fields/{id}",
               "line": 121
             },
             {
@@ -5147,24 +5871,28 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}",
               "line": 131
             },
             {
               "verb": "GET",
               "endpointKey": "indicatorInstitutions",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicatorInstitutions",
               "line": 149
             },
             {
               "verb": "GET",
               "endpointKey": "validateIndicatorName",
               "transforms": [],
+              "urlPattern": "/indicator/v1/validateIndicatorName",
               "line": 164
             },
             {
               "verb": "GET",
               "endpointKey": "fieldInventoryList",
               "transforms": [],
+              "urlPattern": "/indicator/v1/fields",
               "line": 190
             },
             {
@@ -5173,6 +5901,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/fields",
               "line": 203
             },
             {
@@ -5181,6 +5910,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/indicatorSettings",
               "line": 215
             },
             {
@@ -5189,6 +5919,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/indicatorSettings",
               "line": 222
             },
             {
@@ -5197,6 +5928,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/indicatorSettings",
               "line": 234
             },
             {
@@ -5205,6 +5937,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/processOwners",
               "line": 245
             },
             {
@@ -5213,12 +5946,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/processOwners",
               "line": 268
             },
             {
               "verb": "POST",
               "endpointKey": "indicatorInventory",
               "transforms": [],
+              "urlPattern": "/indicator/v1/indicators",
               "line": 283
             },
             {
@@ -5227,6 +5962,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/fields",
               "line": 295
             },
             {
@@ -5235,12 +5971,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/fields",
               "line": 307
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 321
             },
             {
@@ -5249,6 +5987,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/dataReviewers",
               "line": 331
             },
             {
@@ -5257,6 +5996,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/indicators/{id}/dataReviewers",
               "line": 354
             },
             {
@@ -5265,12 +6005,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/userDepartments",
               "line": 364
             },
             {
               "verb": "GET",
               "endpointKey": "indicatorAudits",
               "transforms": [],
+              "urlPattern": "/indicator/v1/audits",
               "line": 377
             },
             {
@@ -5279,12 +6021,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/indicator/v1/audits",
               "line": 387
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 423
             },
             {
@@ -5293,6 +6037,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/userDepartments",
               "line": 433
             }
           ]
@@ -5311,6 +6056,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/uploads",
               "line": 66
             },
             {
@@ -5319,18 +6065,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/uploads/{uploadId}/assets/#uploadAssetId",
               "line": 79
             },
             {
               "verb": "PATCH",
               "endpointKey": "updateProduct",
               "transforms": [],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products",
               "line": 100
             },
             {
               "verb": "GET",
               "endpointKey": "uploadAssets",
               "transforms": [],
+              "urlPattern": "/catalog/v1/products/{productId}/uploadAssets",
               "line": 123
             },
             {
@@ -5339,6 +6088,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/uploads/{uploadId}/files",
               "line": 138
             }
           ]
@@ -5357,6 +6107,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{id}/subscription:publish",
               "line": 63
             },
             {
@@ -5365,6 +6116,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{subscriptionId}/users",
               "line": 76
             },
             {
@@ -5373,18 +6125,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{subscriptionId}/userGroups",
               "line": 86
             },
             {
               "verb": "GET",
               "endpointKey": "searchUsers",
               "transforms": [],
+              "urlPattern": "/account/v1/searchUsers",
               "line": 100
             },
             {
               "verb": "GET",
               "endpointKey": "searchUserGroups",
               "transforms": [],
+              "urlPattern": "/account/v1/searchUserGroups",
               "line": 110
             },
             {
@@ -5393,6 +6148,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{subscriptionId}/userGroups",
               "line": 117
             },
             {
@@ -5401,6 +6157,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{subscriptionId}/users",
               "line": 131
             },
             {
@@ -5409,6 +6166,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{code}",
               "line": 151
             },
             {
@@ -5417,6 +6175,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/qrCode",
               "line": 176
             },
             {
@@ -5425,6 +6184,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}/status",
               "line": 190
             },
             {
@@ -5433,12 +6193,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}/assignments",
               "line": 201
             },
             {
               "verb": "PATCH",
               "endpointKey": "assignmentStatusQR",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentStatus",
               "line": 214
             },
             {
@@ -5447,12 +6209,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v2/products/{productId}",
               "line": 231
             },
             {
               "verb": "POST",
               "endpointKey": "digitalUploads",
               "transforms": [],
+              "urlPattern": "/catalog/v1/digitalUploads",
               "line": 243
             },
             {
@@ -5461,12 +6225,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/digitalUploads/{uploadId}/meta/{metaId}",
               "line": 253
             },
             {
               "verb": "POST",
               "endpointKey": "digitalDocuments",
               "transforms": [],
+              "urlPattern": "/catalog/v1/digitalDocuments:publish",
               "line": 265
             }
           ]
@@ -5483,6 +6249,14 @@
               "verb": "GET",
               "endpointKey": "assetListing",
               "transforms": [],
+              "urlPattern": "/catalog/v1/institutionAssets",
+              "line": 113
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "institutionProducts",
+              "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 113
             },
             {
@@ -5491,18 +6265,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/wishlistSummary",
               "line": 126
             },
             {
               "verb": "GET",
               "endpointKey": "licenseRequestNotification",
               "transforms": [],
+              "urlPattern": "/catalog/v1/licenseRequestNotification",
               "line": 138
             },
             {
               "verb": "GET",
               "endpointKey": "productsV1",
               "transforms": [],
+              "urlPattern": "/catalog/v1/products",
               "line": 180
             },
             {
@@ -5511,6 +6288,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/competencies",
               "line": 191
             },
             {
@@ -5519,6 +6297,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{subscriptionId}/subscription:publish",
               "line": 224
             },
             {
@@ -5527,12 +6306,14 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}/status",
               "line": 239
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 266
             }
           ]
@@ -5551,6 +6332,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/assets/{id}/products",
               "line": 37
             }
           ]
@@ -5567,6 +6349,7 @@
               "verb": "GET",
               "endpointKey": "importAssignmentList",
               "transforms": [],
+              "urlPattern": "/catalog/v1/imports",
               "line": 48
             },
             {
@@ -5575,6 +6358,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/imports/{importId}/files",
               "line": 59
             }
           ]
@@ -5591,6 +6375,7 @@
               "verb": "GET",
               "endpointKey": "assetListing",
               "transforms": [],
+              "urlPattern": "/catalog/v1/institutionAssets",
               "line": 50
             },
             {
@@ -5599,12 +6384,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products",
               "line": 93
             },
             {
               "verb": "PATCH",
               "endpointKey": "productsV1",
               "transforms": [],
+              "urlPattern": "/catalog/v1/products",
               "line": 127
             },
             {
@@ -5613,6 +6400,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/product/{productId}/activities",
               "line": 138
             },
             {
@@ -5621,6 +6409,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/product/{productId}/activities",
               "line": 147
             },
             {
@@ -5629,6 +6418,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/product/{productId}/activities",
               "line": 159
             },
             {
@@ -5637,24 +6427,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/assets",
               "line": 170
             },
             {
               "verb": "DELETE",
               "endpointKey": "productAssetLinks",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productAssetLinks",
               "line": 181
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramCourses",
               "transforms": [],
+              "urlPattern": null,
               "line": 200
             },
             {
               "verb": "PATCH",
               "endpointKey": "collectionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/collectionProducts",
               "line": 232
             },
             {
@@ -5663,6 +6457,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{id}/subscription:publish",
               "line": 242
             },
             {
@@ -5671,6 +6466,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/objectives",
               "line": 261
             },
             {
@@ -5679,18 +6475,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/objectives",
               "line": 274
             },
             {
               "verb": "GET",
               "endpointKey": "productClassificationType",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productClassificationType",
               "line": 283
             },
             {
               "verb": "POST",
               "endpointKey": "productClassificationType",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productClassificationType",
               "line": 294
             }
           ]
@@ -5719,6 +6518,7 @@
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 113
             },
             {
@@ -5727,42 +6527,49 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v2/products/{id}",
               "line": 125
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 152
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 205
             },
             {
               "verb": "GET",
               "endpointKey": "adminTrainingAnalysis",
               "transforms": [],
+              "urlPattern": "/catalog/v1/adminTrainingAnalysis",
               "line": 249
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 263
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 283
             },
             {
               "verb": "GET",
               "endpointKey": "productClassificationType",
               "transforms": [],
+              "urlPattern": "/catalog/v1/productClassificationType",
               "line": 293
             },
             {
@@ -5771,6 +6578,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v2/institutionSubscriptions:export",
               "line": 375
             },
             {
@@ -5779,6 +6587,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products/{productId}/restore",
               "line": 385
             }
           ]
@@ -5797,18 +6606,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products",
               "line": 51
             },
             {
               "verb": "PATCH",
               "endpointKey": "collectionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/collectionProducts",
               "line": 70
             },
             {
               "verb": "GET",
               "endpointKey": "institutionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v2/institutionSubscriptions",
               "line": 116
             },
             {
@@ -5817,6 +6629,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/products/{productId}",
               "line": 126
             },
             {
@@ -5825,24 +6638,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutions/{institutionId}/productStatus",
               "line": 144
             },
             {
               "verb": "GET",
               "endpointKey": "trainingPlanAssociation",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingPlans",
               "line": 199
             },
             {
               "verb": "POST",
               "endpointKey": "trainingPlanspublish",
               "transforms": [],
+              "urlPattern": "/catalog/v1/trainingPlans:publish",
               "line": 209
             },
             {
               "verb": "GET",
               "endpointKey": "trainingProgramCourses",
               "transforms": [],
+              "urlPattern": null,
               "line": 223
             },
             {
@@ -5851,6 +6668,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/institutionSubscriptions/{id}/subscription:publish",
               "line": 234
             },
             {
@@ -5859,6 +6677,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/qrCode/{qrCode}/status",
               "line": 258
             }
           ]
@@ -5875,6 +6694,7 @@
               "verb": "GET",
               "endpointKey": "managerReviews",
               "transforms": [],
+              "urlPattern": "/catalog/v1/managerReviews",
               "line": 30
             }
           ]
@@ -5891,6 +6711,7 @@
               "verb": "GET",
               "endpointKey": "importsSkill",
               "transforms": [],
+              "urlPattern": "/account/v1/imports",
               "line": 44
             },
             {
@@ -5899,6 +6720,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/imports/{importId}/files",
               "line": 55
             }
           ]
@@ -5915,6 +6737,7 @@
               "verb": "GET",
               "endpointKey": "importsQuestion",
               "transforms": [],
+              "urlPattern": "/exam/v1/imports",
               "line": 43
             },
             {
@@ -5923,6 +6746,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/exam/v1/imports/{importId}/files",
               "line": 54
             }
           ]
@@ -5939,6 +6763,7 @@
               "verb": "GET",
               "endpointKey": "imports",
               "transforms": [],
+              "urlPattern": "/account/v1/imports",
               "line": 44
             },
             {
@@ -5947,6 +6772,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/imports/{importId}/files",
               "line": 55
             }
           ]
@@ -5963,6 +6789,7 @@
               "verb": "GET",
               "endpointKey": "importAssignmentList",
               "transforms": [],
+              "urlPattern": "/catalog/v1/imports",
               "line": 44
             },
             {
@@ -5971,6 +6798,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/catalog/v1/imports/{importId}/files",
               "line": 55
             }
           ]
@@ -5989,6 +6817,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/{endpoint}/v1/exports",
               "line": 61
             },
             {
@@ -5997,6 +6826,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/{endpoint}/v1/exportHistory",
               "line": 115
             },
             {
@@ -6005,6 +6835,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": null,
               "line": 127
             }
           ]
@@ -6023,12 +6854,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}",
               "line": 54
             },
             {
               "verb": "POST",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 64
             },
             {
@@ -6037,6 +6870,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{evaluationId}",
               "line": 73
             },
             {
@@ -6045,12 +6879,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/products",
               "line": 85
             },
             {
               "verb": "GET",
               "endpointKey": "assignmentSummaryByUser",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentSummaryByUser",
               "line": 121
             },
             {
@@ -6059,6 +6895,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/userEvaluationStatusSummary",
               "line": 139
             },
             {
@@ -6067,6 +6904,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/examCodes:export",
               "line": 180
             },
             {
@@ -6075,6 +6913,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/examCodes:export",
               "line": 199
             },
             {
@@ -6083,6 +6922,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/draftProducts",
               "line": 207
             },
             {
@@ -6091,6 +6931,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/users",
               "line": 225
             },
             {
@@ -6099,12 +6940,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}/draftUsers",
               "line": 244
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 257
             },
             {
@@ -6113,42 +6956,49 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{id}",
               "line": 267
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionsPublish",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions:publish",
               "line": 280
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionProducts",
               "line": 296
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionUsers",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionUsers",
               "line": 350
             },
             {
               "verb": "PATCH",
               "endpointKey": "sessionUserGroups",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionUserGroups",
               "line": 366
             },
             {
               "verb": "GET",
               "endpointKey": "searchUsers",
               "transforms": [],
+              "urlPattern": "/account/v1/searchUsers",
               "line": 386
             },
             {
               "verb": "POST",
               "endpointKey": "examCodes",
               "transforms": [],
+              "urlPattern": "/catalog/v1/examCodes",
               "line": 397
             },
             {
@@ -6157,24 +7007,28 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/examCodes",
               "line": 409
             },
             {
               "verb": "GET",
               "endpointKey": "examCodeProducts",
               "transforms": [],
+              "urlPattern": "/catalog/v1/examCodeProducts",
               "line": 421
             },
             {
               "verb": "DELETE",
               "endpointKey": "examCodes",
               "transforms": [],
+              "urlPattern": "/catalog/v1/examCodes",
               "line": 435
             },
             {
               "verb": "GET",
               "endpointKey": "candidates",
               "transforms": [],
+              "urlPattern": "/account/v1/candidates",
               "line": 452
             },
             {
@@ -6183,6 +7037,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/copySession",
+              "line": 476
+            },
+            {
+              "verb": "POST",
+              "endpointKey": "copySession",
+              "transforms": [],
+              "urlPattern": "/catalog/v1/copySession",
               "line": 476
             }
           ]
@@ -6199,18 +7061,28 @@
               "verb": "GET",
               "endpointKey": "sessions",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessions",
               "line": 39
             },
             {
               "verb": "GET",
               "endpointKey": "sessionSummary",
               "transforms": [],
+              "urlPattern": "/catalog/v1/sessionSummary",
               "line": 49
             },
             {
               "verb": "GET",
               "endpointKey": "evaluationExport",
               "transforms": [],
+              "urlPattern": "/catalog/v1/assignmentReports:export",
+              "line": 64
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "sessionsExport",
+              "transforms": [],
+              "urlPattern": "/catalog/v1/sessions:export",
               "line": 64
             }
           ]
@@ -6229,6 +7101,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{tokenOrgId}/departments",
               "line": 26
             }
           ]
@@ -6245,12 +7118,14 @@
               "verb": "GET",
               "endpointKey": "courseBuilder",
               "transforms": [],
+              "urlPattern": "/catalog/v1/institutionProducts",
               "line": 70
             },
             {
               "verb": "DELETE",
               "endpointKey": "courseBuilder",
               "transforms": [],
+              "urlPattern": "/catalog/v1/institutionProducts",
               "line": 81
             },
             {
@@ -6259,12 +7134,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/institutionProducts/{productId}/copyData",
               "line": 90
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 112
             }
           ]
@@ -6292,12 +7169,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments",
               "line": 52
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 79
             },
             {
@@ -6306,6 +7185,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{tokenOrgId}/departments",
               "line": 94
             },
             {
@@ -6314,12 +7194,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 108
             },
             {
               "verb": "PATCH",
               "endpointKey": "competencyV2Assessment",
               "transforms": [],
+              "urlPattern": "/assessment/v1/assessments",
               "line": 117
             },
             {
@@ -6328,6 +7210,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/clearDraft",
               "line": 126
             },
             {
@@ -6336,6 +7219,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/frequencies",
               "line": 136
             },
             {
@@ -6344,6 +7228,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/frequency/{assessmentFrequencyId}",
               "line": 146
             },
             {
@@ -6352,6 +7237,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/frequencies",
               "line": 156
             },
             {
@@ -6360,6 +7246,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/frequency/{frequencyId}/reviewers",
               "line": 166
             },
             {
@@ -6368,6 +7255,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/frequency/{assessmentFrequencyId}/reviewer/{frequencyReviewersId}",
               "line": 176
             },
             {
@@ -6376,6 +7264,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/ratingScale",
               "line": 186
             },
             {
@@ -6384,6 +7273,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/ratingScale",
               "line": 196
             },
             {
@@ -6392,6 +7282,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/institution/{institutionId}/ratingScale",
               "line": 206
             },
             {
@@ -6400,6 +7291,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/scores",
               "line": 216
             },
             {
@@ -6408,6 +7300,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/scores",
               "line": 226
             },
             {
@@ -6416,6 +7309,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/institution/{institutionId}/scoreOutcome",
               "line": 236
             },
             {
@@ -6424,6 +7318,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/skills",
               "line": 246
             },
             {
@@ -6432,6 +7327,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/skills/{skillId}",
               "line": 256
             },
             {
@@ -6440,6 +7336,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skills/{skillId}/subskills/{subskillId}",
               "line": 266
             },
             {
@@ -6448,6 +7345,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{assessmentId}/skills",
               "line": 276
             },
             {
@@ -6456,6 +7354,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skills/{skillId}/subskills",
               "line": 286
             },
             {
@@ -6464,6 +7363,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skills/{skillId}",
               "line": 296
             },
             {
@@ -6472,6 +7372,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/subskills/{subskillId}",
               "line": 306
             },
             {
@@ -6480,6 +7381,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/skills:upload",
               "line": 318
             },
             {
@@ -6488,6 +7390,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/publish",
               "line": 328
             },
             {
@@ -6496,6 +7399,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/imports/{importId}",
               "line": 338
             },
             {
@@ -6504,12 +7408,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/userAssessments",
               "line": 372
             },
             {
               "verb": "GET",
               "endpointKey": "competencyV2Assessment",
               "transforms": [],
+              "urlPattern": "/assessment/v1/assessments",
               "line": 390
             },
             {
@@ -6518,6 +7424,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/frequencySummary",
               "line": 399
             },
             {
@@ -6526,6 +7433,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUser/{userId}/frequency/{frequencyId}/idp:report",
               "line": 410
             },
             {
@@ -6534,6 +7442,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessment/{userId}/reports:export",
               "line": 422
             },
             {
@@ -6542,6 +7451,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentSummary",
               "line": 450
             },
             {
@@ -6550,6 +7460,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentSummaryReport",
               "line": 473
             },
             {
@@ -6558,6 +7469,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUserSummary",
               "line": 486
             },
             {
@@ -6566,6 +7478,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skillReports",
               "line": 507
             },
             {
@@ -6574,12 +7487,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skillReports",
               "line": 529
             },
             {
               "verb": "GET",
               "endpointKey": "competencyV2Assessment",
               "transforms": [],
+              "urlPattern": "/assessment/v1/assessments",
               "line": 551
             },
             {
@@ -6588,6 +7503,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skills",
               "line": 566
             },
             {
@@ -6596,6 +7512,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/skills/{skillName}/sub-skills",
               "line": 581
             },
             {
@@ -6604,6 +7521,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessments/{assessmentId}/info",
               "line": 590
             },
             {
@@ -6612,6 +7530,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skills/{skillId}/subSkills",
               "line": 606
             },
             {
@@ -6620,6 +7539,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skillRatingSummary",
               "line": 618
             },
             {
@@ -6628,6 +7548,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/self-rating-comments",
               "line": 626
             },
             {
@@ -6636,6 +7557,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/frequencySummary",
               "line": 639
             },
             {
@@ -6644,6 +7566,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/skills",
               "line": 657
             },
             {
@@ -6652,6 +7575,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUsers/{assessmentUserId}/remarks",
               "line": 668
             },
             {
@@ -6660,6 +7584,16 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/trainings",
+              "line": 681
+            },
+            {
+              "verb": "GET",
+              "endpointKey": "assessmentReport",
+              "transforms": [
+                "template"
+              ],
+              "urlPattern": "/assessment/v1/assessmentUser/{assessmentUserId}/assessmentUserSkill/{skillId}/comments",
               "line": 681
             }
           ]
@@ -6676,12 +7610,14 @@
               "verb": "GET",
               "endpointKey": "competencySettings",
               "transforms": [],
+              "urlPattern": "/account/v1/competencySettings",
               "line": 24
             },
             {
               "verb": "PATCH",
               "endpointKey": "competencySettings",
               "transforms": [],
+              "urlPattern": "/account/v1/competencySettings",
               "line": 34
             },
             {
@@ -6690,6 +7626,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/competencyRoles",
               "line": 47
             },
             {
@@ -6698,6 +7635,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/competency",
               "line": 61
             },
             {
@@ -6706,18 +7644,21 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/targetProficiency",
               "line": 78
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 91
             },
             {
               "verb": "GET",
               "endpointKey": "competencyHeatMap",
               "transforms": [],
+              "urlPattern": "/account/v1/competencyHeatMap",
               "line": 123
             },
             {
@@ -6726,6 +7667,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency",
               "line": 160
             },
             {
@@ -6734,6 +7676,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency",
               "line": 188
             },
             {
@@ -6742,6 +7685,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency",
               "line": 206
             },
             {
@@ -6750,6 +7694,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency/{userId}/proficiencyLevels",
               "line": 215
             },
             {
@@ -6758,6 +7703,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competencyRoles/{userId}/competencyCategories",
               "line": 223
             },
             {
@@ -6766,6 +7712,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{userId}/competencyRoles/{data}",
               "line": 272
             },
             {
@@ -6774,6 +7721,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency/{userId}/proficiencyLevels",
               "line": 281
             },
             {
@@ -6782,6 +7730,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{institutionId}/proficiencyLevels",
               "line": 290
             },
             {
@@ -6790,6 +7739,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/competency",
               "line": 299
             },
             {
@@ -6798,6 +7748,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{instId}/competencyRoles",
               "line": 340
             },
             {
@@ -6806,6 +7757,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions/{id}/competencyRoles/{roleId}",
               "line": 348
             },
             {
@@ -6814,6 +7766,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/competencies",
               "line": 359
             },
             {
@@ -6822,6 +7775,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/catalog/v1/products/{productId}/competencies",
               "line": 370
             },
             {
@@ -6830,12 +7784,14 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/competency/{competencyId}/proficiencyLevels",
               "line": 379
             },
             {
               "verb": "PATCH",
               "endpointKey": "checklist",
               "transforms": [],
+              "urlPattern": "/account/v1/checklists",
               "line": 389
             },
             {
@@ -6844,6 +7800,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists",
               "line": 412
             },
             {
@@ -6852,6 +7809,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/approvers",
               "line": 423
             },
             {
@@ -6860,12 +7818,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/approvers",
               "line": 445
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 458
             },
             {
@@ -6874,6 +7834,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{id}",
               "line": 467
             },
             {
@@ -6882,6 +7843,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/approvers",
               "line": 477
             },
             {
@@ -6890,6 +7852,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}",
               "line": 487
             },
             {
@@ -6898,6 +7861,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/institutions/{id}/proficiencyLevels",
               "line": 496
             },
             {
@@ -6906,6 +7870,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{cId}/competency",
               "line": 515
             },
             {
@@ -6914,6 +7879,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/competency",
               "line": 526
             },
             {
@@ -6922,6 +7888,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{cId}/users",
               "line": 561
             },
             {
@@ -6930,6 +7897,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/account/v1/checklists/{checklistId}/users",
               "line": 572
             },
             {
@@ -6938,6 +7906,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/account/v1/checklists/{id}:publish",
               "line": 581
             }
           ]
@@ -6954,12 +7923,14 @@
               "verb": "GET",
               "endpointKey": "candidates",
               "transforms": [],
+              "urlPattern": "/account/v1/candidates",
               "line": 39
             },
             {
               "verb": "GET",
               "endpointKey": "candidates",
               "transforms": [],
+              "urlPattern": "/account/v1/candidates",
               "line": 57
             },
             {
@@ -6968,6 +7939,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/users/{userId}",
               "line": 66
             },
             {
@@ -6976,6 +7948,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/institutions",
               "line": 77
             },
             {
@@ -6984,12 +7957,14 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/candidates:export",
               "line": 93
             },
             {
               "verb": "REQUEST",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": null,
               "line": 105
             }
           ]
@@ -7006,18 +7981,21 @@
               "verb": "POST",
               "endpointKey": "rules",
               "transforms": [],
+              "urlPattern": "/catalog/v1/rules",
               "line": 22
             },
             {
               "verb": "GET",
               "endpointKey": "rules",
               "transforms": [],
+              "urlPattern": "/catalog/v1/rules",
               "line": 34
             },
             {
               "verb": "GET",
               "endpointKey": "rules",
               "transforms": [],
+              "urlPattern": "/catalog/v1/rules",
               "line": 72
             },
             {
@@ -7026,6 +8004,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/ruleUserReports",
               "line": 106
             },
             {
@@ -7034,6 +8013,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/rules/{ruleId}/logs",
               "line": 130
             },
             {
@@ -7042,6 +8022,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/searchUsers",
               "line": 149
             },
             {
@@ -7050,6 +8031,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/ruleEvaluationSummary",
               "line": 174
             },
             {
@@ -7058,6 +8040,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/rules/{ruleId}/status/{isActive}",
               "line": 183
             },
             {
@@ -7066,18 +8049,21 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/account/v1/userMetaValues",
               "line": 192
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 212
             },
             {
               "verb": "GET",
               "endpointKey": "institutions",
               "transforms": [],
+              "urlPattern": "/account/v1/institutions",
               "line": 230
             },
             {
@@ -7086,6 +8072,7 @@
               "transforms": [
                 "template"
               ],
+              "urlPattern": "/catalog/v1/ruleUserReports:export",
               "line": 269
             }
           ]
@@ -7102,18 +8089,21 @@
               "verb": "GET",
               "endpointKey": "indicatorAudits",
               "transforms": [],
+              "urlPattern": "/indicator/v1/audits",
               "line": 201
             },
             {
               "verb": "GET",
               "endpointKey": "users",
               "transforms": [],
+              "urlPattern": "/account/v1/users",
               "line": 229
             },
             {
               "verb": "POST",
               "endpointKey": "indicatorAudits",
               "transforms": [],
+              "urlPattern": "/indicator/v1/audits",
               "line": 239
             },
             {
@@ -7122,6 +8112,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}/fields",
               "line": 250
             },
             {
@@ -7130,6 +8121,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}/fields",
               "line": 262
             },
             {
@@ -7138,6 +8130,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/audit/{id}/question",
               "line": 278
             },
             {
@@ -7146,6 +8139,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/audit/{id}/question",
               "line": 287
             },
             {
@@ -7154,6 +8148,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}:publish",
               "line": 296
             },
             {
@@ -7162,6 +8157,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/audit/{id}/question",
               "line": 307
             },
             {
@@ -7170,6 +8166,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}",
               "line": 316
             },
             {
@@ -7178,6 +8175,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{auditId}/auditors",
               "line": 326
             },
             {
@@ -7186,6 +8184,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{auditId}/auditors/{auditorId}",
               "line": 335
             },
             {
@@ -7194,6 +8193,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{cId}/auditors",
               "line": 359
             },
             {
@@ -7202,6 +8202,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}",
               "line": 369
             },
             {
@@ -7210,6 +8211,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}/fields",
               "line": 382
             },
             {
@@ -7218,6 +8220,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}:summary",
               "line": 395
             },
             {
@@ -7226,6 +8229,7 @@
               "transforms": [
                 "concat"
               ],
+              "urlPattern": "/indicator/v1/audits/{id}:history",
               "line": 412
             },
             {
@@ -7234,6 +8238,7 @@
               "transforms": [
                 "replace"
               ],
+              "urlPattern": "/indicator/v1/auditsSummary/{auditId}/responses",
               "line": 425
             }
           ]

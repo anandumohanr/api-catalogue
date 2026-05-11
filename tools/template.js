@@ -41,6 +41,9 @@ const CSS = `
   /* App chrome */
   --appbar-h: 52px;
 }
+@media (max-width: 820px) {
+  :root { --appbar-h: 92px; }
+}
 
 :root[data-theme="light"] {
   --bg:           #ffffff;
@@ -120,7 +123,7 @@ const CSS = `
   outline-offset: 2px;
   border-radius: var(--r-1);
 }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; }
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--appbar-h) + var(--s-6));
@@ -342,6 +345,7 @@ nav.rail {
 }
 nav.rail::-webkit-scrollbar { width: 5px; }
 nav.rail::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+nav.rail .rail-toggle { display: none; }
 main.doc { min-width: 0; padding: 36px 8px 100px; max-width: 880px; justify-self: start; }
 aside.toc {
   position: sticky; top: 52px; align-self: start;
@@ -359,11 +363,45 @@ aside.toc::-webkit-scrollbar { display: none; }
 @media (max-width: 820px) {
   .shell { grid-template-columns: 1fr; padding: 0 16px; }
   nav.rail {
-    position: static; height: auto; padding: 14px 0 18px;
+    position: sticky; top: var(--appbar-h); z-index: var(--z-dropdown);
+    height: auto; max-height: 46px; overflow: hidden;
+    padding: 0; background: var(--bg);
     border-right: none; border-bottom: 1px solid var(--rule);
     margin-right: 0; padding-right: 0;
   }
-  .appbar { grid-template-columns: 1fr auto; padding: 0 14px; }
+  nav.rail.is-open {
+    max-height: calc(100vh - var(--appbar-h));
+    overflow-y: auto;
+    padding-bottom: 18px;
+  }
+  nav.rail .rail-toggle {
+    width: 100%; height: 46px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--s-2);
+    padding: 0 var(--s-2);
+    background: var(--bg);
+    border: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--t-sm);
+    cursor: pointer;
+  }
+  nav.rail .rail-toggle .count {
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--t-xs);
+  }
+  .appbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand actions" "nav nav";
+    height: auto; min-height: var(--appbar-h);
+    padding: 6px 14px 0;
+    gap: 0 10px;
+  }
+  .appbar .brand { grid-area: brand; min-width: 0; }
+  .appbar .brand em { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .appbar .actions { grid-area: actions; }
+  .topnav { grid-area: nav; width: 100%; height: 34px; }
   .appbar .crumbs { display: none; }
   .search-trigger { min-width: 0; }
   .search-trigger .label { display: none; }
@@ -670,6 +708,15 @@ table.t td:nth-child(2) {
   background: var(--panel-soft);
   border-top: 1px solid var(--rule-soft);
 }
+.endpoint-loading {
+  display: none;
+  padding: var(--s-3) var(--s-4) var(--s-3) 86px;
+  border-top: 1px solid var(--rule-soft);
+  background: var(--panel-soft);
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+}
+.endpoint[open] > .endpoint-loading { display: block; }
 .endpoint .body > *:first-child { margin-top: 0; }
 .endpoint[open] > summary { background: var(--panel-soft); }
 .endpoint .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
@@ -1373,6 +1420,39 @@ footer.colophon .meta { font-family: 'JetBrains Mono', monospace; font-size: 11p
 .screen-page .cat-ep { border-top: 1px solid var(--rule-soft); border-radius: 0; border-left: none; border-right: none; border-bottom: none; margin: 0; }
 .screen-page .cat-ep:last-child { border-bottom: none; }
 
+.triage-block {
+  margin: var(--s-6) 0;
+}
+.triage-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  background: var(--panel);
+  margin-bottom: var(--s-4);
+}
+.triage-head b {
+  display: block;
+  color: var(--ink);
+  font-size: var(--t-lg);
+}
+.triage-head em {
+  display: block;
+  margin-top: var(--s-1);
+  color: var(--ink-faint);
+  font-style: normal;
+  font-size: var(--t-sm);
+}
+.triage-head strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--t-2xl);
+  line-height: 1;
+  color: var(--accent);
+}
+
 @media (max-width: 720px) {
   .cat-ep { grid-template-columns: 4px 48px 1fr; }
   .cat-ep-summary, .cat-ep-meta { display: none; }
@@ -1592,6 +1672,28 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
               transform var(--d-fast) var(--ease-out),
               box-shadow var(--d-base) var(--ease-out);
 }
+.h2-primary-link {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  height: 42px;
+  padding: 0 var(--s-4);
+  margin: 0 0 var(--s-3);
+  border-radius: var(--r-2);
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none !important;
+  box-shadow: var(--shadow-2);
+  transition: transform var(--d-fast) var(--ease-out), box-shadow var(--d-base) var(--ease-out);
+}
+.h2-primary-link:hover {
+  color: var(--bg);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-3);
+}
+.h2-primary-link .i:last-child {
+  transition: transform var(--d-fast) var(--ease-out);
+}
+.h2-primary-link:hover .i:last-child { transform: translateX(2px); }
 .h2-search-btn:hover {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--rule-strong));
   background: var(--bg);
@@ -1748,6 +1850,13 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
   color: var(--ink-faint);
   text-transform: uppercase; letter-spacing: 0.06em;
 }
+.h2-section-link {
+  display: inline-flex; align-items: center; gap: var(--s-1);
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  text-decoration: none !important;
+}
+.h2-section-link:hover { color: var(--accent); }
 
 /* ── SERVICES DIRECTORY ───────────────────────────────────────────────── */
 .h2-dir {
@@ -2372,6 +2481,338 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
   background: var(--bg);
   color: var(--accent-ink);
 }
+
+/* ============================== V2 API EXPLORER ============================== */
+main.doc.explorer, main.doc.health {
+  display: block;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-left: var(--s-8);
+  padding-right: var(--s-8);
+}
+.explorer-hero {
+  padding-top: var(--s-10);
+}
+.explorer-toolbar {
+  position: sticky;
+  top: var(--appbar-h);
+  z-index: var(--z-dropdown);
+  display: grid;
+  grid-template-columns: minmax(260px, 1.1fr) minmax(0, 1.6fr) auto;
+  gap: var(--s-3);
+  align-items: start;
+  padding: var(--s-3) 0;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.explorer-search {
+  height: 36px;
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: 0 var(--s-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  background: var(--panel);
+}
+.explorer-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--t-base);
+}
+.explorer-selects {
+  display: flex; gap: var(--s-2); flex-wrap: wrap;
+}
+.explorer-selects select {
+  height: 36px;
+  min-width: 132px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  background: var(--panel);
+  color: var(--ink-soft);
+  padding: 0 var(--s-3);
+  font: inherit;
+  font-size: var(--t-sm);
+}
+.explorer-actions {
+  display: flex; gap: var(--s-2); align-items: center;
+}
+.explorer-health-link {
+  height: 36px;
+  display: inline-flex; align-items: center; gap: var(--s-1);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-2);
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  background: var(--panel);
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.explorer-health-link:hover { color: var(--accent); border-color: var(--rule-strong); }
+.explorer-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: var(--s-4) 0;
+}
+.summary-tile {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  padding: var(--s-3);
+  background: var(--panel);
+}
+.summary-tile span {
+  display: block;
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 600;
+}
+.summary-tile b {
+  display: block;
+  margin-top: var(--s-1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--t-2xl);
+  color: var(--ink);
+  line-height: 1;
+}
+.api-table {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--panel);
+}
+.api-table-head, .api-result {
+  display: grid;
+  grid-template-columns: 72px minmax(260px, 1.4fr) minmax(120px, .55fr) minmax(110px, .5fr) minmax(160px, .7fr) 90px;
+  gap: var(--s-3);
+  align-items: center;
+}
+.api-table-head {
+  padding: var(--s-2) var(--s-4);
+  background: var(--panel-soft);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 600;
+}
+.api-result {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--rule-soft);
+  text-decoration: none !important;
+  color: var(--ink);
+}
+.api-result:last-child { border-bottom: none; }
+.api-result:hover { background: var(--hover-bg); }
+.api-result .api-path {
+  min-width: 0;
+}
+.api-result .api-path code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: var(--t-base);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.api-result .api-summary {
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.api-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: var(--r-1);
+  border: 1px solid var(--rule);
+  background: var(--panel-soft);
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+.api-chip.GET    { color: var(--get);    background: var(--get-bg); }
+.api-chip.POST   { color: var(--post);   background: var(--post-bg); }
+.api-chip.PUT    { color: var(--put);    background: var(--put-bg); }
+.api-chip.PATCH  { color: var(--patch);  background: var(--patch-bg); }
+.api-chip.DELETE { color: var(--delete); background: var(--delete-bg); }
+.api-health {
+  display: flex; gap: var(--s-1); flex-wrap: wrap;
+}
+.api-chip.is-ok { color: var(--post); border-color: color-mix(in srgb, var(--post) 35%, var(--rule)); background: var(--post-bg); }
+.api-chip.is-warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, var(--rule)); background: var(--warn-soft); }
+.api-chip.is-muted { opacity: .7; }
+.api-more {
+  padding: var(--s-4);
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  border-top: 1px solid var(--rule-soft);
+}
+@media (max-width: 980px) {
+  .explorer-toolbar { grid-template-columns: 1fr; }
+  .explorer-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .api-table-head { display: none; }
+  .api-result {
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "method path ui"
+      "service path health"
+      "category path health";
+  }
+  .api-result .api-chip:first-child { grid-area: method; }
+  .api-result .api-path { grid-area: path; }
+  .api-result .api-service { grid-area: service; justify-self: start; }
+  .api-result .api-category { grid-area: category; justify-self: start; }
+  .api-result .api-health { grid-area: health; justify-content: flex-end; }
+  .api-result .api-used { grid-area: ui; justify-self: end; }
+}
+@media (max-width: 620px) {
+  main.doc.explorer, main.doc.health { padding-left: var(--s-4); padding-right: var(--s-4); }
+  .explorer-summary { grid-template-columns: 1fr; }
+  .api-result { grid-template-columns: 56px minmax(0, 1fr); grid-template-areas: "method path" "service path" "category path" "ui health"; }
+  .api-result .api-health { justify-content: flex-start; }
+  .explorer-selects select { min-width: calc(50% - var(--s-1)); flex: 1; }
+}
+
+/* ============================== V2 HEALTH DASHBOARD ============================== */
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin: var(--s-5) 0;
+}
+.gauge--link {
+  color: inherit;
+  text-decoration: none !important;
+}
+.gauge--link:hover {
+  border-color: var(--rule-strong);
+  background: var(--panel-soft);
+}
+.gauge-fill--warn {
+  background: linear-gradient(90deg, var(--warn), var(--delete));
+}
+.health-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin: var(--s-5) 0;
+}
+.health-panel {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-3);
+  background: var(--panel);
+  padding: var(--s-5);
+  margin: var(--s-5) 0;
+}
+.health-panel h2 {
+  margin: 0 0 var(--s-2);
+  font-size: var(--t-xl);
+  letter-spacing: -0.01em;
+}
+.health-panel p {
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  margin: 0 0 var(--s-4);
+}
+.health-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.health-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: center;
+}
+.health-list li:last-child { border-bottom: none; }
+.health-list code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.health-list span:last-child {
+  color: var(--ink-faint);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--t-xs);
+}
+.health-pills {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.health-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  color: var(--ink-soft);
+  background: var(--bg);
+  text-decoration: none !important;
+}
+.health-pill b {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+}
+.health-dup {
+  border-top: 1px solid var(--rule-soft);
+  padding: var(--s-2) 0;
+}
+.health-dup:first-of-type { border-top: none; }
+.health-dup summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  cursor: pointer;
+  list-style: none;
+}
+.health-dup summary::-webkit-details-marker { display: none; }
+.health-dup summary span {
+  color: var(--ink-faint);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--t-xs);
+}
+.health-dup a {
+  display: grid;
+  grid-template-columns: minmax(140px, .5fr) minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  margin-top: var(--s-1);
+  border-radius: var(--r-1);
+  background: var(--panel-soft);
+  color: var(--ink-soft);
+  text-decoration: none !important;
+}
+.health-dup a b {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-faint);
+}
+@media (max-width: 820px) {
+  .health-grid, .health-columns { grid-template-columns: 1fr; }
+}
 `;
 
 /* Inline SVG sprite — every icon used by chrome, spotlight, endpoint cards, and new views.
@@ -2405,6 +2846,7 @@ const ICONS = `<svg class="i-sprite" xmlns="http://www.w3.org/2000/svg" aria-hid
   <symbol id="i-tag" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2.5 8.5V3a.5.5 0 0 1 .5-.5h5.5L14 7.5l-5.5 5.5L2.5 8.5z" stroke-linejoin="round"/><circle cx="6" cy="6" r="1" fill="currentColor"/></symbol>
   <symbol id="i-sitemap" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="6" y="1.5" width="4" height="3" rx=".5"/><rect x="1.5" y="11.5" width="4" height="3" rx=".5"/><rect x="10.5" y="11.5" width="4" height="3" rx=".5"/><path d="M8 4.5v3M3.5 11.5V8h9v3.5" stroke-linecap="round"/></symbol>
   <symbol id="i-sparkles" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 2.5l1 2.5 2.5 1-2.5 1L5 9.5 4 7 1.5 6 4 5z" stroke-linejoin="round"/><path d="M11.5 8l.7 1.8L14 10.5l-1.8.7-.7 1.8-.7-1.8L9 10.5l1.8-.7z" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="1.5 8.5 4.5 8.5 6 4 9 12 10.8 8.5 14.5 8.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-server" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2.5" width="12" height="5" rx="1"/><rect x="2" y="8.5" width="12" height="5" rx="1"/><circle cx="4.5" cy="5" r=".7" fill="currentColor"/><circle cx="4.5" cy="11" r=".7" fill="currentColor"/></symbol>
   <symbol id="i-shield" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5 13.5 4v4.5c0 3-2.4 5.5-5.5 6-3.1-.5-5.5-3-5.5-6V4z" stroke-linejoin="round"/><polyline points="5.5 8 7.5 10 10.5 6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-help" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6.5"/><path d="M6 6.2A2 2 0 1 1 8.4 9c-.4.2-.4.5-.4.9v.4" stroke-linecap="round"/><circle cx="8" cy="12" r=".7" fill="currentColor" stroke="none"/></symbol>
@@ -2446,6 +2888,8 @@ const SHORTCUTS_SHEET = `
  *     activeCategory: string|null,
  *     activeService:  string|null,
  *     activePages:    boolean,
+ *     activeExplorer: boolean,
+ *     activeHealth:   boolean,
  *     activeIndex:    boolean,
  *     categories: [{ id, label, count, href }],
  *     services:   [{ id, displayName, count, href }],
@@ -2470,10 +2914,13 @@ const APPBAR = ({ title, brandSub, indexHref, nav }) => {
       </div>
     </details>` : '';
   const pagesLink = n.pagesHref ? `<a class="nv-link${cur(n.activePages)}" href="${escapeAttr(n.pagesHref)}"${aria(n.activePages)}>UI Pages<span class="nv-count">${n.pagesCount || 0}</span></a>` : '';
+  const explorerLink = `<a class="nv-link${cur(n.activeExplorer)}" href="apis.html"${aria(n.activeExplorer)}>API Explorer</a>`;
+  const healthLink = `<a class="nv-link${cur(n.activeHealth)}" href="health.html"${aria(n.activeHealth)}>Health</a>`;
   const insightsMenu = `
     <details class="services-menu">
       <summary>Insights</summary>
       <div class="menu-panel">
+        <a href="health.html" class="${n.activeHealth ? 'is-current' : ''}"><span class="ms-svc">Health dashboard</span></a>
         <a href="auth-coverage.html"><span class="ms-svc">Auth coverage</span></a>
         <a href="tags.html"><span class="ms-svc">Tags</span></a>
         <a href="orphans.html"><span class="ms-svc">Orphans</span></a>
@@ -2488,6 +2935,7 @@ const APPBAR = ({ title, brandSub, indexHref, nav }) => {
   </div>
   <nav class="topnav" aria-label="Primary">
     <a class="nv-link${cur(n.activeIndex)}" href="${escapeAttr(indexHref)}"${aria(n.activeIndex)}>Home</a>
+    <span class="nv-sep" aria-hidden="true"></span>${explorerLink}${healthLink}
     ${catLinks ? `<span class="nv-sep" aria-hidden="true"></span>${catLinks}` : ''}
     ${svcMenu ? `<span class="nv-sep" aria-hidden="true"></span>${svcMenu}` : ''}
     ${pagesLink ? `<span class="nv-sep" aria-hidden="true"></span>${pagesLink}` : ''}
@@ -2611,7 +3059,7 @@ const SCRIPT = `
 
   const EP_XREF   = window.__EP_XREF__   || {};
   const PAGE_XREF = window.__PAGE_XREF__ || [];
-  const EP_LIST   = G.filter(e => e.svcId !== 'pages' && e.svcId !== 'category');
+  const EP_LIST   = G.filter(e => e.svcId !== 'pages' && e.svcId !== 'category' && e.svcId !== 'view');
 
   function escHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function highlight(text, tokens) {
@@ -2621,6 +3069,27 @@ const SCRIPT = `
   }
   function tokenize(q) {
     return q.toLowerCase().split(/\\s+/).filter(Boolean).map(t => t.charAt(0) === '/' ? t.slice(1) : t);
+  }
+  function parsePaletteQuery(q) {
+    const filters = {};
+    const terms = [];
+    tokenize(q).forEach(t => {
+      const m = t.match(/^([a-z]+):(.*)$/);
+      if (m) filters[m[1]] = m[2];
+      else if (/^(get|post|put|patch|delete)$/.test(t)) filters.method = t.toUpperCase();
+      else terms.push(t);
+    });
+    return { terms, filters };
+  }
+  function filterEp(ep, filters) {
+    if (filters.method && ep.method !== filters.method) return false;
+    if (filters.service && !(ep.svcId || '').toLowerCase().includes(filters.service)) return false;
+    if (filters.category && !(ep.category || '').toLowerCase().includes(filters.category)) return false;
+    if (filters.auth && ep.auth !== filters.auth) return false;
+    if (filters.schema && ep.schema !== filters.schema) return false;
+    if (filters.used === '0' && Number(ep.used || 0) !== 0) return false;
+    if (filters.used && filters.used !== '0' && Number(ep.used || 0) === 0) return false;
+    return true;
   }
   function scoreEp(ep, tokens) {
     let s = 0;
@@ -2660,10 +3129,13 @@ const SCRIPT = `
     }
     return s;
   }
-  function buildApiItems(tokens) {
+  function buildApiItems(parsed) {
+    const tokens = parsed.terms || [];
+    const filters = parsed.filters || {};
     let hits;
-    if (!tokens.length) hits = EP_LIST.slice(0, 80).map(ep => ({ ep, s: 0 }));
-    else hits = EP_LIST.map(ep => ({ ep, s: scoreEp(ep, tokens) })).filter(x => x.s >= 0).sort((a, b) => b.s - a.s).slice(0, 120);
+    const base = EP_LIST.filter(ep => filterEp(ep, filters));
+    if (!tokens.length) hits = base.slice().sort((a, b) => Number(b.used || 0) - Number(a.used || 0)).slice(0, 80).map(ep => ({ ep, s: 0 }));
+    else hits = base.map(ep => ({ ep, s: scoreEp(ep, tokens) })).filter(x => x.s >= 0).sort((a, b) => b.s - a.s).slice(0, 120);
     return hits.map(({ ep }) => {
       const epId = ep.href.split('#')[1] || '';
       const usage = (EP_XREF[epId] || []).length;
@@ -2677,7 +3149,7 @@ const SCRIPT = `
           +   '<div class="p-path">' + highlight(ep.path, tokens) + '</div>'
           +   '<div class="p-summary">' + (ep.summary ? highlight(ep.summary, tokens) : '<span style="opacity:.6">' + (ep.area || '') + '</span>') + '</div>'
           + '</div>'
-          + '<span class="p-count' + (usage === 0 ? ' is-zero' : '') + '">' + usage + ' page' + (usage === 1 ? '' : 's') + '</span>'
+          + '<span class="p-count' + (usage === 0 ? ' is-zero' : '') + '">' + usage + ' page' + (usage === 1 ? '' : 's') + (ep.schema === 'missing' ? ' · schema' : '') + '</span>'
       };
     });
   }
@@ -2703,8 +3175,9 @@ const SCRIPT = `
     });
   }
   function render(q) {
-    const tokens = tokenize(q);
-    const items = currentTab === 'api' ? buildApiItems(tokens) : buildPageItems(tokens);
+    const parsed = parsePaletteQuery(q);
+    const tokens = parsed.terms;
+    const items = currentTab === 'api' ? buildApiItems(parsed) : buildPageItems(tokens);
     current = items; activeIdx = 0;
     if (!items.length) {
       results.innerHTML = '<div class="palette-empty">No '
@@ -2813,9 +3286,73 @@ const SCRIPT = `
       }
     );
   }
+
+  function highlightJsonBlocks(root) {
+    (root || document).querySelectorAll('pre.json-body').forEach(pre => {
+      if (pre.dataset.highlighted === '1') return;
+      pre.innerHTML = highlightJson(pre.textContent);
+      pre.dataset.highlighted = '1';
+    });
+  }
+
+  let endpointDetailsPromise = null;
+  function loadEndpointDetails() {
+    if (window.__ENDPOINT_DETAILS__) return Promise.resolve(window.__ENDPOINT_DETAILS__);
+    if (!window.__ENDPOINT_DETAIL_SRC__) return Promise.resolve(null);
+    if (endpointDetailsPromise) return endpointDetailsPromise;
+    endpointDetailsPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = window.__ENDPOINT_DETAIL_SRC__;
+      s.onload = () => resolve(window.__ENDPOINT_DETAILS__ || null);
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    return endpointDetailsPromise;
+  }
+
+  function appendEndpointDetail(d, html) {
+    const loading = d.querySelector(':scope > .endpoint-loading');
+    if (loading) loading.remove();
+    const holder = document.createElement('div');
+    holder.innerHTML = html;
+    while (holder.firstChild) d.appendChild(holder.firstChild);
+    d.dataset.hydrated = '1';
+    highlightJsonBlocks(d);
+  }
+
+  function hydrateEndpoint(d) {
+    if (!d || d.dataset.hydrated === '1') return;
+    const tpl = d.querySelector(':scope > template.endpoint-template');
+    if (tpl) {
+      d.appendChild(tpl.content.cloneNode(true));
+      d.dataset.hydrated = '1';
+      highlightJsonBlocks(d);
+      return;
+    }
+    const loading = d.querySelector(':scope > .endpoint-loading');
+    if (loading) loading.textContent = 'Loading endpoint details...';
+    loadEndpointDetails().then(map => {
+      if (!map || !map[d.id]) {
+        if (loading) loading.textContent = 'Endpoint detail payload is unavailable.';
+        return;
+      }
+      appendEndpointDetail(d, map[d.id]);
+    }).catch(() => {
+      if (loading) loading.textContent = 'Could not load endpoint details.';
+    });
+  }
+
+  document.querySelectorAll('details.endpoint').forEach(d => {
+    d.addEventListener('toggle', () => { if (d.open) hydrateEndpoint(d); });
+    if (d.open) hydrateEndpoint(d);
+  });
+
+  highlightJsonBlocks(document);
+  /*
   document.querySelectorAll('pre.json-body').forEach(pre => {
     pre.innerHTML = highlightJson(pre.textContent);
   });
+  */
   document.addEventListener('click', e => {
     const btn = e.target.closest('.copy-json'); if (!btn) return;
     e.preventDefault(); e.stopPropagation();
@@ -2920,7 +3457,10 @@ const SCRIPT = `
   function expandAnchor() {
     const h = location.hash.slice(1); if (!h) return;
     const t = document.getElementById(h);
-    if (t && t.tagName.toLowerCase() === 'details') t.open = true;
+    if (t && t.tagName.toLowerCase() === 'details') {
+      hydrateEndpoint(t);
+      t.open = true;
+    }
   }
   window.addEventListener('hashchange', expandAnchor); expandAnchor();
 
@@ -3039,10 +3579,30 @@ const SCRIPT = `
     let allExpanded = false;
     expandAllBtn.addEventListener('click', () => {
       allExpanded = !allExpanded;
-      allEndpoints.forEach(d => { d.open = allExpanded; });
+      allEndpoints.forEach(d => { if (allExpanded) hydrateEndpoint(d); d.open = allExpanded; });
       expandAllBtn.textContent = allExpanded ? 'Collapse all' : 'Expand all';
     });
   }
+
+  // Mobile rail drawer. The rendered rail remains full fidelity on desktop,
+  // while mobile users get a compact picker instead of thousands of links above content.
+  document.querySelectorAll('nav.rail').forEach(rail => {
+    if (rail.querySelector('.rail-toggle')) return;
+    const epCount = rail.querySelectorAll('a.ep-link').length;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'rail-toggle';
+    btn.innerHTML = '<span><svg class="i"><use href="#i-list"/></svg> Navigation</span><span class="count">' + epCount + '</span>';
+    btn.addEventListener('click', () => {
+      rail.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', rail.classList.contains('is-open') ? 'true' : 'false');
+    });
+    rail.insertBefore(btn, rail.firstChild);
+    rail.addEventListener('click', e => {
+      const a = e.target.closest('a');
+      if (a && window.matchMedia('(max-width: 820px)').matches) rail.classList.remove('is-open');
+    });
+  });
 
   // Position services dropdown panel (fixed, escapes topnav overflow clipping)
   document.querySelectorAll('details.services-menu').forEach(el => {
@@ -3056,6 +3616,116 @@ const SCRIPT = `
       p.style.left = r.left + 'px';
     });
   });
+
+  // V2 API Explorer
+  const explorer = document.getElementById('api-explorer');
+  if (explorer && window.__CATALOGUE_V2__) {
+    const data = window.__CATALOGUE_V2__;
+    const rows = data.endpoints || [];
+    const text = document.getElementById('api-filter-text');
+    const svc = document.getElementById('api-filter-service');
+    const method = document.getElementById('api-filter-method');
+    const category = document.getElementById('api-filter-category');
+    const auth = document.getElementById('api-filter-auth');
+    const schema = document.getElementById('api-filter-schema');
+    const usage = document.getElementById('api-filter-usage');
+    const clear = document.getElementById('api-filter-clear');
+    const results = document.getElementById('api-results');
+    const summary = document.getElementById('api-summary');
+    const option = (value, label) => '<option value="' + escHTML(value) + '">' + escHTML(label) + '</option>';
+    const unique = (arr) => Array.from(new Set(arr.filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
+    if (svc) svc.innerHTML += unique(rows.map(r => r.service)).map(v => option(v, (data.services || []).find(s => s.id === v)?.name || v)).join('');
+    if (method) method.innerHTML += unique(rows.map(r => r.method)).map(v => option(v, v)).join('');
+    if (category) category.innerHTML += unique(rows.map(r => r.category)).map(v => option(v, v === 'uncategorized' ? 'Other / uncategorized' : v)).join('');
+
+    function parseExplorerQuery(q) {
+      const filters = {};
+      const terms = [];
+      String(q || '').trim().split(/\\s+/).filter(Boolean).forEach(tok => {
+        const m = tok.match(/^([a-z]+):(.*)$/i);
+        if (m) filters[m[1].toLowerCase()] = m[2].toLowerCase();
+        else if (/^(GET|POST|PUT|PATCH|DELETE)$/i.test(tok)) filters.method = tok.toUpperCase();
+        else terms.push(tok.toLowerCase().replace(/^\\//, ''));
+      });
+      return { filters, terms };
+    }
+    function matchesQuery(r, parsed) {
+      const f = parsed.filters;
+      if (f.service && !r.service.toLowerCase().includes(f.service)) return false;
+      if (f.method && r.method !== f.method.toUpperCase()) return false;
+      if (f.category && !r.category.toLowerCase().includes(f.category)) return false;
+      if (f.auth && r.auth !== f.auth) return false;
+      if (f.schema && r.schema !== f.schema) return false;
+      if (f.used === '0' && r.used !== 0) return false;
+      if (f.used && f.used !== '0' && r.used === 0) return false;
+      const hay = (r.path + ' ' + r.summary + ' ' + r.area + ' ' + r.serviceName + ' ' + (r.tags || []).join(' ')).toLowerCase();
+      return parsed.terms.every(t => hay.includes(t));
+    }
+    function chip(label, cls) {
+      return '<span class="api-chip ' + (cls || '') + '">' + escHTML(label) + '</span>';
+    }
+    function renderRow(r) {
+      const schemaCls = r.schema === 'ok' ? 'is-ok' : 'is-warn';
+      const authCls = r.auth === 'none' ? 'is-warn' : 'is-ok';
+      const usedLabel = r.used ? r.used + ' UI' : (r.siblingUsed ? r.siblingUsed + ' sibling' : '0 UI');
+      return '<a class="api-result" href="' + escHTML(r.href) + '">'
+        + chip(r.method, r.method)
+        + '<span class="api-path"><code>' + escHTML(r.path) + '</code><span class="api-summary">' + escHTML(r.summary || r.area) + '</span></span>'
+        + '<span class="api-chip api-service">' + escHTML(r.serviceName) + '</span>'
+        + '<span class="api-chip api-category">' + escHTML(r.category === 'uncategorized' ? 'other' : r.category) + '</span>'
+        + '<span class="api-health">' + chip(r.auth === 'none' ? 'no gate' : r.auth, authCls) + chip('schema ' + r.schema, schemaCls) + (r.paginated ? chip('pageable', 'is-muted') : '') + '</span>'
+        + '<span class="api-chip api-used ' + (r.used || r.siblingUsed ? 'is-ok' : 'is-warn') + '">' + escHTML(usedLabel) + '</span>'
+        + '</a>';
+    }
+    function applyUrlParams() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('category') && category) category.value = params.get('category');
+      if (params.get('service') && svc) svc.value = params.get('service');
+      if (params.get('method') && method) method.value = params.get('method').toUpperCase();
+      if (params.get('q') && text) text.value = params.get('q');
+    }
+    function applyExplorer() {
+      const parsed = parseExplorerQuery(text ? text.value : '');
+      let out = rows.filter(r => {
+        if (svc && svc.value && r.service !== svc.value) return false;
+        if (method && method.value && r.method !== method.value) return false;
+        if (category && category.value && r.category !== category.value) return false;
+        if (auth && auth.value && r.auth !== auth.value) return false;
+        if (schema && schema.value && r.schema !== schema.value) return false;
+        if (usage && usage.value === 'used' && r.used === 0) return false;
+        if (usage && usage.value === 'orphan' && r.used !== 0) return false;
+        if (usage && usage.value === 'sibling' && r.siblingUsed === 0) return false;
+        return matchesQuery(r, parsed);
+      });
+      out.sort((a, b) => {
+        const au = a.used + a.siblingUsed, bu = b.used + b.siblingUsed;
+        return bu - au || a.service.localeCompare(b.service) || a.path.localeCompare(b.path);
+      });
+      const shown = out.slice(0, 700);
+      if (summary) {
+        const used = out.filter(r => r.used > 0).length;
+        const missing = out.filter(r => r.schema === 'missing').length;
+        const noGate = out.filter(r => r.auth === 'none').length;
+        summary.innerHTML =
+          '<div class="summary-tile"><span>Showing</span><b>' + out.length.toLocaleString() + '</b></div>'
+          + '<div class="summary-tile"><span>UI used</span><b>' + used.toLocaleString() + '</b></div>'
+          + '<div class="summary-tile"><span>Schema missing</span><b>' + missing.toLocaleString() + '</b></div>'
+          + '<div class="summary-tile"><span>No detected gate</span><b>' + noGate.toLocaleString() + '</b></div>';
+      }
+      if (results) {
+        results.innerHTML = shown.map(renderRow).join('') + (out.length > shown.length ? '<div class="api-more">Showing first ' + shown.length + ' of ' + out.length + ' matches. Tighten filters to narrow the set.</div>' : '');
+      }
+    }
+    applyUrlParams();
+    [text, svc, method, category, auth, schema, usage].filter(Boolean).forEach(el => el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', applyExplorer));
+    if (clear) clear.addEventListener('click', () => {
+      if (text) text.value = '';
+      [svc, method, category, auth, schema, usage].filter(Boolean).forEach(el => { el.value = ''; });
+      history.replaceState(null, '', location.pathname);
+      applyExplorer();
+    });
+    applyExplorer();
+  }
 
   // Map ⌘K hero badge for the search button (specific to the home page hero)
   const kbdHero = document.getElementById('kbd-meta-hero');

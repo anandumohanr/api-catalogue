@@ -15,9 +15,10 @@
 const fs   = require('fs');
 const path = require('path');
 const { parseService, buildRegistry, walkJava }           = require('./parse');
+const { parseExpressService }                             = require('./parse-express');
 const { parseTheme }                                      = require('./parse-frontend');
 const { buildXref, renderReport }                         = require('./xref');
-const { renderService, renderIndex, renderPages, renderCategoryPage, renderOrphans, renderAuthCoverage, renderTagsView, buildGlobalIndex, buildEpXref, buildPageXref } = require('./render');
+const { renderService, renderIndex, renderPages, renderCategoryPage, renderOrphans, renderAuthCoverage, renderTagsView, renderExplorer, renderHealth, buildGlobalIndex, buildCatalogueData, buildEpXref, buildPageXref } = require('./render');
 const { categorizeAll }                                   = require('./categorize');
 
 const ROOT      = path.resolve(__dirname, '..');
@@ -96,7 +97,9 @@ function parseAll(registry) {
       continue;
     }
     const t0 = Date.now();
-    const spec = parseService(sourceDir, s.id, registry);
+    const spec = s.parser === 'express'
+      ? parseExpressService(sourceDir, s.id)
+      : parseService(sourceDir, s.id, registry);
     // Coverage stats per service
     let withReq = 0, totalReq = 0, withResp = 0, totalEp = 0;
     for (const a of spec.areas) {
@@ -167,6 +170,10 @@ function renderAll(xref) {
     categories: catSummary.counts,
     categoryDescriptions: catSummary.descriptions
   };
+  const catalogueData = buildCatalogueData(services, xref, totals);
+  const catalogueJs = `window.__CATALOGUE_V2__ = ${JSON.stringify(catalogueData)};\n`;
+  fs.writeFileSync(path.join(OUT_DIR, 'catalogue-v2.js'), catalogueJs);
+  console.log(`[render]  catalogue-v2.js · ${(catalogueJs.length/1024).toFixed(1)}KB · ${catalogueData.endpoints.length} endpoints`);
   const replaceIndex = html =>
     html.replace('window.__GLOBAL_INDEX__ = null;', `window.__GLOBAL_INDEX__ = ${JSON.stringify(globalIndex)};`);
   const replaceHomeData = html =>
@@ -180,10 +187,24 @@ function renderAll(xref) {
     if (!s.spec) { console.warn(`[skip] ${s.id}: no spec`); continue; }
     const html = replaceIndex(renderService(s.spec, services, s.id, xref, totals));
     fs.writeFileSync(path.join(OUT_DIR, `${s.id}.html`), html);
+    if (s.spec._endpointDetails) {
+      const detailJs = `window.__ENDPOINT_DETAILS__ = ${JSON.stringify(s.spec._endpointDetails)};\n`;
+      fs.writeFileSync(path.join(OUT_DIR, `${s.id}-details.js`), detailJs);
+      delete s.spec._endpointDetails;
+      console.log(`[render]  ${s.id}-details.js · ${(detailJs.length/1024).toFixed(1)}KB`);
+    }
     console.log(`[render]  ${s.id}.html · ${(html.length/1024).toFixed(1)}KB`);
   }
 
   if (onlyId) return;
+
+  const explorerHtml = replaceIndex(renderExplorer(services, totals, xref));
+  fs.writeFileSync(path.join(OUT_DIR, 'apis.html'), explorerHtml);
+  console.log(`[render]  apis.html · ${(explorerHtml.length/1024).toFixed(1)}KB`);
+
+  const healthHtml = replaceIndex(renderHealth(catalogueData, services, totals, xref));
+  fs.writeFileSync(path.join(OUT_DIR, 'health.html'), healthHtml);
+  console.log(`[render]  health.html · ${(healthHtml.length/1024).toFixed(1)}KB`);
 
   // Pages page (only if xref data is available)
   if (xref) {

@@ -72,6 +72,49 @@ function stripPrefix(url, prefixes) {
   return best == null ? null : url.slice(best.length);
 }
 
+function joinPath(base, sub) {
+  if (!sub || sub === '/') return base || '/';
+  if (!base || base === '/') return sub.startsWith('/') ? sub : '/' + sub;
+  return (base.replace(/\/+$/, '') + '/' + sub.replace(/^\/+/, '')).replace(/\/{2,}/g, '/');
+}
+
+function prefixMatches(url, prefix) {
+  return url === prefix || url.startsWith(prefix + '/') || url.startsWith(prefix + ':');
+}
+
+function tailCandidatesForPrefix(url, prefix) {
+  if (!prefixMatches(url, prefix)) return [];
+  const tail = url.slice(prefix.length) || '/';
+  const out = [];
+  const m = prefix.match(/^(\/[^/]+)(\/v\d+)$/);
+  const versionedTail = m ? joinPath(m[2], tail) : null;
+
+  // Most v1 controllers expose unversioned service-local paths. v2 controllers in this
+  // codebase often keep `/v2` in the Spring class mapping, so try the versioned tail first.
+  if (versionedTail && m[2] !== '/v1') out.push(versionedTail);
+  out.push(tail);
+  if (versionedTail && m[2] === '/v1') out.push(versionedTail);
+
+  return [...new Set(out)];
+}
+
+function serviceRootFromPrefix(prefix) {
+  const m = String(prefix || '').match(/^(\/[^/]+)/);
+  return m ? m[1] : null;
+}
+
+function expandUrlForService(url, svc) {
+  const out = [url];
+  const m = String(url || '').match(/^\/\{[^}]+\}(\/v\d+(?:\/.*)?|\/.*)$/);
+  if (m) {
+    for (const p of svc.frontendPrefix || []) {
+      const root = serviceRootFromPrefix(p);
+      if (root) out.push(root + m[1]);
+    }
+  }
+  return [...new Set(out)];
+}
+
 // ─────────────────────────────────────────────────────────────────────────
 // Build per-service path → endpointId index from the API catalogue specs
 // ─────────────────────────────────────────────────────────────────────────
@@ -143,6 +186,28 @@ function buildXref() {
   }
   const endpointGroups = buildEndpointGroups(svcIndexes);
 
+  function resolveUrl(urlPath) {
+    let firstRouted = null;
+    for (const [svcId, { svc, idx }] of svcIndexes) {
+      for (const urlVariant of expandUrlForService(urlPath, svc)) {
+        for (const prefix of svc.frontendPrefix || []) {
+          for (const tail of tailCandidatesForPrefix(urlVariant, prefix)) {
+            if (!firstRouted) firstRouted = { service: svcId, urlPath, candidates: [], noPathMatch: true, prefix };
+            const matches = lookupPath(idx, tail);
+            if (matches.length) {
+              return { service: svcId, urlPath, candidates: matches, prefix, matchedUrl: urlVariant, matchedTail: tail };
+            }
+          }
+        }
+      }
+    }
+    if (firstRouted) return firstRouted;
+
+    const m = String(urlPath || '').match(/^(\/[^/]+\/v\d+)/);
+    const pref = m ? m[1] : String(urlPath || '').split('/').slice(0, 2).join('/');
+    return { unrouted: true, urlPath, prefix: pref };
+  }
+
   // For each endpoint key in endpoints.ts, resolve to (service, endpointId) if possible.
   // Some keys may match no service (e.g. /analytics/v1) — record under "unrouted".
   const keyResolution = {};       // key → { service, method?, endpointId, urlPath } or { unrouted: true, urlPath, prefix }
@@ -150,25 +215,12 @@ function buildXref() {
   let mappedPrefixCounts   = {};
 
   for (const [key, urlPath] of Object.entries(endpointMap)) {
-    let routed = false;
-    for (const [svcId, { svc, idx }] of svcIndexes) {
-      const tail = stripPrefix(urlPath, svc.frontendPrefix || []);
-      if (tail == null) continue;
-      const matches = lookupPath(idx, tail);
-      keyResolution[key] = matches.length
-        ? { service: svcId, urlPath, candidates: matches }
-        : { service: svcId, urlPath, candidates: [], noPathMatch: true };
-      mappedPrefixCounts[svc.frontendPrefix.find(p => urlPath.startsWith(p))] =
-        (mappedPrefixCounts[svc.frontendPrefix.find(p => urlPath.startsWith(p))] || 0) + 1;
-      routed = true;
-      break;
-    }
-    if (!routed) {
-      // record the prefix for diagnosis
-      const m = urlPath.match(/^(\/[^/]+\/v\d+)/);
-      const pref = m ? m[1] : urlPath.split('/').slice(0, 2).join('/');
-      unmappedPrefixCounts[pref] = (unmappedPrefixCounts[pref] || 0) + 1;
-      keyResolution[key] = { unrouted: true, urlPath, prefix: pref };
+    const r = resolveUrl(urlPath);
+    keyResolution[key] = r;
+    if (r.unrouted) {
+      unmappedPrefixCounts[r.prefix] = (unmappedPrefixCounts[r.prefix] || 0) + 1;
+    } else {
+      mappedPrefixCounts[r.prefix] = (mappedPrefixCounts[r.prefix] || 0) + 1;
     }
   }
 
@@ -182,7 +234,7 @@ function buildXref() {
           arr.push({ verb: call.verb, unresolved: true, line: call.line, expr: call.expr || call.literalUrl });
           continue;
         }
-        const r = keyResolution[call.endpointKey];
+        const r = call.urlPattern ? resolveUrl(call.urlPattern) : keyResolution[call.endpointKey];
         if (!r || r.unrouted) {
           arr.push({ verb: call.verb, key: call.endpointKey, urlPath: r?.urlPath, unrouted: true });
           continue;
@@ -191,7 +243,7 @@ function buildXref() {
         const match = r.candidates.find(cand => cand.method === call.verb)
                    || r.candidates[0];
         if (!match) {
-          arr.push({ verb: call.verb, key: call.endpointKey, urlPath: r.urlPath, noPathMatch: true });
+          arr.push({ verb: call.verb, key: call.endpointKey, urlPath: r.urlPath, service: r.service, noPathMatch: true });
         } else {
           arr.push({
             verb: call.verb,
@@ -291,7 +343,7 @@ function buildXref() {
   // Compute summary stats
   const totalPages = pages.length;
   const totalCalls = pages.reduce((n, p) => n + p.apiCalls.length, 0);
-  const resolvedCalls = pages.reduce((n, p) => n + p.apiCalls.filter(c => !c.unrouted).length, 0);
+  const resolvedCalls = pages.reduce((n, p) => n + p.apiCalls.filter(c => c.endpointId).length, 0);
   const matchRate = totalCalls ? (resolvedCalls / totalCalls * 100).toFixed(1) : '–';
 
   const endpointUsageObj = Object.fromEntries(endpointUsage);
@@ -402,10 +454,22 @@ function renderReport(result) {
   lines.push('');
   lines.push('## Path-match misses (key in endpoints.ts but no matching catalogue path)');
   lines.push('');
-  const noMatch = Object.entries(keyResolution).filter(([_, v]) => v.noPathMatch);
+  const pageMisses = new Map();
+  for (const p of xref.pages || []) {
+    for (const c of p.apiCalls || []) {
+      if (!c.noPathMatch) continue;
+      const rec = pageMisses.get(c.urlPath) || { count: 0, verbs: new Set(), services: new Set(), keys: new Set() };
+      rec.count++;
+      if (c.verb) rec.verbs.add(c.verb);
+      if (c.service) rec.services.add(c.service);
+      if (c.key) rec.keys.add(c.key);
+      pageMisses.set(c.urlPath, rec);
+    }
+  }
+  const noMatch = Array.from(pageMisses.entries()).sort((a, b) => b[1].count - a[1].count);
   if (noMatch.length === 0) lines.push('_None._');
-  else for (const [k, v] of noMatch.slice(0, 30)) {
-    lines.push(`- \`${k}\` → \`${v.urlPath}\` (would be routed to \`${v.service}\`)`);
+  else for (const [url, rec] of noMatch.slice(0, 30)) {
+    lines.push(`- \`${Array.from(rec.verbs).join('/') || '?'} ${url}\` · ${rec.count} UI reference${rec.count === 1 ? '' : 's'} · keys: ${Array.from(rec.keys).map(k => `\`${k}\``).join(', ') || 'unknown'} · routed service: ${Array.from(rec.services).map(s => `\`${s}\``).join(', ') || 'unknown'}`);
   }
   lines.push('');
   lines.push('## Same METHOD + path implemented more than once');

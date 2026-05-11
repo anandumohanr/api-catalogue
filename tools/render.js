@@ -43,7 +43,7 @@ function synthesizeCurl(e) {
 
 function renderEndpointActions(e, curl) {
   const enc = encodeURIComponent(curl || '');
-  return `<div class="ep-actions" onclick="event.stopPropagation()">
+  return `<div class="ep-actions">
     <button class="ep-action" data-action="copy-path" data-path="${escapeAttr(e.path)}" type="button" aria-label="Copy path">
       <svg class="i"><use href="#i-copy"/></svg><span>path</span>
     </button>
@@ -54,6 +54,22 @@ function renderEndpointActions(e, curl) {
       <svg class="i"><use href="#i-terminal"/></svg><span>curl</span>
     </button>
   </div>`;
+}
+
+function canonicalAuth(auth) {
+  if (!auth) return 'none';
+  const a = String(auth).toLowerCase();
+  if (a.includes('preauthorize') || a.includes('hasrole') || a.includes('hasauthority')) return 'role';
+  if (a.includes('isvalid') || a.includes('institution') || a.includes('roster')) return 'session';
+  return 'custom';
+}
+
+function schemaStatus(e) {
+  const reqMissing = !!(e.requestBody && (!e.requestBody.resolved || e.requestBody.resolved.kind === 'unknown'));
+  const respMissing = !(e.response && e.response.resolved && e.response.resolved.kind && e.response.resolved.kind !== 'unknown');
+  if (reqMissing || respMissing) return 'missing';
+  if (e.response && e.response.resolved && e.response.resolved.kind === 'truncated') return 'partial';
+  return 'ok';
 }
 
 function renderCurlCard(curl) {
@@ -196,15 +212,23 @@ function renderEnvelope(envelope, dataTypeLabel) {
 
 function buildGlobalIndex(services, xref) {
   const out = [];
+  const usage = (xref && xref.endpointUsage) || {};
+  const twins = (xref && xref.endpointTwins) || {};
   for (const s of services) {
     if (!s.spec) continue;
     for (const a of s.spec.areas) {
       for (const e of a.endpoints) {
+        const usageCount = (usage[e.id] || []).length;
         out.push({
           svcId:   s.id, svcName: s.displayName,
           area:    a.name, method: e.method,
           path:    e.path, summary: e.summary,
-          href:    `${s.id}.html#${e.id}`
+          href:    `${s.id}.html#${e.id}`,
+          category: e.category || 'uncategorized',
+          auth: canonicalAuth(e.auth),
+          schema: schemaStatus(e),
+          used: usageCount,
+          siblingUsed: usageCount ? 0 : twinUsagePageCount(twins[e.id])
         });
       }
     }
@@ -237,11 +261,151 @@ function buildGlobalIndex(services, xref) {
   }
   // New first-class views
   out.push(
+    { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/apis',          summary: 'All APIs explorer — filter and triage every endpoint', href: 'apis.html' },
+    { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/health',        summary: 'Mapping health dashboard — exact, stale, unrouted, orphaned', href: 'health.html' },
     { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/orphans',       summary: 'Endpoints with no Angular page consumer',  href: 'orphans.html' },
     { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/auth-coverage', summary: 'Authorization matrix — services × auth type', href: 'auth-coverage.html' },
     { svcId: 'view', svcName: 'View', area: 'Browse', method: 'CAT', path: '/tags',          summary: 'Browse by behavioural tag — paginated, export, lookup', href: 'tags.html' }
   );
   return out;
+}
+
+function buildCatalogueData(services, xref, totals) {
+  const usage = (xref && xref.endpointUsage) || {};
+  const twins = (xref && xref.endpointTwins) || {};
+  const endpoints = [];
+  const serviceRows = [];
+  const methodCounts = {};
+  const authCounts = { none: 0, session: 0, role: 0, custom: 0 };
+  const schemaCounts = { ok: 0, partial: 0, missing: 0 };
+  const categoryCounts = {};
+
+  for (const s of services) {
+    if (!s.spec) continue;
+    let svcUsed = 0;
+    let svcSchemaMissing = 0;
+    const svcMethods = {};
+    for (const a of s.spec.areas || []) {
+      for (const e of a.endpoints || []) {
+        const used = (usage[e.id] || []).length;
+        const siblingUsed = used ? 0 : twinUsagePageCount(twins[e.id]);
+        const auth = canonicalAuth(e.auth);
+        const schema = schemaStatus(e);
+        const category = e.category || 'uncategorized';
+        const hasRequest = !!e.requestBody;
+        const hasResponse = !!(e.response && (e.response.resolved || e.response.shape));
+        const row = {
+          id: e.id,
+          service: s.id,
+          serviceName: s.displayName,
+          area: a.name || a.sourceClass || 'Uncategorized',
+          method: e.method,
+          path: e.path,
+          summary: e.summary || '',
+          href: `${s.id}.html#${e.id}`,
+          category,
+          categoryReason: e.categoryReason || '',
+          auth,
+          authRaw: e.auth || '',
+          schema,
+          used,
+          siblingUsed,
+          hasRequest,
+          hasResponse,
+          paginated: !!e.hasPageable,
+          tags: e.tags || []
+        };
+        endpoints.push(row);
+        methodCounts[e.method] = (methodCounts[e.method] || 0) + 1;
+        svcMethods[e.method] = (svcMethods[e.method] || 0) + 1;
+        authCounts[auth] = (authCounts[auth] || 0) + 1;
+        schemaCounts[schema] = (schemaCounts[schema] || 0) + 1;
+        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+        if (used) svcUsed++;
+        if (schema === 'missing') svcSchemaMissing++;
+      }
+    }
+    serviceRows.push({
+      id: s.id,
+      name: s.displayName,
+      blurb: s.blurb || s.spec.description || '',
+      endpoints: s.spec.totalEndpoints,
+      areas: s.spec.totalAreas,
+      used: svcUsed,
+      orphaned: s.spec.totalEndpoints - svcUsed,
+      schemaMissing: svcSchemaMissing,
+      methods: svcMethods,
+      href: `${s.id}.html`
+    });
+  }
+
+  const pageStats = { total: 0, calls: 0, exact: 0, verbMismatch: 0, noPathMatch: 0, unrouted: 0, zeroResolved: 0 };
+  const noPathTop = {};
+  const unroutedTop = {};
+  for (const p of (xref && xref.pages) || []) {
+    pageStats.total++;
+    let resolvedOnPage = 0;
+    for (const c of p.apiCalls || []) {
+      pageStats.calls++;
+      if (c.endpointId) {
+        resolvedOnPage++;
+        if (c.verbMismatch) pageStats.verbMismatch++;
+        else pageStats.exact++;
+      } else if (c.noPathMatch) {
+        pageStats.noPathMatch++;
+        const key = c.urlPath || c.key || 'unknown';
+        noPathTop[key] = (noPathTop[key] || 0) + 1;
+      } else if (c.unrouted) {
+        pageStats.unrouted++;
+        const key = c.urlPath || c.key || 'unknown';
+        unroutedTop[key] = (unroutedTop[key] || 0) + 1;
+      }
+    }
+    if (!resolvedOnPage) pageStats.zeroResolved++;
+  }
+
+  const duplicateGroups = [];
+  const byMethodPath = new Map();
+  for (const e of endpoints) {
+    const key = `${e.method} ${e.path}`;
+    if (!byMethodPath.has(key)) byMethodPath.set(key, []);
+    byMethodPath.get(key).push(e);
+  }
+  for (const [key, group] of byMethodPath) {
+    if (group.length <= 1) continue;
+    duplicateGroups.push({
+      key,
+      method: group[0].method,
+      path: group[0].path,
+      count: group.length,
+      pages: group.reduce((n, e) => n + e.used, 0),
+      endpoints: group.map(e => ({ service: e.service, serviceName: e.serviceName, href: e.href, area: e.area, used: e.used }))
+    });
+  }
+  duplicateGroups.sort((a, b) => b.pages - a.pages || b.count - a.count || a.key.localeCompare(b.key));
+
+  return {
+    generatedAt: new Date().toISOString(),
+    version: '2.0',
+    totals,
+    services: serviceRows,
+    endpoints,
+    stats: {
+      methods: methodCounts,
+      auth: authCounts,
+      schema: schemaCounts,
+      categories: categoryCounts,
+      pages: pageStats,
+      orphaned: endpoints.filter(e => e.used === 0).length,
+      duplicateGroups: duplicateGroups.length,
+      exactRate: pageStats.calls ? Math.round(pageStats.exact / pageStats.calls * 1000) / 10 : 0
+    },
+    diagnostics: {
+      noPathTop: Object.entries(noPathTop).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([path, count]) => ({ path, count })),
+      unroutedTop: Object.entries(unroutedTop).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([path, count]) => ({ path, count })),
+      duplicateGroups: duplicateGroups.slice(0, 40)
+    }
+  };
 }
 
 function buildEpXref(xref) {
@@ -259,9 +423,8 @@ function buildPageXref(xref) {
     .map(p => {
       const calls = (p.apiCalls || []).filter(c => c.endpointId)
         .map(c => ({ endpointId: c.endpointId, verb: c.verb, path: c.path, area: c.area, svc: c.service }));
-      return calls.length ? { id: p.id, route: p.route, title: p.title || p.component || '', calls } : null;
+      return { id: p.id, route: p.route, title: p.title || p.component || '', component: p.component || '', guards: p.guards || [], calls };
     })
-    .filter(Boolean)
     .sort((a, b) => a.route.localeCompare(b.route));
 }
 
@@ -374,7 +537,7 @@ function renderUsedBy(usage, twins) {
 </div>`;
 }
 
-function renderEndpoint(e, hasPaginationSection, usage, twins) {
+function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) {
   const path = pathHTML(e.path);
   const summary = escapeHtml(e.summary || '');
 
@@ -544,16 +707,7 @@ function renderEndpoint(e, hasPaginationSection, usage, twins) {
     ${renderCurlCard(curl)}
   </div>`;
 
-  return `<details class="endpoint" id="${escapeAttr(e.id)}">
-  <summary>
-    <span class="verb-band ${e.method}" aria-hidden="true"></span>
-    <span class="verb ${e.method}">${e.method}</span>
-    <span class="e-path tt" data-tip="${escapeAttr(e.path)}">${path}</span>
-    <span class="e-summary">${summary}</span>
-    <span class="ep-badges">${categoryBadge}${usageBadge}</span>
-    ${renderEndpointActions(e, curl)}
-  </summary>
-  <div class="body body--with-aside">
+  const bodyHTML = `<div class="body body--with-aside">
     <div class="body-main">
       ${tabsHTML}
       ${overviewPanel}
@@ -564,11 +718,26 @@ function renderEndpoint(e, hasPaginationSection, usage, twins) {
     <aside class="body-aside">
       ${usedBy}
     </aside>
-  </div>
+  </div>`;
+
+  if (detailCollector) {
+    detailCollector[e.id] = bodyHTML;
+  }
+
+  return `<details class="endpoint" id="${escapeAttr(e.id)}"${detailCollector ? ' data-deferred-detail="1"' : ''}>
+  <summary>
+    <span class="verb-band ${e.method}" aria-hidden="true"></span>
+    <span class="verb ${e.method}">${e.method}</span>
+    <span class="e-path tt" data-tip="${escapeAttr(e.path)}">${path}</span>
+    <span class="e-summary">${summary}</span>
+    <span class="ep-badges">${categoryBadge}${usageBadge}</span>
+    ${renderEndpointActions(e, curl)}
+  </summary>
+  ${detailCollector ? '<div class="endpoint-loading">Open to load endpoint details.</div>' : `<template class="endpoint-template">${bodyHTML}</template>`}
 </details>`;
 }
 
-function renderArea(area, hasPagination, endpointUsage, endpointTwins) {
+function renderArea(area, hasPagination, endpointUsage, endpointTwins, detailCollector) {
   const slug = `area-${tagSlug(area.name)}`;
   const areaDisplayName = area.name || area.sourceClass || 'Uncategorized';
   return `
@@ -578,7 +747,7 @@ function renderArea(area, hasPagination, endpointUsage, endpointTwins) {
     <span class="area-meta"><b>${area.endpoints.length}</b> endpoint${area.endpoints.length === 1 ? '' : 's'}</span>
     <span class="area-source">${escapeHtml(area.sourceClass)}</span>
   </header>
-  ${area.endpoints.map(e => renderEndpoint(e, hasPagination, endpointUsage[e.id], endpointTwins[e.id])).join('\n')}
+  ${area.endpoints.map(e => renderEndpoint(e, hasPagination, endpointUsage[e.id], endpointTwins[e.id], detailCollector)).join('\n')}
 </section>`;
 }
 
@@ -591,6 +760,12 @@ function renderRailNav(spec, services, currentId, pageCount) {
     ).join('\n      ');
     return `<li><a class="area-link" href="#${slug}">${escapeHtml(a.name)} <span class="count">${a.endpoints.length}</span></a></li>\n      ${epLinks}`;
   }).join('\n      ');
+  const foundationItems = [
+    '<li><a href="#overview">Overview</a></li>',
+    spec._hasAuth ? '<li><a href="#authorization">Authorization</a></li>' : null,
+    spec._hasPagination ? '<li><a href="#pagination">Pagination</a></li>' : null,
+    '<li><a href="#envelope">Response envelope</a></li>'
+  ].filter(Boolean).join('\n    ');
 
   return `
 <div class="group">
@@ -603,10 +778,7 @@ function renderRailNav(spec, services, currentId, pageCount) {
 <div class="group">
   <div class="group-label">Foundations</div>
   <ul>
-    <li><a href="#overview">Overview</a></li>
-    ${spec._hasAuth       ? '<li><a href="#authorization">Authorization</a></li>' : ''}
-    ${spec._hasPagination ? '<li><a href="#pagination">Pagination</a></li>'        : ''}
-    <li><a href="#envelope">Response envelope</a></li>
+    ${foundationItems}
   </ul>
 </div>
 
@@ -657,7 +829,7 @@ function paginatedEndpoints(spec) {
 
 // ────── page assembly ──────
 
-function pageShell({ title, body, brandTitle, brandSub, indexHref, nav }) {
+function pageShell({ title, body, brandTitle, brandSub, indexHref, nav, extraScripts }) {
   return `<!doctype html>
 <html lang="en" data-theme="light">
 <head>
@@ -675,6 +847,7 @@ ${PALETTE}
 ${SHORTCUTS_SHEET}
 ${TOAST}
 <script>window.__GLOBAL_INDEX__ = null;</script>
+${extraScripts || ''}
 <script>${SCRIPT}</script>
 </body>
 </html>`;
@@ -692,7 +865,7 @@ const CATEGORY_ORDER = ['pre-login', 'dashboard', 'admin', 'my-team-space'];
 function categoryHref(catId) { return `category-${catId}.html`; }
 
 /** Build the appbar nav config from services + totals. */
-function buildNav({ services, currentServiceId, currentCategory, isIndex, isPages, totals, xref }) {
+function buildNav({ services, currentServiceId, currentCategory, isIndex, isPages, isExplorer, isHealth, totals, xref }) {
   const counts = (totals && totals.categories) || {};
   const categories = CATEGORY_ORDER.map(id => ({
     id,
@@ -711,6 +884,8 @@ function buildNav({ services, currentServiceId, currentCategory, isIndex, isPage
     activeCategory: currentCategory || null,
     activeService:  currentServiceId || null,
     activePages:    !!isPages,
+    activeExplorer: !!isExplorer,
+    activeHealth:   !!isHealth,
     activeIndex:    !!isIndex,
     categories,
     services:   svcEntries,
@@ -729,6 +904,7 @@ function renderService(spec, services, currentServiceId, xref, totals) {
   const endpointUsage = (xref && xref.endpointUsage) || {};
   const endpointTwins = (xref && xref.endpointTwins) || {};
   const totalPages = xref && xref.pages ? xref.pages.length : 0;
+  const endpointDetails = {};
   const railHTML = renderRailNav(spec, services, currentServiceId, totalPages);
   const tocHTML  = renderRightToc(spec);
 
@@ -738,6 +914,11 @@ function renderService(spec, services, currentServiceId, xref, totals) {
     spec.javaVersion ? `Java ${escapeHtml(spec.javaVersion)}` : null,
     spec.springBoot ? `Spring Boot ${escapeHtml(spec.springBoot)}` : null
   ].filter(Boolean);
+  const heroStats = [
+    `<span class="stat"><b>${spec.totalEndpoints}</b> endpoints</span>`,
+    `<span class="stat"><b>${spec.totalAreas}</b> areas</span>`,
+    spec._hasPagination ? `<span class="stat"><b>${paginated.length}</b> paginated</span>` : null
+  ].filter(Boolean).join('\n    ');
 
   const hero = `
 <section class="hero">
@@ -745,9 +926,7 @@ function renderService(spec, services, currentServiceId, xref, totals) {
   <h1>${escapeHtml(svcCfg.displayName)} <span style="color:var(--ink-faint);font-weight:400">API</span></h1>
   <p class="lede">${escapeHtml(svcCfg.blurb || spec.description || `API surface for the ${svcCfg.displayName} service.`)}</p>
   <div class="stat-row">
-    <span class="stat"><b>${spec.totalEndpoints}</b> endpoints</span>
-    <span class="stat"><b>${spec.totalAreas}</b> areas</span>
-    ${spec._hasPagination ? `<span class="stat"><b>${paginated.length}</b> paginated</span>` : ''}
+    ${heroStats}
   </div>
 </section>`;
 
@@ -798,11 +977,14 @@ ${auth.counts.map(([k, n]) => {
 }</pre>
 </div>`);
 
+  const subnavLinks = [
+    '<a href="#foundations"><svg class="i"><use href="#i-info"/></svg>Foundations</a>',
+    '<a href="#endpoints"><svg class="i"><use href="#i-list"/></svg>Endpoints</a>',
+    spec._hasAuth ? '<a href="#authorization"><svg class="i"><use href="#i-shield"/></svg>Authorization</a>' : null,
+    spec._hasPagination ? '<a href="#pagination"><svg class="i"><use href="#i-layers"/></svg>Pagination</a>' : null
+  ].filter(Boolean).join('\n    ');
   const subnav = `<nav class="subnav" aria-label="Section">
-    <a href="#foundations"><svg class="i"><use href="#i-info"/></svg>Foundations</a>
-    <a href="#endpoints"><svg class="i"><use href="#i-list"/></svg>Endpoints</a>
-    ${spec._hasAuth ? `<a href="#authorization"><svg class="i"><use href="#i-shield"/></svg>Authorization</a>` : ''}
-    ${spec._hasPagination ? `<a href="#pagination"><svg class="i"><use href="#i-layers"/></svg>Pagination</a>` : ''}
+    ${subnavLinks}
   </nav>`;
 
   const main = `<main class="doc">
@@ -815,7 +997,7 @@ ${foundCards.join('\n')}
 </div>
 
 <h2 class="section" id="endpoints"><span class="num">§</span>Endpoints by area<button class="expand-all-btn" id="expand-all" type="button">Expand all</button></h2>
-${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointTwins)).join('\n')}
+${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointTwins, endpointDetails)).join('\n')}
 
 <footer class="colophon">
   <div>Generated from source · <code>${escapeHtml(spec.serviceDir)}</code></div>
@@ -829,6 +1011,7 @@ ${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointT
 ${main}
 ${tocHTML}
 </div>`;
+  spec._endpointDetails = endpointDetails;
 
   return pageShell({
     title:       `${svcCfg.displayName} · API`,
@@ -836,7 +1019,8 @@ ${tocHTML}
     brandTitle:  'Medlern',
     brandSub:    '/ ' + svcCfg.displayName,
     indexHref:   'index.html',
-    nav: buildNav({ services, currentServiceId, totals, xref })
+    nav: buildNav({ services, currentServiceId, totals, xref }),
+    extraScripts: `<script>window.__ENDPOINT_DETAIL_SRC__ = '${escapeAttr(currentServiceId)}-details.js';</script>`
   });
 }
 
@@ -999,6 +1183,13 @@ function methodBreakdown(spec) {
 
 function renderIndex(services, totals, xref) {
   const totalPages = (xref && xref.pages) ? xref.pages.length : 0;
+  const pageStats = xref && xref.pages ? {
+    totalCalls: xref.pages.reduce((n, p) => n + (p.apiCalls || []).length, 0),
+    exact: xref.pages.reduce((n, p) => n + (p.apiCalls || []).filter(c => c.endpointId && !c.verbMismatch).length, 0),
+    noPath: xref.pages.reduce((n, p) => n + (p.apiCalls || []).filter(c => c.noPathMatch).length, 0),
+    unrouted: xref.pages.reduce((n, p) => n + (p.apiCalls || []).filter(c => c.unrouted).length, 0)
+  } : { totalCalls: 0, exact: 0, noPath: 0, unrouted: 0 };
+  const exactRate = pageStats.totalCalls ? Math.round(pageStats.exact / pageStats.totalCalls * 1000) / 10 : 0;
 
   // ── HERO ────────────────────────────────────────────────────────────
   const hero = `
@@ -1008,6 +1199,11 @@ function renderIndex(services, totals, xref) {
       <span class="h2-eyebrow"><span class="pulse" aria-hidden="true"></span>Medlern platform · live from source</span>
       <h1>One catalogue.<br>Every <span class="accent">API</span>.</h1>
       <p class="h2-lede">Find the backend endpoint behind any feature, and the UI page behind any endpoint. Generated from <code>${services.length}</code> Spring services and the Angular theme — no manual upkeep.</p>
+      <a class="h2-primary-link" href="apis.html">
+        <svg class="i"><use href="#i-search"/></svg>
+        <span>Open API Explorer</span>
+        <svg class="i"><use href="#i-arrow-right"/></svg>
+      </a>
       <button class="h2-search-btn" id="hero-search-btn" type="button" aria-label="Search APIs and pages">
         <svg class="i"><use href="#i-search"/></svg>
         <span class="h2-search-btn-text">Search APIs and pages…</span>
@@ -1037,6 +1233,11 @@ function renderIndex(services, totals, xref) {
         <span class="sn-label"><svg class="i"><use href="#i-page"/></svg>UI pages</span>
         <span class="sn-num">${totalPages.toLocaleString()}</span>
         <span class="sn-sub">${xref && xref.stats ? xref.stats.resolvedCalls + ' xref calls' : 'angular routes'}</span>
+      </a>
+      <a class="h2-snap-cell is-link" href="health.html">
+        <span class="sn-label"><svg class="i"><use href="#i-pulse"/></svg>Exact xref</span>
+        <span class="sn-num">${exactRate}%</span>
+        <span class="sn-sub">${pageStats.noPath + pageStats.unrouted} gaps</span>
       </a>
     </div>
   </div>
@@ -1078,8 +1279,35 @@ function renderIndex(services, totals, xref) {
   </div>
 </section>`;
 
+  const health = `
+<section class="h2-section" id="health">
+  <div class="h2-section-head">
+    <h2>Mapping Health</h2>
+    <a class="h2-section-link" href="health.html">Open dashboard <svg class="i"><use href="#i-arrow-right"/></svg></a>
+  </div>
+  <div class="health-card health-card--home">
+    <div class="gauge">
+      <span class="gauge-title">Exact UI calls</span>
+      <span class="gauge-num">${exactRate}<em>%</em></span>
+      <span class="gauge-bar"><span class="gauge-fill" style="width:${exactRate}%"></span></span>
+      <span class="gauge-sub">${pageStats.exact} of ${pageStats.totalCalls} calls match method + path</span>
+    </div>
+    <a class="gauge gauge--link" href="orphans.html">
+      <span class="gauge-title">Endpoint orphans</span>
+      <span class="gauge-num">${(totals.endpoints - Object.keys((xref && xref.endpointUsage) || {}).length).toLocaleString()}</span>
+      <span class="gauge-sub">No direct Angular page consumer</span>
+    </a>
+    <a class="gauge gauge--link" href="health.html#stale">
+      <span class="gauge-title">Stale UI references</span>
+      <span class="gauge-num">${(pageStats.noPath + pageStats.unrouted).toLocaleString()}</span>
+      <span class="gauge-sub">No path match or unmapped service prefix</span>
+    </a>
+  </div>
+</section>`;
+
   const main = `<main class="doc home">
 ${hero}
+${health}
 ${directory}
 <div class="h2-foot">
   <div>Generated from source by <code>tools/build.js</code></div>
@@ -1097,6 +1325,143 @@ ${directory}
     brandSub:    '/ catalogue',
     indexHref:   'index.html',
     nav: buildNav({ services, isIndex: true, totals, xref })
+  });
+}
+
+function renderExplorer(services, totals, xref) {
+  const dataScript = '<script src="catalogue-v2.js"></script>';
+  const main = `<main class="doc explorer" id="api-explorer">
+  <section class="cat-hero explorer-hero">
+    <div class="eyebrow"><svg class="i"><use href="#i-search"/></svg> Version 2.0</div>
+    <h1>API Explorer</h1>
+    <p class="lede">A single dense workbench for every endpoint. Filter by service, method, category, auth, schema status, UI usage, or free text without loading every schema/example panel up front.</p>
+    <div class="stat-row" id="explorer-stats">
+      <span class="stat"><b>${totals.endpoints.toLocaleString()}</b> endpoints</span>
+      <span class="stat"><b>${services.length}</b> services</span>
+      <span class="stat"><b>${((xref && xref.pages) || []).length}</b> UI pages</span>
+    </div>
+  </section>
+  <section class="explorer-toolbar" aria-label="Explorer filters">
+    <div class="explorer-search">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input id="api-filter-text" type="search" placeholder="Search path, summary, area, tag… try service:catalog method:POST used:0 schema:missing" autocomplete="off">
+    </div>
+    <div class="explorer-selects">
+      <select id="api-filter-service" aria-label="Service"><option value="">All services</option></select>
+      <select id="api-filter-method" aria-label="Method"><option value="">All methods</option></select>
+      <select id="api-filter-category" aria-label="Category"><option value="">All categories</option></select>
+      <select id="api-filter-auth" aria-label="Auth"><option value="">All auth</option><option value="none">No gate</option><option value="session">Session</option><option value="role">Role</option><option value="custom">Custom</option></select>
+      <select id="api-filter-schema" aria-label="Schema"><option value="">All schemas</option><option value="ok">Schema OK</option><option value="missing">Schema missing</option><option value="partial">Partial schema</option></select>
+      <select id="api-filter-usage" aria-label="Usage"><option value="">Any usage</option><option value="used">Used by UI</option><option value="orphan">No direct UI</option><option value="sibling">Sibling used</option></select>
+    </div>
+    <div class="explorer-actions">
+      <button class="cat-clear is-active" type="button" id="api-filter-clear">Reset</button>
+      <a class="explorer-health-link" href="health.html"><svg class="i"><use href="#i-pulse"/></svg> Health</a>
+    </div>
+  </section>
+  <section class="explorer-summary" id="api-summary"></section>
+  <section class="api-table" aria-label="Endpoints">
+    <div class="api-table-head">
+      <span>Method</span><span>Endpoint</span><span>Service</span><span>Category</span><span>Health</span><span>UI</span>
+    </div>
+    <div id="api-results"></div>
+  </section>
+  <footer class="colophon">
+    <div>Data split into <code>catalogue-v2.js</code>. Endpoint details still open on service pages.</div>
+    <div class="meta">${totals.endpoints}&nbsp;endpoints</div>
+  </footer>
+</main>`;
+  const body = `<div class="shell shell--home">${main}</div>`;
+  return pageShell({
+    title:      'Medlern · API Explorer',
+    body,
+    brandTitle: 'Medlern',
+    brandSub:   '/ API explorer',
+    indexHref:  'index.html',
+    nav: buildNav({ services, isExplorer: true, totals, xref }),
+    extraScripts: dataScript
+  });
+}
+
+function renderHealth(catalogueData, services, totals, xref) {
+  const d = catalogueData || { stats: { pages: {}, schema: {}, auth: {}, categories: {} }, diagnostics: {} };
+  const pages = d.stats.pages || {};
+  const exactRate = pages.calls ? Math.round((pages.exact || 0) / pages.calls * 1000) / 10 : 0;
+  const orphanPct = totals.endpoints ? Math.round((d.stats.orphaned || 0) / totals.endpoints * 1000) / 10 : 0;
+  const schemaOkPct = totals.endpoints ? Math.round(((d.stats.schema && d.stats.schema.ok) || 0) / totals.endpoints * 1000) / 10 : 0;
+  const catRows = Object.entries(d.stats.categories || {}).sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `<a class="health-pill" href="${escapeAttr(k === 'uncategorized' ? 'apis.html?category=uncategorized' : categoryHref(k))}"><span>${escapeHtml(CATEGORY_LABELS[k] || k)}</span><b>${v}</b></a>`).join('');
+  const staleRows = (d.diagnostics.noPathTop || []).map(x => `<li><code>${escapeHtml(x.path)}</code><span>${x.count} call${x.count === 1 ? '' : 's'}</span></li>`).join('');
+  const unroutedRows = (d.diagnostics.unroutedTop || []).map(x => `<li><code>${escapeHtml(x.path)}</code><span>${x.count} call${x.count === 1 ? '' : 's'}</span></li>`).join('');
+  const duplicateRows = (d.diagnostics.duplicateGroups || []).slice(0, 12).map(g => `<details class="health-dup">
+      <summary><code>${escapeHtml(g.key)}</code><span>${g.count} implementations · ${g.pages} UI page refs</span></summary>
+      ${g.endpoints.map(e => `<a href="${escapeAttr(e.href)}"><span>${escapeHtml(e.serviceName)}</span><span>${escapeHtml(e.area || '')}</span><b>${e.used}</b></a>`).join('')}
+    </details>`).join('');
+  const main = `<main class="doc health">
+    <section class="cat-hero">
+      <div class="eyebrow"><svg class="i"><use href="#i-pulse"/></svg> Mapping health</div>
+      <h1>Catalogue Health</h1>
+      <p class="lede">A trust dashboard for the UI/API join. Exact means the Angular call resolved to a backend endpoint with the same HTTP verb and compatible path.</p>
+      <div class="stat-row">
+        <span class="stat"><b>${exactRate}%</b> exact UI calls</span>
+        <span class="stat"><b>${orphanPct}%</b> endpoint orphans</span>
+        <span class="stat"><b>${schemaOkPct}%</b> schema OK</span>
+      </div>
+    </section>
+    <section class="health-grid">
+      <div class="gauge">
+        <span class="gauge-title">Exact UI/API matches</span>
+        <span class="gauge-num">${exactRate}<em>%</em></span>
+        <span class="gauge-bar"><span class="gauge-fill" style="width:${exactRate}%"></span></span>
+        <span class="gauge-sub">${pages.exact || 0} exact · ${pages.verbMismatch || 0} verb mismatch · ${pages.noPathMatch || 0} no path · ${pages.unrouted || 0} unrouted</span>
+      </div>
+      <div class="gauge">
+        <span class="gauge-title">Schema coverage</span>
+        <span class="gauge-num">${schemaOkPct}<em>%</em></span>
+        <span class="gauge-bar"><span class="gauge-fill" style="width:${schemaOkPct}%"></span></span>
+        <span class="gauge-sub">${(d.stats.schema && d.stats.schema.ok) || 0} OK · ${(d.stats.schema && d.stats.schema.missing) || 0} missing</span>
+      </div>
+      <div class="gauge">
+        <span class="gauge-title">Orphan endpoints</span>
+        <span class="gauge-num">${(d.stats.orphaned || 0).toLocaleString()}</span>
+        <span class="gauge-bar"><span class="gauge-fill gauge-fill--warn" style="width:${Math.min(orphanPct, 100)}%"></span></span>
+        <span class="gauge-sub">No direct Angular page consumer</span>
+      </div>
+    </section>
+    <section class="health-columns" id="stale">
+      <div class="health-panel">
+        <h2>No Path Match</h2>
+        <p>Frontend keys route to a known service, but no compatible backend path exists.</p>
+        <ul class="health-list">${staleRows || '<li><span>No stale path references.</span></li>'}</ul>
+      </div>
+      <div class="health-panel">
+        <h2>Unrouted Prefixes</h2>
+        <p>Frontend calls use a prefix that is not catalogued in <code>tools/services.json</code>.</p>
+        <ul class="health-list">${unroutedRows || '<li><span>No unmapped prefixes.</span></li>'}</ul>
+      </div>
+    </section>
+    <section class="health-panel">
+      <h2>Category Triage</h2>
+      <div class="health-pills">${catRows}</div>
+    </section>
+    <section class="health-panel">
+      <h2>Duplicate Method + Path Groups</h2>
+      <p>These often explain why one service endpoint appears orphaned while a sibling implementation is actively used.</p>
+      ${duplicateRows || emptyState('i-check-circle', 'No duplicate endpoints', 'No duplicate method/path groups found.')}
+    </section>
+    <footer class="colophon">
+      <div>Generated from <code>_data/xref.json</code> plus service specs.</div>
+      <div class="meta">${pages.calls || 0}&nbsp;UI call references</div>
+    </footer>
+  </main>`;
+  const body = `<div class="shell shell--home">${main}</div>`;
+  return pageShell({
+    title:      'Medlern · Catalogue Health',
+    body,
+    brandTitle: 'Medlern',
+    brandSub:   '/ health',
+    indexHref:  'index.html',
+    nav: buildNav({ services, isHealth: true, totals, xref })
   });
 }
 
@@ -1199,7 +1564,7 @@ function renderCategoryPage(categoryId, services, xref, totals) {
     <a class="cat-svc-name" href="${escapeAttr(svc.id)}.html">${escapeHtml(svc.displayName)}</a>
     <span class="cat-svc-meta">${areaBlocks.reduce((n,b) => n + b.endpoints.length, 0)} endpoint${areaBlocks.reduce((n,b) => n + b.endpoints.length, 0) === 1 ? '' : 's'}</span>
   </header>
-  ${areaBlocks.map(b => `
+${areaBlocks.map(b => `
     <div class="cat-area">
       <div class="cat-area-label">${escapeHtml(b.area.name || b.area.sourceClass || 'Uncategorized')}</div>
       ${b.endpoints.map(e => epLink(e, svc, b.area, '')).join('')}
@@ -1331,41 +1696,86 @@ function emptyState(iconId, title, body) {
 
 function renderOrphans(services, xref, totals) {
   const used = (xref && xref.endpointUsage) || {};
+  const twins = (xref && xref.endpointTwins) || {};
   const blocks = [];
   let total = 0;
+  const methodCounts = {};
+  const serviceCounts = {};
+  const buckets = {
+    sibling: { label: 'Sibling implementation is used', help: 'Same method/path exists in another service and has UI consumers.', items: [] },
+    internal: { label: 'Likely ops or internal', help: 'Exports, imports, schedulers, ETL, schema discovery, and backfill-like paths.', items: [] },
+    review: { label: 'Needs product review', help: 'No UI consumer, no obvious internal signal, and no used sibling.', items: [] }
+  };
   for (const s of services) {
     if (!s.spec) continue;
-    const orphans = [];
     for (const a of s.spec.areas) {
-      const eps = a.endpoints.filter(e => !(used[e.id] && used[e.id].length));
-      if (eps.length) orphans.push({ area: a, eps });
+      for (const e of a.endpoints) {
+        if (used[e.id] && used[e.id].length) continue;
+        total++;
+        methodCounts[e.method] = (methodCounts[e.method] || 0) + 1;
+        serviceCounts[s.id] = (serviceCounts[s.id] || { svc: s, count: 0 });
+        serviceCounts[s.id].count++;
+        const siblingPages = twinUsagePageCount(twins[e.id]);
+        const hay = `${e.path} ${e.summary || ''} ${a.name || ''}`.toLowerCase();
+        const item = { e, svc: s, area: a, siblingPages };
+        if (siblingPages) buckets.sibling.items.push(item);
+        else if (/(export|import|etl|backfill|schema|scheduler|trigger|batch|upload|files?)/i.test(hay)) buckets.internal.items.push(item);
+        else buckets.review.items.push(item);
+      }
     }
-    if (!orphans.length) continue;
-    const cnt = orphans.reduce((n, x) => n + x.eps.length, 0);
-    total += cnt;
-    blocks.push(`<section class="cat-svc" data-svc="${escapeAttr(s.id)}">
-      <header class="cat-svc-head">
-        <a class="cat-svc-name" href="${escapeAttr(s.id)}.html">${escapeHtml(s.displayName)}</a>
-        <span class="cat-svc-meta">${cnt} endpoint${cnt === 1 ? '' : 's'}</span>
+  }
+  const methodChips = ['GET','POST','PUT','PATCH','DELETE']
+    .filter(m => methodCounts[m])
+    .map(m => `<button class="cat-mchip" data-method="${m}"><span class="verb-mini ${m}">${m}</span><span>${methodCounts[m]}</span></button>`)
+    .join('');
+  const serviceFilters = Object.values(serviceCounts)
+    .map(({ svc, count }) => `<button class="cat-svcchip" data-svc="${escapeAttr(svc.id)}" type="button">${escapeHtml(svc.displayName)} <span>${count}</span></button>`)
+    .join('');
+  const filterBar = `<div class="cat-filters" id="cat-filters">
+    <input type="text" class="cat-text" id="cat-text" placeholder="Filter orphan paths, summary, area…" autocomplete="off">
+    <div class="cat-chip-row">${methodChips}</div>
+    <div class="cat-chip-row">${serviceFilters}</div>
+    <button class="cat-clear" type="button" id="cat-clear">Clear filters</button>
+  </div>`;
+  for (const bucket of Object.values(buckets)) {
+    if (!bucket.items.length) continue;
+    const byService = new Map();
+    for (const item of bucket.items) {
+      if (!byService.has(item.svc.id)) byService.set(item.svc.id, { svc: item.svc, items: [] });
+      byService.get(item.svc.id).items.push(item);
+    }
+    blocks.push(`<section class="triage-block">
+      <header class="triage-head">
+        <span>
+          <b>${escapeHtml(bucket.label)}</b>
+          <em>${escapeHtml(bucket.help)}</em>
+        </span>
+        <strong>${bucket.items.length}</strong>
       </header>
-      ${orphans.map(o => `
+      ${Array.from(byService.values()).map(group => `<section class="cat-svc" data-svc="${escapeAttr(group.svc.id)}">
+        <header class="cat-svc-head">
+          <a class="cat-svc-name" href="${escapeAttr(group.svc.id)}.html">${escapeHtml(group.svc.displayName)}</a>
+          <span class="cat-svc-meta">${group.items.length} endpoint${group.items.length === 1 ? '' : 's'}</span>
+        </header>
         <div class="cat-area">
-          <div class="cat-area-label">${escapeHtml(o.area.name || o.area.sourceClass || 'Uncategorized')}</div>
-          ${o.eps.map(e => compactEpLink(e, s, o.area, '')).join('')}
-        </div>`).join('')}
+          ${group.items.map(({ e, svc, area, siblingPages }) => compactEpLink(e, svc, area, siblingPages ? `${siblingPages} sibling UI pages` : '')).join('')}
+        </div>
+      </section>`).join('')}
     </section>`);
   }
   const main = `<main class="doc category">
     <section class="cat-hero">
       <div class="eyebrow"><svg class="i"><use href="#i-orphan"/></svg> Coverage gap</div>
       <h1>Orphan endpoints</h1>
-      <p class="lede">Backend endpoints with no Angular page in our index that calls them. Either the consumer lives outside the catalogued theme, the endpoint is dead code, or the cross-reference missed the call site (see <code>_data/xref-report.md</code>).</p>
+      <p class="lede">Backend endpoints with no direct Angular page consumer, triaged by likely cause. Sibling-used rows are usually duplicate implementations; ops/internal rows often belong to scheduled or admin tooling; review rows need product or source inspection.</p>
       <div class="stat-row">
         <span class="stat"><b>${total}</b> orphaned</span>
-        <span class="stat"><b>${blocks.length}</b> service${blocks.length === 1 ? '' : 's'} affected</span>
+        <span class="stat"><b>${buckets.sibling.items.length}</b> sibling-used</span>
+        <span class="stat"><b>${buckets.review.items.length}</b> needs review</span>
         <span class="stat"><b>${totals.endpoints}</b> total endpoints</span>
       </div>
     </section>
+    ${filterBar}
     ${blocks.length ? blocks.join('\n') : emptyState('i-check-circle', 'No orphans', 'Every endpoint in the catalogue has at least one UI page that consumes it.')}
     <footer class="colophon">
       <div>Computed against <code>_data/xref.json</code>'s <code>endpointUsage</code> reverse index.</div>
@@ -1522,4 +1932,18 @@ function renderTagsView(services, xref, totals) {
   });
 }
 
-module.exports = { renderService, renderIndex, renderPages, renderCategoryPage, renderOrphans, renderAuthCoverage, renderTagsView, buildGlobalIndex, buildEpXref, buildPageXref };
+module.exports = {
+  renderService,
+  renderIndex,
+  renderPages,
+  renderCategoryPage,
+  renderOrphans,
+  renderAuthCoverage,
+  renderTagsView,
+  renderExplorer,
+  renderHealth,
+  buildGlobalIndex,
+  buildCatalogueData,
+  buildEpXref,
+  buildPageXref
+};

@@ -140,7 +140,7 @@ function parseEndpointsTs(themeDir) {
 // 2) *.service.ts → service descriptors
 // ─────────────────────────────────────────────────────────────────────────
 
-function parseServiceFile(file, themeDir) {
+function parseServiceFile(file, themeDir, endpointMap) {
   const raw = readSafe(file);
   if (!/this\.http\.\w+\s*\(/.test(raw) && !/HttpClient/.test(raw)) return null;
   const src = stripComments(raw);
@@ -171,7 +171,7 @@ function parseServiceFile(file, themeDir) {
       // 1. Inline references in the call's first argument
       const argBlob = body.slice(openParen + 1, closeParen);
       const urlExpr = firstArg(argBlob);
-      let refs = collectEndpointRefs(urlExpr);
+      let refs = collectEndpointRefs(urlExpr, endpointMap);
 
       // 2. If the arg is a bare identifier, resolve to its local assignment in scope.
       //    Also try the parent enclosing block when the variable is defined outside
@@ -179,14 +179,14 @@ function parseServiceFile(file, themeDir) {
       if (refs.length === 0) {
         const ident = urlExpr.trim().match(/^([A-Za-z_]\w*)\s*$/);
         if (ident) {
-          const locals = collectLocalAssignments(scopeText);
+          const locals = collectLocalAssignments(scopeText, endpointMap);
           const local = locals[ident[1]];
           if (local && local.length) {
             refs = local;
           } else if (enclosing) {
             const parentEnclosing = findEnclosingBlock(body, enclosing.start - 1);
             if (parentEnclosing) {
-              const parentLocals = collectLocalAssignments(parentEnclosing.body);
+              const parentLocals = collectLocalAssignments(parentEnclosing.body, endpointMap);
               const parentLocal = parentLocals[ident[1]];
               if (parentLocal && parentLocal.length) refs = parentLocal;
             }
@@ -196,7 +196,7 @@ function parseServiceFile(file, themeDir) {
 
       // 3. Fallback: any endpoint refs anywhere in the enclosing scope. Acceptable
       //    overcount for methods with multiple http calls and multiple URL constants.
-      if (refs.length === 0) refs = collectEndpointRefs(scopeText);
+      if (refs.length === 0) refs = collectEndpointRefs(scopeText, endpointMap, false);
 
       const lineNum = lineOf(raw, mm.index + bodyStart + 1);
       if (refs.length === 0) {
@@ -207,7 +207,7 @@ function parseServiceFile(file, themeDir) {
           calls.push({ verb, endpointKey: null, expr: urlExpr.trim().slice(0, 120), line: lineNum, unresolved: true });
         }
       } else {
-        for (const r of refs) calls.push({ verb, endpointKey: r.key, transforms: r.transforms, line: lineNum });
+        for (const r of refs) calls.push({ verb, endpointKey: r.key, transforms: r.transforms, urlPattern: r.urlPattern, line: lineNum });
       }
     }
 
@@ -240,22 +240,71 @@ function findEnclosingBlock(src, pos) {
  * Returns { name: [{ key, transforms }, ...] } so a later http call referencing
  * `<name>` as the URL can resolve to those keys.
  */
-function collectLocalAssignments(scopeText) {
+function readExpressionUntilStatementEnd(src, start) {
+  let depth = 0;
+  let i = start;
+  for (; i < src.length; i++) {
+    const c = src[i];
+    if (c === '"' || c === "'" || c === '`') {
+      const q = c; i++;
+      while (i < src.length && src[i] !== q) {
+        if (src[i] === '\\') i += 2;
+        else i++;
+      }
+      continue;
+    }
+    if (c === '(' || c === '[' || c === '{') depth++;
+    else if (c === ')' || c === ']' || c === '}') {
+      if (depth > 0) depth--;
+      else break;
+    } else if (c === ';' && depth === 0) {
+      break;
+    } else if (c === '\n' && depth === 0) {
+      const next = src.slice(i + 1).match(/^\s*([A-Za-z_]\w*|})/);
+      if (next && /^(return|const|let|var|if|for|while|switch|})$/.test(next[1])) break;
+    }
+  }
+  return { expr: src.slice(start, i).trim(), end: i };
+}
+
+function collectLocalAssignments(scopeText, endpointMap) {
   const locals = {};
-  const re = /\b(?:const|let|var)\s+([A-Za-z_]\w*)\s*(?::[^=;]+)?\s*=\s*([^;]+);/g;
   let m;
+  const re = /\b(?:const|let|var)\s+([A-Za-z_]\w*)\s*(?::[^=;]+)?\s*=\s*/g;
   while ((m = re.exec(scopeText)) !== null) {
     const name = m[1];
-    const rhs = m[2];
-    const refs = collectEndpointRefs(rhs);
-    if (refs.length) locals[name] = refs;
+    const read = readExpressionUntilStatementEnd(scopeText, re.lastIndex);
+    const refs = collectEndpointRefs(read.expr, endpointMap);
+    if (refs.length) locals[name] = (locals[name] || []).concat(refs);
+    re.lastIndex = Math.max(re.lastIndex, read.end);
   }
   // Also: assignments to `this.<field>` — services sometimes hold the URL in a field.
-  const fre = /this\.([A-Za-z_]\w*)\s*=\s*([^;]+);/g;
+  const fre = /this\.([A-Za-z_]\w*)\s*=\s*/g;
   while ((m = fre.exec(scopeText)) !== null) {
     const name = 'this.' + m[1];
-    const refs = collectEndpointRefs(m[2]);
-    if (refs.length) locals[name] = refs;
+    const read = readExpressionUntilStatementEnd(scopeText, fre.lastIndex);
+    const refs = collectEndpointRefs(read.expr, endpointMap);
+    if (refs.length) locals[name] = (locals[name] || []).concat(refs);
+    fre.lastIndex = Math.max(fre.lastIndex, read.end);
+  }
+  // Plain reassignment inside conditionals:
+  //   let url; if (...) { url = `${environment.apiEndPoint.x}/...`; }
+  const are = /(?:^|[;{}\n])\s*([A-Za-z_]\w*)\s*=\s*/g;
+  while ((m = are.exec(scopeText)) !== null) {
+    const name = m[1];
+    const read = readExpressionUntilStatementEnd(scopeText, are.lastIndex);
+    const refs = collectEndpointRefs(read.expr, endpointMap);
+    if (refs.length) locals[name] = (locals[name] || []).concat(refs);
+    are.lastIndex = Math.max(are.lastIndex, read.end);
+  }
+  for (const [name, refs] of Object.entries(locals)) {
+    const seen = new Set();
+    locals[name] = refs.filter(r => {
+      const key = `${r.key}|${r.urlPattern || ''}|${(r.transforms || []).join(',')}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
   return locals;
 }
@@ -282,18 +331,138 @@ function firstArg(s) {
   return buf;
 }
 
+function stripOuterParens(s) {
+  s = s.trim();
+  while (s.startsWith('(') && matchBracket(s, 0) === s.length - 1) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
+function stringLiteralValue(s) {
+  s = s.trim();
+  const q = s[0];
+  if ((q !== '"' && q !== "'" && q !== '`') || s[s.length - 1] !== q) return null;
+  return s.slice(1, -1).replace(/\\(['"`\\])/g, '$1');
+}
+
+function placeholderName(expr) {
+  let s = String(expr || '').trim()
+    .replace(/\.toString\s*\(\s*\)/g, '')
+    .replace(/\?.*$/, '');
+  const fn = s.match(/^[A-Za-z_]\w*\(([^()]+)\)$/);
+  if (fn) s = fn[1].trim();
+  const parts = s.split('.');
+  s = parts[parts.length - 1] || s;
+  s = s.replace(/[^A-Za-z0-9_]+/g, '_').replace(/^_+|_+$/g, '');
+  return s || 'value';
+}
+
+function normaliseUrlPattern(s) {
+  if (!s) return null;
+  const queryIdx = s.indexOf('?');
+  if (queryIdx >= 0) s = s.slice(0, queryIdx);
+  s = s.replace(/([A-Za-z0-9}_])(\{[A-Za-z_]\w*\})/g, '$1/$2');
+  s = s.replace(/\\/g, '/').replace(/\/{2,}/g, '/');
+  s = s.replace(/(^|\/)#(?=\/|$|:)/g, '$1{id}');
+  if (!s.startsWith('/')) s = '/' + s;
+  return s;
+}
+
+function replacementPattern(arg, endpointMap) {
+  const lit = stringLiteralValue(arg);
+  if (lit != null) return lit;
+  const ep = endpointRefToPattern(arg, endpointMap);
+  if (ep != null) return ep;
+  return `{${placeholderName(arg)}}`;
+}
+
+function endpointRefToPattern(part, endpointMap) {
+  let s = stripOuterParens(part);
+  const m = s.match(/^environment\.apiEndPoint\.([A-Za-z_]\w*)/);
+  if (!m) return null;
+
+  let base = (endpointMap && endpointMap[m[1]]) || null;
+  if (!base) return null;
+
+  let rest = s.slice(m[0].length).trim();
+  while (rest.startsWith('.replace')) {
+    const open = rest.indexOf('(');
+    if (open < 0) break;
+    const close = matchBracket(rest, open);
+    if (close < 0) break;
+    const args = splitTopLevel(rest.slice(open + 1, close), ',');
+    if (args.length >= 2) {
+      const from = stringLiteralValue(args[0]);
+      if (from != null) {
+        base = base.split(from).join(replacementPattern(args[1], endpointMap));
+      }
+    }
+    rest = rest.slice(close + 1).trim();
+  }
+  return base;
+}
+
+function templateToPattern(body, endpointMap) {
+  let out = '';
+  for (let i = 0; i < body.length; i++) {
+    if (body[i] === '$' && body[i + 1] === '{') {
+      let j = i + 2;
+      let depth = 1;
+      while (j < body.length && depth > 0) {
+        if (body[j] === '{') depth++;
+        else if (body[j] === '}') depth--;
+        if (depth === 0) break;
+        j++;
+      }
+      const inner = body.slice(i + 2, j).trim();
+      const lit = stringLiteralValue(inner);
+      const ep = endpointRefToPattern(inner, endpointMap);
+      out += lit != null ? lit : ep != null ? ep : `{${placeholderName(inner)}}`;
+      i = j;
+    } else {
+      out += body[i];
+    }
+  }
+  return out;
+}
+
+function partToPattern(part, endpointMap) {
+  let s = stripOuterParens(part);
+  if (!s) return '';
+
+  const lit = stringLiteralValue(s);
+  if (lit != null) {
+    if (s[0] === '`') return templateToPattern(lit, endpointMap);
+    return lit;
+  }
+
+  const ep = endpointRefToPattern(s, endpointMap);
+  if (ep != null) return ep;
+
+  return `{${placeholderName(s)}}`;
+}
+
+function urlPatternFromExpression(expr, endpointMap) {
+  if (!expr || !endpointMap) return null;
+  const parts = splitTopLevel(expr, '+');
+  const pattern = parts.map(p => partToPattern(p, endpointMap)).join('');
+  return normaliseUrlPattern(pattern);
+}
+
 /**
  * Pull `environment.apiEndPoint.<key>` references out of an expression.
  * Notes:
- *  - `${environment.apiEndPoint.products}/${id}` → key: products
- *  - `environment.apiEndPoint.x.replace('#', val)` → key: x, transforms: ['replace']
- *  - bare `environment.apiEndPoint.x + foo` → key: x
+ *  - `${environment.apiEndPoint.products}/${id}` → key: products, URL `/products/{id}`
+ *  - `environment.apiEndPoint.x.replace('#', val)` → key: x, placeholder-substituted URL
+ *  - bare `environment.apiEndPoint.x + foo` → key: x, URL `/x/{foo}`
  */
-function collectEndpointRefs(expr) {
+function collectEndpointRefs(expr, endpointMap, derivePattern = true) {
   const out = [];
   const seen = new Set();
   const re = /\benvironment\.apiEndPoint\.([A-Za-z_]\w*)/g;
   let m;
+  const urlPattern = derivePattern && expr.length < 500 ? urlPatternFromExpression(expr, endpointMap) : null;
   while ((m = re.exec(expr)) !== null) {
     const key = m[1];
     if (seen.has(key)) continue;
@@ -303,7 +472,7 @@ function collectEndpointRefs(expr) {
     if (/^\.replace\s*\(/.test(after)) transforms.push('replace');
     if (/^\s*\+/.test(after)) transforms.push('concat');
     if (/^\s*\}/.test(after)) transforms.push('template');
-    out.push({ key, transforms });
+    out.push({ key, transforms, urlPattern });
   }
   return out;
 }
@@ -568,7 +737,7 @@ function parseTheme(themeDir) {
   const services = [];
   const serviceClassNames = new Set();
   for (const f of serviceFiles) {
-    const svc = parseServiceFile(f, themeDir);
+    const svc = parseServiceFile(f, themeDir, endpoints.map);
     if (!svc) continue;
     services.push(svc);
     for (const cls of svc.classes) serviceClassNames.add(cls.class);
