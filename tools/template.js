@@ -3400,7 +3400,7 @@ const SCRIPT = `
   }
 
   function hydrateEndpoint(d) {
-    if (!d || d.dataset.hydrated === '1') return;
+    if (!d || d.dataset.hydrated === '1' || d.dataset.hydrating === '1') return;
     const tpl = d.querySelector(':scope > template.endpoint-template');
     if (tpl) {
       d.appendChild(tpl.content.cloneNode(true));
@@ -3408,6 +3408,10 @@ const SCRIPT = `
       highlightJsonBlocks(d);
       return;
     }
+    // Mark hydration in-flight synchronously so a re-entrant call (e.g. the
+    // toggle handler firing right after a hash-navigation expand) doesn't
+    // kick off a second load that would append the detail content twice.
+    d.dataset.hydrating = '1';
     const loading = d.querySelector(':scope > .endpoint-loading');
     if (loading) loading.textContent = 'Loading endpoint details...';
     loadEndpointDetails().then(map => {
@@ -3418,6 +3422,8 @@ const SCRIPT = `
       appendEndpointDetail(d, map[d.id]);
     }).catch(() => {
       if (loading) loading.textContent = 'Could not load endpoint details.';
+    }).finally(() => {
+      delete d.dataset.hydrating;
     });
   }
 
