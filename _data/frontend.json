@@ -2947,10 +2947,10 @@
               "line": 892
             },
             {
-              "verb": "REQUEST",
+              "verb": "DELETE",
               "endpointKey": "users",
               "transforms": [],
-              "urlPattern": null,
+              "urlPattern": "/account/v1/users",
               "line": 904
             },
             {
@@ -5225,7 +5225,7 @@
               "transforms": [
                 "replace"
               ],
-              "urlPattern": null,
+              "urlPattern": "/catalog/v1/sessions/{sessionId}/zoomWebinar/{panelistId}",
               "line": 556
             },
             {
@@ -6835,7 +6835,7 @@
               "transforms": [
                 "replace"
               ],
-              "urlPattern": null,
+              "urlPattern": "/{exportType}/v1/exports/{exportId}/files",
               "line": 127
             }
           ]
@@ -7961,10 +7961,10 @@
               "line": 93
             },
             {
-              "verb": "REQUEST",
+              "verb": "DELETE",
               "endpointKey": "users",
               "transforms": [],
-              "urlPattern": null,
+              "urlPattern": "/account/v1/users",
               "line": 105
             }
           ]

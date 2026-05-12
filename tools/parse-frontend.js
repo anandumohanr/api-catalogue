@@ -159,7 +159,7 @@ function parseServiceFile(file, themeDir, endpointMap) {
     const callRe = /this\.http\.(get|post|put|patch|delete|head|options|request)\s*(?:<[^>]*>)?\s*\(/g;
     let mm;
     while ((mm = callRe.exec(body)) !== null) {
-      const verb = mm[1].toUpperCase();
+      let verb = mm[1].toUpperCase();
       const openParen = mm.index + mm[0].length - 1;
       const closeParen = matchBracket(body, openParen);
       if (closeParen < 0) continue;
@@ -169,8 +169,20 @@ function parseServiceFile(file, themeDir, endpointMap) {
       const scopeText = enclosing ? enclosing.body : body;
 
       // 1. Inline references in the call's first argument
-      const argBlob = body.slice(openParen + 1, closeParen);
-      const urlExpr = firstArg(argBlob);
+      let argBlob = body.slice(openParen + 1, closeParen);
+      let urlExpr = firstArg(argBlob);
+
+      // `http.request(verbLiteral, url, options)` — pull the verb from arg #1
+      // and re-derive the URL expression from arg #2 so URL resolution works.
+      if (verb === 'REQUEST') {
+        const verbLit = stringLiteralValue(urlExpr.trim());
+        if (verbLit) {
+          verb = verbLit.toUpperCase();
+          const afterFirst = argBlob.slice(urlExpr.length).replace(/^\s*,\s*/, '');
+          urlExpr = firstArg(afterFirst);
+          argBlob = afterFirst;
+        }
+      }
       let refs = collectEndpointRefs(urlExpr, endpointMap);
 
       // 2. If the arg is a bare identifier, resolve to its local assignment in scope.
@@ -190,6 +202,29 @@ function parseServiceFile(file, themeDir, endpointMap) {
               const parentLocal = parentLocals[ident[1]];
               if (parentLocal && parentLocal.length) refs = parentLocal;
             }
+          }
+        }
+      }
+
+      // 2b. `<localUrl> + <expr>` — common pattern where the URL is built by appending
+      //     a path-variable at the call site. Resolve the local and extend its URL
+      //     pattern by treating each `+`-separated tail part as either a literal or a
+      //     `{name}` placeholder so the result lines up with the catalogued path.
+      if (refs.length === 0) {
+        const concat = urlExpr.trim().match(/^([A-Za-z_]\w*)\s*\+\s*(.*)$/s);
+        if (concat) {
+          const locals = collectLocalAssignments(scopeText, endpointMap);
+          const local = locals[concat[1]];
+          if (local && local.length) {
+            const tail = splitTopLevel(concat[2], '+')
+              .map(p => partToPattern(p.trim(), endpointMap))
+              .join('');
+            refs = local.map(r => ({
+              ...r,
+              urlPattern: r.urlPattern
+                ? normaliseUrlPattern(r.urlPattern.replace(/\/+$/, '') + '/' + tail.replace(/^\/+/, ''))
+                : null
+            }));
           }
         }
       }

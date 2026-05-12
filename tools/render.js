@@ -9,6 +9,8 @@
 
 const { FONTS, CSS, SCRIPT, APPBAR, PALETTE, ICONS, TOAST, SHORTCUTS_SHEET, escapeHtml, escapeAttr } = require('./template');
 
+const BUILT_AT = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+
 function pathHTML(p) { return escapeHtml(p).replace(/\{([^}]+)\}/g, '<span class="ph">{$1}</span>'); }
 function tagSlug(t)  { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-'); }
 
@@ -506,33 +508,56 @@ function renderUsedBy(usage, twins) {
   siblingEntries.sort((a, b) => a.route.localeCompare(b.route) || a.twin.service.localeCompare(b.twin.service));
   const twinSummary = renderTwinSummary(twins);
 
+  const SHOW_LIMIT = 8;
+
+  const colHead = `<div class="ub-list-head"><span>Route</span><span>Page title</span><span>Via service</span></div>`;
+
+  function rowList(items, hrefFn, siblingNote) {
+    const visible = items.slice(0, SHOW_LIMIT);
+    const hidden  = items.slice(SHOW_LIMIT);
+    const rows = visible.map(e => `<a class="ub-row" href="${escapeAttr(hrefFn(e))}">
+      <span class="ub-row-route" title="${escapeAttr(e.route)}">${escapeHtml(e.route)}</span>
+      <span class="ub-row-title">${escapeHtml(e.title || '')}</span>
+      <span class="ub-row-via">${escapeHtml(Array.from(e.vias || [e.viaService]).filter(Boolean).join(', '))}</span>
+    </a>`).join('');
+    const hiddenRows = hidden.map(e => `<a class="ub-row ub-row--hidden" href="${escapeAttr(hrefFn(e))}" hidden>
+      <span class="ub-row-route" title="${escapeAttr(e.route)}">${escapeHtml(e.route)}</span>
+      <span class="ub-row-title">${escapeHtml(e.title || '')}</span>
+      <span class="ub-row-via">${escapeHtml(Array.from(e.vias || [e.viaService]).filter(Boolean).join(', '))}</span>
+    </a>`).join('');
+    const moreBtn = hidden.length ? `<button class="ub-more" type="button" data-ub-expand>Show ${hidden.length} more</button>` : '';
+    const note = siblingNote ? `<div class="ub-sibling-note">${escapeHtml(siblingNote)}</div>` : '';
+    return `<div class="ub-list">${colHead}${note}${rows}${hiddenRows}${moreBtn}</div>`;
+  }
+
   if (entries.length === 0 && siblingEntries.length === 0) {
-    return `<div class="used-by"><h4>Used by</h4><div class="ub-empty">No UI pages found in the Angular theme that consume this endpoint directly.</div>${twinSummary}</div>`;
+    return `<div class="used-by">
+  <div class="ub-header">
+    <span class="ub-title">Used by</span>
+  </div>
+  <p class="ub-none">No Angular page consumes this endpoint.</p>
+  ${twinSummary}
+</div>`;
   }
 
   if (entries.length === 0) {
     const siblingPageCount = twinUsagePageCount(twins);
     return `<div class="used-by">
-  <h4>Used by · <span class="ub-meta">${siblingPageCount} UI page${siblingPageCount === 1 ? '' : 's'} via same method/path</span></h4>
-  <div class="ub-empty">No direct UI route targets this service endpoint; these pages call a sibling implementation with the same method and path.</div>
-  <ul class="ub-list">
-    ${siblingEntries.map(e => `<li>
-      <span class="ub-route"><a href="pages.html#${escapeAttr(e.pageId)}">${escapeHtml(e.route)}</a>${e.title ? ` <span style="color:var(--ink-faint)">· ${escapeHtml(e.title)}</span>` : ''}</span>
-      <span class="ub-via">via <a href="${escapeAttr(e.twin.service)}.html#${escapeAttr(e.twin.endpointId)}">${escapeHtml(e.twin.serviceName || e.twin.service)}</a> · ${escapeHtml(Array.from(e.vias).join(', '))}</span>
-    </li>`).join('\n    ')}
-  </ul>
+  <div class="ub-header">
+    <span class="ub-title">Used by</span>
+    <span class="ub-count">${siblingPageCount} page${siblingPageCount === 1 ? '' : 's'} via sibling</span>
+  </div>
+  ${rowList(siblingEntries, e => `pages.html#${e.pageId}`, 'No direct UI consumer — these pages call a sibling implementation with the same method + path.')}
   ${twinSummary}
 </div>`;
   }
 
   return `<div class="used-by">
-  <h4>Used by · <span class="ub-meta">${entries.length} UI page${entries.length === 1 ? '' : 's'}</span></h4>
-  <ul class="ub-list">
-    ${entries.map(e => `<li>
-      <span class="ub-route"><a href="pages.html#${escapeAttr(e.pageId)}">${escapeHtml(e.route)}</a>${e.title ? ` <span style="color:var(--ink-faint)">· ${escapeHtml(e.title)}</span>` : ''}</span>
-      <span class="ub-via">via ${escapeHtml(Array.from(e.vias).join(', '))}</span>
-    </li>`).join('\n    ')}
-  </ul>
+  <div class="ub-header">
+    <span class="ub-title">Used by</span>
+    <span class="ub-count">${entries.length} UI page${entries.length === 1 ? '' : 's'}</span>
+  </div>
+  ${rowList(entries, e => `pages.html#${e.pageId}`, null)}
   ${twinSummary}
 </div>`;
 }
@@ -637,12 +662,20 @@ function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) 
     : '';
 
   // ── Build tabbed body ─────────────────────────────────────────────────
+  // Schema/request-body/response paragraphs are re-emitted into the Schema
+  // tab below; filter them out of Overview so they don't appear twice.
+  // Also drop empty/whitespace-only items (e.g. `renderEnvelope` returns ''
+  // when the envelope is unresolved) so they don't pad an otherwise blank
+  // panel and defeat the "No additional parameters" fallback below.
   const overviewSections = sections.filter(s =>
+    s && s.trim() &&
     !/<h4>Request body<\/h4>/.test(s) &&
     !/<h4>Response /.test(s) &&
     !/<div class="json-card/.test(s) &&
     !/<details class="schema-card/.test(s) &&
-    !/<div class="envelope-card/.test(s)
+    !/<div class="envelope-card/.test(s) &&
+    !/Detected expression:/.test(s) &&
+    !/Bound type:/.test(s)
   );
   const schemaSections = [];
   const exampleSections = [];
@@ -692,9 +725,16 @@ function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) 
     <button class="ep-tab" data-tab="curl" type="button"><svg class="i"><use href="#i-terminal"/></svg><span>cURL</span></button>
   </div>`;
 
+  // The overview panel's body comes from the filtered `overviewSections`. If it
+  // ends up empty (request/response paragraphs all moved to the Schema tab and
+  // there were no path/header/query params), fall back to the placeholder so
+  // the panel isn't blank or tag-only.
+  const overviewBody = overviewSections.length
+    ? overviewSections.join('\n      ')
+    : '<p style="color:var(--ink-faint);font-size:13px">No additional parameters.</p>';
   const overviewPanel = `<div class="ep-tab-panel is-active" data-tab="overview">
     ${renderTags(e.tags)}
-    ${overviewSections.join('\n      ')}
+    ${overviewBody}
   </div>`;
   const schemaPanel = hasSchema ? `<div class="ep-tab-panel" data-tab="schema">
     ${schemaSections.join('\n      ')}
@@ -707,24 +747,20 @@ function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) 
     ${renderCurlCard(curl)}
   </div>`;
 
-  const bodyHTML = `<div class="body body--with-aside">
-    <div class="body-main">
-      ${tabsHTML}
-      ${overviewPanel}
-      ${schemaPanel}
-      ${examplePanel}
-      ${curlPanel}
-    </div>
-    <aside class="body-aside">
-      ${usedBy}
-    </aside>
+  const bodyHTML = `<div class="body">
+    ${tabsHTML}
+    ${overviewPanel}
+    ${schemaPanel}
+    ${examplePanel}
+    ${curlPanel}
+    ${usedBy}
   </div>`;
 
   if (detailCollector) {
     detailCollector[e.id] = bodyHTML;
   }
 
-  return `<details class="endpoint" id="${escapeAttr(e.id)}"${detailCollector ? ' data-deferred-detail="1"' : ''}>
+  return `<details class="endpoint" id="${escapeAttr(e.id)}"${detailCollector ? ' data-deferred-detail="1"' : ''}${e._areaName ? ` data-area="${escapeAttr(e._areaName)}"` : ''}>
   <summary>
     <span class="verb-band ${e.method}" aria-hidden="true"></span>
     <span class="verb ${e.method}">${e.method}</span>
@@ -747,7 +783,7 @@ function renderArea(area, hasPagination, endpointUsage, endpointTwins, detailCol
     <span class="area-meta"><b>${area.endpoints.length}</b> endpoint${area.endpoints.length === 1 ? '' : 's'}</span>
     <span class="area-source">${escapeHtml(area.sourceClass)}</span>
   </header>
-  ${area.endpoints.map(e => renderEndpoint(e, hasPagination, endpointUsage[e.id], endpointTwins[e.id], detailCollector)).join('\n')}
+  ${area.endpoints.map(e => { e._areaName = areaDisplayName; return renderEndpoint(e, hasPagination, endpointUsage[e.id], endpointTwins[e.id], detailCollector); }).join('\n')}
 </section>`;
 }
 
@@ -758,7 +794,7 @@ function renderRailNav(spec, services, currentId, pageCount) {
     const epLinks = a.endpoints.map(e =>
       `<li><a class="ep-link" href="#${escapeAttr(e.id)}"><span class="verb-mini ${e.method}">${e.method}</span><span class="ep-text">${escapeHtml(e.path)}</span></a></li>`
     ).join('\n      ');
-    return `<li><a class="area-link" href="#${slug}">${escapeHtml(a.name)} <span class="count">${a.endpoints.length}</span></a></li>\n      ${epLinks}`;
+    return `<li class="area-item"><a class="area-link" href="#${slug}">${escapeHtml(a.name)} <span class="count">${a.endpoints.length}</span></a><ul class="area-eps">\n        ${epLinks}\n      </ul></li>`;
   }).join('\n      ');
   const foundationItems = [
     '<li><a href="#overview">Overview</a></li>',
@@ -843,6 +879,7 @@ ${FONTS}
 ${ICONS}
 ${APPBAR({ title: brandTitle, brandSub, indexHref, nav })}
 ${body}
+<div class="build-stamp">Generated&nbsp;${escapeHtml(BUILT_AT)}</div>
 ${PALETTE}
 ${SHORTCUTS_SHEET}
 ${TOAST}
@@ -865,7 +902,7 @@ const CATEGORY_ORDER = ['pre-login', 'dashboard', 'admin', 'my-team-space'];
 function categoryHref(catId) { return `category-${catId}.html`; }
 
 /** Build the appbar nav config from services + totals. */
-function buildNav({ services, currentServiceId, currentCategory, isIndex, isPages, isExplorer, isHealth, totals, xref }) {
+function buildNav({ services, currentServiceId, currentCategory, isIndex, isPages, isExplorer, isHealth, isAuthCoverage, isTags, isOrphans, totals, xref }) {
   const counts = (totals && totals.categories) || {};
   const categories = CATEGORY_ORDER.map(id => ({
     id,
@@ -881,12 +918,15 @@ function buildNav({ services, currentServiceId, currentCategory, isIndex, isPage
   }));
   const pagesCount = (xref && xref.pages) ? xref.pages.length : 0;
   return {
-    activeCategory: currentCategory || null,
-    activeService:  currentServiceId || null,
-    activePages:    !!isPages,
-    activeExplorer: !!isExplorer,
-    activeHealth:   !!isHealth,
-    activeIndex:    !!isIndex,
+    activeCategory:      currentCategory || null,
+    activeService:       currentServiceId || null,
+    activePages:         !!isPages,
+    activeExplorer:      !!isExplorer,
+    activeHealth:        !!isHealth,
+    activeAuthCoverage:  !!isAuthCoverage,
+    activeTags:          !!isTags,
+    activeOrphans:       !!isOrphans,
+    activeIndex:         !!isIndex,
     categories,
     services:   svcEntries,
     pagesHref:  pagesCount ? 'pages.html' : null,
@@ -906,7 +946,6 @@ function renderService(spec, services, currentServiceId, xref, totals) {
   const totalPages = xref && xref.pages ? xref.pages.length : 0;
   const endpointDetails = {};
   const railHTML = renderRailNav(spec, services, currentServiceId, totalPages);
-  const tocHTML  = renderRightToc(spec);
 
   // Hero
   const eyebrowParts = [
@@ -997,6 +1036,12 @@ ${foundCards.join('\n')}
 </div>
 
 <h2 class="section" id="endpoints"><span class="num">§</span>Endpoints by area<button class="expand-all-btn" id="expand-all" type="button">Expand all</button></h2>
+<div class="svc-filter" id="svc-filter">
+  <input type="search" id="svc-filter-text" placeholder="Filter by path or summary…" autocomplete="off">
+  <div class="svc-filter-methods">${['GET','POST','PUT','PATCH','DELETE'].filter(m => spec.areas.some(a => a.endpoints.some(e => e.method === m))).map(m => `<button class="svc-mchip ${m}" data-m="${m}" type="button">${m}</button>`).join('')}</div>
+  <span class="svc-filter-count" id="svc-filter-count">${spec.totalEndpoints} endpoints</span>
+  <button class="svc-filter-clear" type="button" id="svc-filter-clear">Reset</button>
+</div>
 ${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointTwins, endpointDetails)).join('\n')}
 
 <footer class="colophon">
@@ -1009,7 +1054,6 @@ ${spec.areas.map(a => renderArea(a, !!paginated.length, endpointUsage, endpointT
 <div class="shell">
 <nav class="rail" aria-label="Catalogue navigation">${railHTML}</nav>
 ${main}
-${tocHTML}
 </div>`;
   spec._endpointDetails = endpointDetails;
 
@@ -1181,6 +1225,26 @@ function methodBreakdown(spec) {
   return order.filter(m => counts[m]).map(m => ({ method: m, count: counts[m] }));
 }
 
+function computeOrphanBuckets(services, xref) {
+  const used = (xref && xref.endpointUsage) || {};
+  const twins = (xref && xref.endpointTwins) || {};
+  let sibling = 0, internal = 0, review = 0;
+  for (const s of services) {
+    if (!s.spec) continue;
+    for (const a of s.spec.areas) {
+      for (const e of a.endpoints) {
+        if (used[e.id] && used[e.id].length) continue;
+        const siblingPages = twinUsagePageCount(twins[e.id]);
+        const hay = `${e.path} ${e.summary || ''} ${a.name || ''}`.toLowerCase();
+        if (siblingPages) sibling++;
+        else if (/(export|import|etl|backfill|schema|scheduler|trigger|batch|upload|files?)/i.test(hay)) internal++;
+        else review++;
+      }
+    }
+  }
+  return { sibling, internal, review };
+}
+
 function renderIndex(services, totals, xref) {
   const totalPages = (xref && xref.pages) ? xref.pages.length : 0;
   const pageStats = xref && xref.pages ? {
@@ -1211,11 +1275,11 @@ function renderIndex(services, totals, xref) {
       </button>
       <div class="h2-hero-quick">
         <span class="h2-hero-quick-label">Try</span>
-        <button class="h2-hero-chip" data-search-seed="institution" type="button">institution</button>
-        <button class="h2-hero-chip" data-search-seed="login" type="button">login</button>
-        <button class="h2-hero-chip" data-search-seed="report" type="button">report</button>
-        <button class="h2-hero-chip" data-search-seed="course" type="button">course</button>
-        <button class="h2-hero-chip" data-search-seed="export" type="button">export</button>
+        <a class="h2-hero-chip" href="apis.html?q=institution">institution</a>
+        <a class="h2-hero-chip" href="apis.html?q=login">login</a>
+        <a class="h2-hero-chip" href="apis.html?q=report">report</a>
+        <a class="h2-hero-chip" href="apis.html?q=course">course</a>
+        <a class="h2-hero-chip" href="apis.html?q=export">export</a>
       </div>
     </div>
     <div class="h2-snap" aria-label="Catalogue snapshot">
@@ -1279,6 +1343,12 @@ function renderIndex(services, totals, xref) {
   </div>
 </section>`;
 
+  const orphanCount = totals.endpoints - Object.keys((xref && xref.endpointUsage) || {}).length;
+  const orphanBuckets = computeOrphanBuckets(services, xref);
+  const uncatCount = (totals.categories && totals.categories.uncategorized) || 0;
+  const catTotal = totals.endpoints;
+  const catCoveredPct = catTotal ? Math.round((catTotal - uncatCount) / catTotal * 100) : 0;
+
   const health = `
 <section class="h2-section" id="health">
   <div class="h2-section-head">
@@ -1294,13 +1364,15 @@ function renderIndex(services, totals, xref) {
     </div>
     <a class="gauge gauge--link" href="orphans.html">
       <span class="gauge-title">Endpoint orphans</span>
-      <span class="gauge-num">${(totals.endpoints - Object.keys((xref && xref.endpointUsage) || {}).length).toLocaleString()}</span>
-      <span class="gauge-sub">No direct Angular page consumer</span>
+      <span class="gauge-num">${orphanCount.toLocaleString()}</span>
+      <span class="gauge-bar"><span class="gauge-fill gauge-fill--warn" style="width:${Math.min(orphanCount/totals.endpoints*100,100).toFixed(1)}%"></span></span>
+      <span class="gauge-sub">${orphanBuckets.sibling} sibling-used · ${orphanBuckets.internal} internal · ${orphanBuckets.review} needs review</span>
     </a>
-    <a class="gauge gauge--link" href="health.html#stale">
-      <span class="gauge-title">Stale UI references</span>
-      <span class="gauge-num">${(pageStats.noPath + pageStats.unrouted).toLocaleString()}</span>
-      <span class="gauge-sub">No path match or unmapped service prefix</span>
+    <a class="gauge gauge--link" href="apis.html?category=uncategorized">
+      <span class="gauge-title">Category coverage</span>
+      <span class="gauge-num">${catCoveredPct}<em>%</em></span>
+      <span class="gauge-bar"><span class="gauge-fill${catCoveredPct < 80 ? ' gauge-fill--warn' : ''}" style="width:${catCoveredPct}%"></span></span>
+      <span class="gauge-sub">${uncatCount} of ${catTotal} endpoints uncategorized</span>
     </a>
   </div>
 </section>`;
@@ -1310,7 +1382,6 @@ ${hero}
 ${health}
 ${directory}
 <div class="h2-foot">
-  <div>Generated from source by <code>tools/build.js</code></div>
   <div>${totals.endpoints}&nbsp;endpoints · ${totals.areas}&nbsp;areas · ${services.length}&nbsp;services</div>
 </div>
 <script>window.__EP_XREF__ = null; window.__PAGE_XREF__ = null;</script>
@@ -1789,7 +1860,7 @@ function renderOrphans(services, xref, totals) {
     brandTitle: 'Medlern',
     brandSub:   '/ orphans',
     indexHref:  'index.html',
-    nav: buildNav({ services, totals, xref })
+    nav: buildNav({ services, isOrphans: true, totals, xref })
   });
 }
 
@@ -1874,7 +1945,7 @@ function renderAuthCoverage(services, xref, totals) {
     brandTitle: 'Medlern',
     brandSub:   '/ auth coverage',
     indexHref:  'index.html',
-    nav: buildNav({ services, totals, xref })
+    nav: buildNav({ services, isAuthCoverage: true, totals, xref })
   });
 }
 
@@ -1928,7 +1999,7 @@ function renderTagsView(services, xref, totals) {
     brandTitle: 'Medlern',
     brandSub:   '/ tags',
     indexHref:  'index.html',
-    nav: buildNav({ services, totals, xref })
+    nav: buildNav({ services, isTags: true, totals, xref })
   });
 }
 

@@ -213,7 +213,8 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
   color: var(--ink); background: var(--panel-soft);
 }
 .topnav a.is-current,
-.topnav a[aria-current="page"] {
+.topnav a[aria-current="page"],
+.topnav .services-menu summary.is-current {
   color: var(--accent-ink);
   background: var(--accent-soft);
   font-weight: 500;
@@ -331,7 +332,7 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
 
 .shell {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 220px;
+  grid-template-columns: 260px minmax(0, 1fr);
   max-width: 1440px; margin: 0 auto;
   padding: 0 24px; gap: 36px;
 }
@@ -346,7 +347,7 @@ nav.rail {
 nav.rail::-webkit-scrollbar { width: 5px; }
 nav.rail::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
 nav.rail .rail-toggle { display: none; }
-main.doc { min-width: 0; padding: 36px 8px 100px; max-width: 880px; justify-self: start; }
+main.doc { min-width: 0; padding: 36px 8px 100px; max-width: 1040px; justify-self: start; }
 aside.toc {
   position: sticky; top: 52px; align-self: start;
   height: calc(100vh - 52px); overflow-y: auto;
@@ -357,7 +358,6 @@ aside.toc::-webkit-scrollbar { display: none; }
 
 @media (max-width: 1100px) {
   .shell { grid-template-columns: 240px minmax(0, 1fr); gap: 28px; }
-  aside.toc { display: none; }
   nav.rail { margin-right: -28px; }
 }
 @media (max-width: 820px) {
@@ -939,74 +939,142 @@ aside.toc a.active {
 /* ============================== USED-BY BLOCK ============================== */
 
 .used-by {
-  margin-top: 14px;
+  margin-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid var(--rule-soft);
-  padding-top: 12px;
 }
-.used-by h4 { margin-top: 0; }
-.used-by .ub-meta {
-  font-size: 11.5px; color: var(--ink-faint);
+.ub-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.ub-title {
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.ub-count {
+  font-size: var(--t-2xs);
   font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-faint);
 }
-.used-by ul.ub-list {
-  list-style: none; padding: 0; margin: 6px 0 0;
-  max-height: 220px; overflow-y: auto;
-  border: 1px solid var(--rule-soft); border-radius: 4px;
-  background: var(--bg);
-}
-.used-by ul.ub-list li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px; align-items: center;
-  padding: 4px 10px;
-  border-bottom: 1px solid var(--rule-soft);
-  font-size: 12.5px;
-}
-.used-by ul.ub-list li:last-child { border-bottom: none; }
-.used-by ul.ub-list li:hover { background: var(--hover-bg); }
-.used-by ul.ub-list .ub-route {
-  font-family: 'JetBrains Mono', monospace;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.used-by ul.ub-list .ub-route a { color: var(--ink); }
-.used-by ul.ub-list .ub-route a:hover { color: var(--accent); }
-.used-by ul.ub-list .ub-via {
-  font-size: 10.5px; color: var(--ink-faint);
-  font-family: 'JetBrains Mono', monospace;
-  white-space: nowrap;
-}
-.used-by .ub-empty {
-  font-size: 12px; color: var(--ink-faint);
+.ub-none {
+  font-size: var(--t-sm);
+  color: var(--ink-faint);
   font-style: italic;
-  padding: 6px 0;
+  margin: 4px 0 0;
 }
-.used-by .ub-via a { color: inherit; text-decoration: underline; text-decoration-color: var(--rule-strong); }
-.used-by .ub-via a:hover { color: var(--accent); }
-.ub-twins {
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid var(--rule-soft);
-}
-.ub-twin-title {
+.ub-list-head {
+  display: grid;
+  grid-template-columns: minmax(140px, 2fr) minmax(0, 3fr) minmax(0, 1.5fr);
+  gap: 0 12px;
+  padding: 4px 12px;
+  background: var(--panel-soft);
+  border-bottom: 1px solid var(--rule);
   font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.ub-list {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+a.ub-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 2fr) minmax(0, 3fr) minmax(0, 1.5fr);
+  gap: 0 12px;
+  align-items: baseline;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--rule-soft);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--d-fast) var(--ease-out);
+}
+a.ub-row:last-of-type { border-bottom: none; }
+a.ub-row:hover { background: var(--accent-soft); text-decoration: none; }
+.ub-row-route {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ub-row-title {
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ub-row-via {
+  font-size: 10.5px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.ub-more {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  background: var(--panel-soft);
+  border: none;
+  border-top: 1px solid var(--rule-soft);
+  font-size: var(--t-xs);
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+.ub-more:hover { background: var(--accent-soft); }
+.ub-sibling-note {
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  font-style: italic;
+  padding: 6px 12px;
+  background: var(--panel-soft);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.ub-twin-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rule-strong); }
+.ub-twin-link:hover { color: var(--accent); }
+.ub-twins { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule-soft); }
+.ub-twin-title {
+  font-size: var(--t-2xs);
   color: var(--ink-faint);
   text-transform: uppercase;
   letter-spacing: .08em;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 .ub-twin {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 8px;
   padding: 4px 0;
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--t-xs);
+  text-decoration: none;
 }
 .ub-twin span:last-child {
   color: var(--ink-faint);
   text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
 }
-.ub-twin:hover { color: var(--accent); }
+.ub-twin:hover { color: var(--accent); text-decoration: none; }
+@media (max-width: 600px) {
+  a.ub-row { grid-template-columns: 1fr; }
+  .ub-row-title, .ub-row-via { display: none; }
+}
 
 /* ============================== PAGES PAGE ============================== */
 
@@ -1459,50 +1527,6 @@ footer.colophon .meta { font-family: 'JetBrains Mono', monospace; font-size: 11p
 }
 
 /* endpoint body two-column layout (main + Used-by aside on wide viewports) */
-.body--with-aside {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
-  gap: 24px;
-  align-items: start;
-}
-.body--with-aside > .body-main { min-width: 0; }
-.body--with-aside > .body-aside {
-  position: sticky; top: 76px;
-  font-size: 12px;
-}
-.body--with-aside .used-by {
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  padding: 12px 14px;
-  background: var(--panel);
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.body--with-aside .used-by h4 { margin: 0 0 8px; font-size: 12px; }
-.body--with-aside .used-by .ub-meta { color: var(--ink-faint); font-weight: 400; }
-.body--with-aside .used-by .ub-list { padding: 0; margin: 0; list-style: none; }
-.body--with-aside .used-by .ub-list li {
-  font-size: 11.5px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--rule-soft);
-  display: flex; flex-direction: column; gap: 2px;
-}
-.body--with-aside .used-by .ub-list li:last-child { border-bottom: none; }
-.body--with-aside .used-by .ub-route a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
-  word-break: break-word;
-}
-.body--with-aside .used-by .ub-via { color: var(--ink-faint); font-size: 10.5px; }
-.body--with-aside .used-by .ub-empty {
-  color: var(--ink-faint); font-size: 11.5px;
-  padding: 4px 0;
-}
-@media (max-width: 920px) {
-  .body--with-aside { grid-template-columns: 1fr; }
-  .body--with-aside > .body-aside { position: static; }
-}
-
 /* category badge on endpoint summary */
 .ep-cat-badge {
   display: inline-block;
@@ -2813,6 +2837,65 @@ main.doc.explorer, main.doc.health {
 @media (max-width: 820px) {
   .health-grid, .health-columns { grid-template-columns: 1fr; }
 }
+
+/* ============================== BUILD STAMP ============================== */
+.build-stamp {
+  text-align: right;
+  font-size: var(--t-xs);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-faint);
+  padding: var(--s-2) var(--s-8) var(--s-3);
+  border-top: 1px solid var(--rule-soft);
+  background: var(--bg);
+}
+
+/* ============================== RAIL COLLAPSIBLE AREAS ============================== */
+.area-item > .area-eps { display: none; list-style: none; padding: 0; margin: 0; }
+.area-item.is-open > .area-eps { display: block; }
+.rail a.area-link { cursor: pointer; }
+
+/* ============================== SERVICE PAGE FILTER ============================== */
+.svc-filter {
+  display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap;
+  padding: var(--s-3) 0 var(--s-4);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s-4);
+}
+.svc-filter input[type="search"] {
+  height: 32px; flex: 1 1 220px; min-width: 160px;
+  border: 1px solid var(--rule); border-radius: var(--r-2);
+  background: var(--panel); color: var(--ink);
+  padding: 0 var(--s-3); font: inherit; font-size: var(--t-sm);
+  -webkit-appearance: none;
+}
+.svc-filter input[type="search"]:focus { outline: none; border-color: var(--accent); }
+.svc-filter-methods { display: flex; gap: var(--s-1); flex-shrink: 0; }
+.svc-mchip {
+  height: 28px; padding: 0 var(--s-2);
+  border: 1px solid var(--rule); border-radius: var(--r-1);
+  background: var(--panel); cursor: pointer;
+  font-size: var(--t-xs); font-family: 'JetBrains Mono', monospace; font-weight: 600;
+  color: var(--ink-faint);
+  transition: background var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+}
+.svc-mchip:hover { border-color: var(--rule-strong); color: var(--ink); }
+.svc-mchip.GET.is-active    { color: var(--get);    background: var(--get-bg);    border-color: var(--get); }
+.svc-mchip.POST.is-active   { color: var(--post);   background: var(--post-bg);   border-color: var(--post); }
+.svc-mchip.PUT.is-active    { color: var(--put);    background: var(--put-bg);    border-color: var(--put); }
+.svc-mchip.PATCH.is-active  { color: var(--patch);  background: var(--patch-bg);  border-color: var(--patch); }
+.svc-mchip.DELETE.is-active { color: var(--delete); background: var(--delete-bg); border-color: var(--delete); }
+.svc-filter-count {
+  font-size: var(--t-xs); font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-faint); margin-left: auto; flex-shrink: 0;
+}
+.svc-filter-clear {
+  height: 28px; padding: 0 var(--s-3);
+  border: 1px solid transparent; border-radius: var(--r-1);
+  background: transparent; cursor: pointer;
+  font-size: var(--t-xs); color: var(--ink-faint); display: none;
+}
+.svc-filter-clear.is-active { display: block; }
+.svc-filter-clear:hover { color: var(--accent); border-color: var(--rule); }
 `;
 
 /* Inline SVG sprite — every icon used by chrome, spotlight, endpoint cards, and new views.
@@ -2916,14 +2999,15 @@ const APPBAR = ({ title, brandSub, indexHref, nav }) => {
   const pagesLink = n.pagesHref ? `<a class="nv-link${cur(n.activePages)}" href="${escapeAttr(n.pagesHref)}"${aria(n.activePages)}>UI Pages<span class="nv-count">${n.pagesCount || 0}</span></a>` : '';
   const explorerLink = `<a class="nv-link${cur(n.activeExplorer)}" href="apis.html"${aria(n.activeExplorer)}>API Explorer</a>`;
   const healthLink = `<a class="nv-link${cur(n.activeHealth)}" href="health.html"${aria(n.activeHealth)}>Health</a>`;
+  const anyInsight = n.activeHealth || n.activeAuthCoverage || n.activeTags || n.activeOrphans;
   const insightsMenu = `
     <details class="services-menu">
-      <summary>Insights</summary>
+      <summary class="${anyInsight ? 'is-current' : ''}">Insights</summary>
       <div class="menu-panel">
         <a href="health.html" class="${n.activeHealth ? 'is-current' : ''}"><span class="ms-svc">Health dashboard</span></a>
-        <a href="auth-coverage.html"><span class="ms-svc">Auth coverage</span></a>
-        <a href="tags.html"><span class="ms-svc">Tags</span></a>
-        <a href="orphans.html"><span class="ms-svc">Orphans</span></a>
+        <a href="auth-coverage.html" class="${n.activeAuthCoverage ? 'is-current' : ''}"><span class="ms-svc">Auth coverage</span></a>
+        <a href="tags.html" class="${n.activeTags ? 'is-current' : ''}"><span class="ms-svc">Tags</span></a>
+        <a href="orphans.html" class="${n.activeOrphans ? 'is-current' : ''}"><span class="ms-svc">Orphans</span></a>
       </div>
     </details>`;
   return `
@@ -3236,11 +3320,6 @@ const SCRIPT = `
   }
   paletteTabs.forEach(t => t.addEventListener('click', () => setTab(t.dataset.paletteTab)));
 
-  // Hero "Try" chips — open popup pre-filled with the seed term
-  document.querySelectorAll('.h2-hero-chip[data-search-seed]').forEach(c => {
-    c.addEventListener('click', () => openP(c.dataset.searchSeed));
-  });
-
   // Initial counts (visible before first open)
   if (countApi)  countApi.textContent  = EP_LIST.length.toLocaleString();
   if (countPage) countPage.textContent = PAGE_XREF.length.toLocaleString();
@@ -3426,6 +3505,15 @@ const SCRIPT = `
     ep.querySelectorAll('.ep-tab-panel').forEach(p => p.classList.toggle('is-active', p.dataset.tab === targetKey));
   });
 
+  // ─── USED-BY "Show more" expand ─────────────────────────────────────────
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.ub-more[data-ub-expand]');
+    if (!btn) return;
+    const list = btn.closest('.ub-list');
+    if (list) list.querySelectorAll('.ub-row[hidden]').forEach(r => r.removeAttribute('hidden'));
+    btn.remove();
+  });
+
   // TOC scroll-spy
   const tocLinks = Array.from(document.querySelectorAll('aside.toc a[data-toc]'));
   const tocTargets = tocLinks.map(a => document.getElementById(a.dataset.toc)).filter(Boolean);
@@ -3438,6 +3526,17 @@ const SCRIPT = `
       tocLinks.forEach(a => a.classList.toggle('active', a.dataset.toc === activeId));
       document.querySelectorAll('nav.rail a.area-link').forEach(a => a.classList.remove('is-active'));
       const ra = document.querySelector('nav.rail a.area-link[href="#'+activeId+'"]'); if (ra) ra.classList.add('is-active');
+    } else {
+      const areaLinks = Array.from(document.querySelectorAll('nav.rail a.area-link'));
+      const areaTargets = areaLinks.map(a => {
+        const id = (a.getAttribute('href') || '').slice(1);
+        return { a, el: id ? document.getElementById(id) : null };
+      }).filter(x => x.el);
+      if (areaTargets.length) {
+        let activeId = areaTargets[0].el.id;
+        for (const { el } of areaTargets) { if (el.offsetTop <= sy) activeId = el.id; else break; }
+        areaLinks.forEach(a => a.classList.toggle('is-active', (a.getAttribute('href') || '').slice(1) === activeId));
+      }
     }
     if (subnavLinks.length) {
       const visited = subnavLinks.map(a => {
@@ -3568,21 +3667,81 @@ const SCRIPT = `
   if ('IntersectionObserver' in window) {
     const eps = Array.from(document.querySelectorAll('details.endpoint'));
     const map = new Map(Array.from(document.querySelectorAll('nav.rail a.ep-link')).map(a=>[a.getAttribute('href').slice(1),a]));
-    const obs = new IntersectionObserver(es => es.forEach(en => { const l = map.get(en.target.id); if (!l) return; if (en.isIntersecting) l.classList.add('is-active'); else l.classList.remove('is-active'); }), { rootMargin:'-30% 0px -55% 0px' });
+    // Auto-open the area containing an endpoint targeted by the initial URL hash
+    if (location.hash) { const epLink = map.get(location.hash.slice(1)); if (epLink) epLink.closest('.area-item')?.classList.add('is-open'); }
+    const obs = new IntersectionObserver(es => es.forEach(en => {
+      const l = map.get(en.target.id); if (!l) return;
+      if (en.isIntersecting) { l.classList.add('is-active'); l.closest('.area-item')?.classList.add('is-open'); }
+      else l.classList.remove('is-active');
+    }), { rootMargin:'-30% 0px -55% 0px' });
     eps.forEach(el => obs.observe(el));
   }
+
+  // Rail area — clicking always opens that area's endpoint list (never collapses via nav click)
+  document.querySelectorAll('nav.rail .area-link').forEach(link => {
+    link.addEventListener('click', () => link.closest('.area-item')?.classList.add('is-open'));
+  });
 
   // Expand all / Collapse all on service pages
   const expandAllBtn = document.getElementById('expand-all');
   if (expandAllBtn) {
     const allEndpoints = Array.from(document.querySelectorAll('details.endpoint'));
+    const allAreaItems = Array.from(document.querySelectorAll('nav.rail .area-item'));
     let allExpanded = false;
     expandAllBtn.addEventListener('click', () => {
       allExpanded = !allExpanded;
+      allAreaItems.forEach(item => item.classList.toggle('is-open', allExpanded));
       allEndpoints.forEach(d => { if (allExpanded) hydrateEndpoint(d); d.open = allExpanded; });
       expandAllBtn.textContent = allExpanded ? 'Collapse all' : 'Expand all';
     });
   }
+
+  // Service page inline filter
+  (function() {
+    const filterEl = document.getElementById('svc-filter');
+    if (!filterEl) return;
+    const textInput = document.getElementById('svc-filter-text');
+    const methodBtns = Array.from(filterEl.querySelectorAll('.svc-mchip'));
+    const clearBtn = document.getElementById('svc-filter-clear');
+    const countEl = document.getElementById('svc-filter-count');
+    const allEndpoints = Array.from(document.querySelectorAll('details.endpoint'));
+    const allAreas = Array.from(document.querySelectorAll('section.area'));
+    let activeMethod = null, q = '';
+    function applyFilter() {
+      let shown = 0;
+      for (const ep of allEndpoints) {
+        const method = ep.querySelector('.verb')?.textContent?.trim() || '';
+        const path = ep.querySelector('.e-path')?.getAttribute('data-tip') || ep.querySelector('.e-path')?.textContent?.trim() || '';
+        const summary = ep.querySelector('.e-summary')?.textContent?.trim() || '';
+        const area = ep.dataset.area || '';
+        const hay = (path + ' ' + summary + ' ' + area).toLowerCase();
+        let visible = true;
+        if (activeMethod && method !== activeMethod) visible = false;
+        if (visible && q && !hay.includes(q)) visible = false;
+        ep.hidden = !visible;
+        if (visible) shown++;
+      }
+      for (const area of allAreas) {
+        area.hidden = !area.querySelector('details.endpoint:not([hidden])');
+      }
+      if (countEl) countEl.textContent = shown + ' endpoint' + (shown === 1 ? '' : 's');
+      clearBtn?.classList.toggle('is-active', !!(activeMethod || q));
+    }
+    if (textInput) textInput.addEventListener('input', e => { q = e.target.value.toLowerCase().trim(); applyFilter(); });
+    methodBtns.forEach(btn => btn.addEventListener('click', () => {
+      const m = btn.dataset.m;
+      activeMethod = activeMethod === m ? null : m;
+      methodBtns.forEach(b => b.classList.toggle('is-active', b.dataset.m === activeMethod));
+      applyFilter();
+    }));
+    if (clearBtn) clearBtn.addEventListener('click', () => {
+      activeMethod = null; q = '';
+      if (textInput) textInput.value = '';
+      methodBtns.forEach(b => b.classList.remove('is-active'));
+      applyFilter();
+    });
+    applyFilter();
+  })();
 
   // Mobile rail drawer. The rendered rail remains full fidelity on desktop,
   // while mobile users get a compact picker instead of thousands of links above content.

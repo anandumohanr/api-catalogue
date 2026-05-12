@@ -1,12 +1,12 @@
 # UI ↔ API cross-reference build report
 
-Generated: 2026-05-11 16:39
+Generated: 2026-05-12 09:38
 
 ## Headline numbers
 
 - Pages: **219**
-- Total API call references across all pages: **6094**
-- Resolved to a catalogued endpoint: **5853** (96.0%)
+- Total API call references across all pages: **6103**
+- Resolved to a catalogued endpoint: **5862** (96.1%)
 - Endpoint keys in endpoints.ts: 397
 
 ## Per-prefix routing
@@ -96,34 +96,37 @@ Found 39 duplicate method/path groups. These are kept as direct-service matches,
 - `POST /questionsImport`
   - `exam-service` · `exam-service-ep-12` · 17 UI pages
   - `catalog-service` · `catalog-service-ep-198` · 17 UI pages
+- `GET /reportHistory/{reportHistoryId}`
+  - `exam-service` · `exam-service-ep-84` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-164` · 27 UI pages
 - `GET /assignmentReports`
   - `reports-service` · `reports-service-ep-12` · 25 UI pages
   - `catalog-service` · `catalog-service-ep-534` · 0 UI pages
-- `GET /reportHistory/{reportHistoryId}`
-  - `exam-service` · `exam-service-ep-84` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-164` · 25 UI pages
 - `GET /trainingReports`
   - `reports-service` · `reports-service-ep-2` · 0 UI pages
   - `catalog-service` · `catalog-service-ep-170` · 25 UI pages
 - `GET /trainingStatusSummary`
   - `reports-service` · `reports-service-ep-1` · 0 UI pages
   - `catalog-service` · `catalog-service-ep-160` · 25 UI pages
+- `GET /imports`
+  - `exam-service` · `exam-service-ep-11` · 1 UI page
+  - `account-service` · `account-service-ep-237` · 2 UI pages
+  - `catalog-service` · `catalog-service-ep-195` · 20 UI pages
+- `GET /audits`
+  - `indicator-service` · `indicator-service-ep-45` · 7 UI pages
+  - `account-service` · `account-service-ep-1` · 8 UI pages
 - `GET /exports`
   - `reports-service` · `reports-service-ep-10` · 12 UI pages
   - `exam-service` · `exam-service-ep-5` · 0 UI pages
   - `assessment-service` · `assessment-service-ep-58` · 0 UI pages
   - `account-service` · `account-service-ep-233` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-420` · 12 UI pages
-- `GET /imports`
-  - `exam-service` · `exam-service-ep-11` · 1 UI page
-  - `account-service` · `account-service-ep-237` · 2 UI pages
-  - `catalog-service` · `catalog-service-ep-195` · 20 UI pages
-- `DELETE /audits/{auditId}`
-  - `indicator-service` · `indicator-service-ep-57` · 10 UI pages
-  - `account-service` · `account-service-ep-5` · 6 UI pages
-- `GET /audits`
-  - `indicator-service` · `indicator-service-ep-45` · 7 UI pages
-  - `account-service` · `account-service-ep-1` · 8 UI pages
+  - `catalog-service` · `catalog-service-ep-420` · 0 UI pages
+- `GET /exports/{id}/files`
+  - `reports-service` · `reports-service-ep-9` · 12 UI pages
+  - `exam-service` · `exam-service-ep-7` · 0 UI pages
+  - `assessment-service` · `assessment-service-ep-59` · 0 UI pages
+  - `account-service` · `account-service-ep-234` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-421` · 0 UI pages
 - `GET /products/{id}/competencies`
   - `account-service` · `account-service-ep-120` · 0 UI pages
   - `catalog-service` · `catalog-service-ep-237` · 12 UI pages
@@ -142,9 +145,15 @@ Found 39 duplicate method/path groups. These are kept as direct-service matches,
 - `DELETE /audit/{auditId}/question`
   - `indicator-service` · `indicator-service-ep-62` · 5 UI pages
   - `account-service` · `account-service-ep-16` · 3 UI pages
+- `DELETE /audits/{auditId}`
+  - `indicator-service` · `indicator-service-ep-57` · 5 UI pages
+  - `account-service` · `account-service-ep-5` · 3 UI pages
 - `GET /audit/{auditId}/question`
   - `indicator-service` · `indicator-service-ep-47` · 5 UI pages
   - `account-service` · `account-service-ep-15` · 3 UI pages
+- `POST /audits/{auditId}:publish`
+  - `indicator-service` · `indicator-service-ep-56` · 5 UI pages
+  - `account-service` · `account-service-ep-7` · 3 UI pages
 - `PUT /audit/{auditId}/question`
   - `indicator-service` · `indicator-service-ep-46` · 5 UI pages
   - `account-service` · `account-service-ep-13` · 3 UI pages
@@ -157,10 +166,3 @@ Found 39 duplicate method/path groups. These are kept as direct-service matches,
 - `DELETE /institutions`
   - `account-service` · `account-service-ep-261` · 0 UI pages
   - `catalog-service` · `catalog-service-ep-314` · 0 UI pages
-- `GET /`
-  - `exam-service` · `exam-service-ep-108` · 0 UI pages
-  - `exam-service` · `exam-service-ep-111` · 0 UI pages
-  - `exam-service` · `exam-service-ep-114` · 0 UI pages
-- `GET /batchUploadDimensions`
-  - `account-service` · `account-service-ep-80` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-419` · 0 UI pages

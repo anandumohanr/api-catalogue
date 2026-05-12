@@ -1462,9 +1462,17 @@ function readPomMeta(serviceDir) {
   return m;
 }
 
-function controllerToArea(className) {
+function controllerToArea(className, pkg) {
   // Strip "Controller" / "RestController" suffix
-  return humanise(className.replace(/(Rest)?Controller$/, ''));
+  let base = className.replace(/(Rest)?Controller$/, '');
+  // Some controllers are literally named `Controller` and live in feature-named
+  // packages (e.g. `com.impelsys.phoenix.v1.audit.Controller`). Without this
+  // fallback, every such class collapses into one anonymous area.
+  if (!base && pkg) {
+    const tail = String(pkg).split('.').filter(p => !/^v\d+$/.test(p)).pop();
+    if (tail) base = tail;
+  }
+  return humanise(base);
 }
 
 function makeId(serviceId, idx) { return `${serviceId}-ep-${idx}`; }
@@ -1601,7 +1609,7 @@ function parseService(serviceDir, serviceId, registry) {
     }
     const traceCtx = { fields: ctrlFields };
 
-    let areaName = ctrl.tagName || controllerToArea(ctrl.className);
+    let areaName = ctrl.tagName || controllerToArea(ctrl.className, ctrlPackage);
     if (!seenAreas.has(areaName)) {
       seenAreas.set(areaName, { name: areaName, summary: ctrl.tagDesc || null, sourceClass: ctrl.className, file: path.relative(serviceDir, file), endpoints: [] });
       areas.push(seenAreas.get(areaName));

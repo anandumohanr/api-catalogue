@@ -348,9 +348,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -901,9 +901,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -1480,9 +1480,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -2057,9 +2057,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -2425,9 +2425,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -2793,9 +2793,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -3161,9 +3161,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -3529,9 +3529,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -3886,9 +3886,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -4337,9 +4337,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -4722,9 +4722,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -5132,9 +5132,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -5530,9 +5530,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -5974,9 +5974,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -6357,9 +6357,9 @@
           "via": "CandidatesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -6385,13 +6385,13 @@
         },
         {
           "via": "CandidatesService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TrainingReportsService",
@@ -6971,11 +6971,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         }
       ],
       "injects": [
@@ -7329,8 +7329,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -7469,9 +7469,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -7703,8 +7703,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -7927,8 +7927,8 @@
           "via": "TrainingHoursService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -8047,8 +8047,8 @@
           "via": "TrainingHoursService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -8177,8 +8177,8 @@
           "via": "TrainingHoursService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -8394,9 +8394,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -8628,8 +8628,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -8872,8 +8872,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -9032,9 +9032,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -9266,8 +9266,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -9521,8 +9521,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -9681,9 +9681,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -9905,8 +9905,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -10161,8 +10161,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -10321,9 +10321,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -10545,8 +10545,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -10801,8 +10801,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -10961,9 +10961,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -11185,8 +11185,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -11400,8 +11400,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -11560,9 +11560,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -11794,8 +11794,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -11969,9 +11969,9 @@
           "via": "CandidatesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -11997,13 +11997,13 @@
         },
         {
           "via": "CandidatesService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TrainingReportsCommonService",
@@ -12069,8 +12069,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -12443,8 +12443,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -12696,8 +12696,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -12856,9 +12856,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -13090,8 +13090,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -13343,8 +13343,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -13503,9 +13503,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -13737,8 +13737,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -14011,8 +14011,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -14171,9 +14171,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -14405,8 +14405,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -14679,8 +14679,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -14839,9 +14839,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -15073,8 +15073,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -15347,8 +15347,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -15507,9 +15507,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -15741,8 +15741,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -16035,8 +16035,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -16195,9 +16195,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -16429,8 +16429,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -16863,8 +16863,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -17023,9 +17023,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -17257,8 +17257,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -17471,8 +17471,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -17631,9 +17631,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -17865,8 +17865,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -18128,8 +18128,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -18288,9 +18288,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -18522,8 +18522,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -18852,11 +18852,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -19324,8 +19324,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -19484,9 +19484,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -19718,8 +19718,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -19960,8 +19960,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -20120,9 +20120,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -20354,8 +20354,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -20666,9 +20666,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -20960,8 +20960,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -21170,8 +21170,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -21429,8 +21429,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -21589,9 +21589,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -21823,8 +21823,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -22048,8 +22048,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -22208,9 +22208,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -22442,8 +22442,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -22667,8 +22667,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -22827,9 +22827,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -23061,8 +23061,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -24304,7 +24304,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-131",
           "path": "/products/{productId}/wishlistSummary",
-          "area": "",
+          "area": "product",
           "key": "licenseRequest",
           "verbMismatch": false
         },
@@ -24659,11 +24659,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -24879,9 +24879,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -25255,11 +25255,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -25475,9 +25475,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -25637,7 +25637,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-133",
           "path": "/products/{productId}/objectives",
-          "area": "",
+          "area": "product",
           "key": "trainingAddObjectives",
           "verbMismatch": false
         },
@@ -25647,7 +25647,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-134",
           "path": "/products/{productId}/objectives",
-          "area": "",
+          "area": "product",
           "key": "trainingAddObjectives",
           "verbMismatch": false
         },
@@ -25887,9 +25887,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -26052,13 +26052,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -26386,7 +26386,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -26688,9 +26688,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -26843,13 +26843,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -27177,7 +27177,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -27512,11 +27512,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -27832,8 +27832,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -28176,8 +28176,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -28346,9 +28346,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -28511,13 +28511,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -28845,7 +28845,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -29481,11 +29481,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -29691,9 +29691,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -30354,11 +30354,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -30584,9 +30584,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -30673,9 +30673,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -31235,11 +31235,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UtilService",
@@ -31566,11 +31566,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -31766,11 +31766,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -31996,9 +31996,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -32559,11 +32559,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TokenService",
@@ -33054,11 +33054,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TokenService",
@@ -33404,11 +33404,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         }
       ],
       "injects": [
@@ -33888,11 +33888,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TokenService",
@@ -34193,11 +34193,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TokenService",
@@ -34525,11 +34525,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         }
       ],
       "injects": [
@@ -38549,8 +38549,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-165",
-          "path": "/reportHistory/{reportHistoryId}:export",
+          "endpointId": "catalog-service-ep-164",
+          "path": "/reportHistory/{reportHistoryId}",
           "area": "Kpi Reports",
           "key": "reportHistory",
           "verbMismatch": false
@@ -38689,9 +38689,9 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -38923,8 +38923,8 @@
           "via": "TrainingReportsCommonService",
           "verb": "GET",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-164",
-          "path": "/reportHistory/{reportHistoryId}",
+          "endpointId": "catalog-service-ep-165",
+          "path": "/reportHistory/{reportHistoryId}:export",
           "area": "Kpi Reports",
           "key": "reportExportHistory",
           "verbMismatch": false
@@ -39177,11 +39177,11 @@
           "via": "SkillAuditService",
           "verb": "POST",
           "service": "account-service",
-          "endpointId": "account-service-ep-5",
-          "path": "/audits/{auditId}",
+          "endpointId": "account-service-ep-7",
+          "path": "/audits/{auditId}:publish",
           "area": "User Audit",
           "key": "audit",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SkillAuditService",
@@ -39379,11 +39379,11 @@
           "via": "SkillAuditService",
           "verb": "POST",
           "service": "account-service",
-          "endpointId": "account-service-ep-5",
-          "path": "/audits/{auditId}",
+          "endpointId": "account-service-ep-7",
+          "path": "/audits/{auditId}:publish",
           "area": "User Audit",
           "key": "audit",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SkillAuditService",
@@ -39481,9 +39481,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39552,9 +39552,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39623,9 +39623,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39694,9 +39694,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39765,9 +39765,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39836,9 +39836,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39907,9 +39907,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -39978,9 +39978,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -40049,9 +40049,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -41308,11 +41308,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -41518,9 +41518,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -41901,11 +41901,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -42131,9 +42131,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -42577,11 +42577,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -42807,9 +42807,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -43539,9 +43539,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -43915,9 +43915,9 @@
         {
           "via": "ExportHistoryService",
           "verb": "GET",
-          "service": "catalog-service",
-          "endpointId": "catalog-service-ep-420",
-          "path": "/exports",
+          "service": "reports-service",
+          "endpointId": "reports-service-ep-9",
+          "path": "/exports/{id}/files",
           "area": "Export",
           "key": "exports",
           "verbMismatch": false
@@ -43965,9 +43965,9 @@
           "via": "CandidatesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -43993,13 +43993,13 @@
         },
         {
           "via": "CandidatesService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UtilService",
@@ -44639,9 +44639,9 @@
           "via": "TrainingReportsService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -45100,11 +45100,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -46007,11 +46007,11 @@
           "via": "AuditManagementService",
           "verb": "POST",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-57",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-56",
+          "path": "/audits/{auditId}:publish",
           "area": "Audit",
           "key": "indicatorAudits",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "AuditManagementService",
@@ -46067,8 +46067,8 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-59",
-          "path": "/audits/{auditId}:history",
+          "endpointId": "indicator-service-ep-49",
+          "path": "/audits/{auditId}",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46087,8 +46087,18 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-49",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-58",
+          "path": "/audits/{auditId}:summary",
+          "area": "Audit",
+          "key": "indicatorAudits",
+          "verbMismatch": false
+        },
+        {
+          "via": "AuditManagementService",
+          "verb": "GET",
+          "service": "indicator-service",
+          "endpointId": "indicator-service-ep-59",
+          "path": "/audits/{auditId}:history",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46219,11 +46229,11 @@
           "via": "AuditManagementService",
           "verb": "POST",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-57",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-56",
+          "path": "/audits/{auditId}:publish",
           "area": "Audit",
           "key": "indicatorAudits",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "AuditManagementService",
@@ -46279,8 +46289,8 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-59",
-          "path": "/audits/{auditId}:history",
+          "endpointId": "indicator-service-ep-49",
+          "path": "/audits/{auditId}",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46299,8 +46309,18 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-49",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-58",
+          "path": "/audits/{auditId}:summary",
+          "area": "Audit",
+          "key": "indicatorAudits",
+          "verbMismatch": false
+        },
+        {
+          "via": "AuditManagementService",
+          "verb": "GET",
+          "service": "indicator-service",
+          "endpointId": "indicator-service-ep-59",
+          "path": "/audits/{auditId}:history",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46392,11 +46412,11 @@
           "via": "AuditManagementService",
           "verb": "POST",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-57",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-56",
+          "path": "/audits/{auditId}:publish",
           "area": "Audit",
           "key": "indicatorAudits",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "AuditManagementService",
@@ -46452,8 +46472,8 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-59",
-          "path": "/audits/{auditId}:history",
+          "endpointId": "indicator-service-ep-49",
+          "path": "/audits/{auditId}",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46472,8 +46492,18 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-49",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-58",
+          "path": "/audits/{auditId}:summary",
+          "area": "Audit",
+          "key": "indicatorAudits",
+          "verbMismatch": false
+        },
+        {
+          "via": "AuditManagementService",
+          "verb": "GET",
+          "service": "indicator-service",
+          "endpointId": "indicator-service-ep-59",
+          "path": "/audits/{auditId}:history",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -46766,9 +46796,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -47189,9 +47219,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -47555,7 +47585,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -47910,19 +47940,19 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -48075,13 +48105,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -48389,7 +48419,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -48551,9 +48581,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -49060,13 +49090,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -49344,7 +49374,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -49412,8 +49442,8 @@
           "via": "PrivilegingChecklistService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-130",
-          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "endpointId": "account-service-ep-129",
+          "path": "/users/{userId}/checklists/{checklistId}",
           "area": "Checklist",
           "key": "checkListPrivilege",
           "verbMismatch": false
@@ -49436,6 +49466,16 @@
           "path": "/user/{userId}/checklist/{checklistId}/approverSignOffDetails",
           "area": "Checklist",
           "key": "levelCompleteStatus",
+          "verbMismatch": false
+        },
+        {
+          "via": "PrivilegingChecklistService",
+          "verb": "GET",
+          "service": "account-service",
+          "endpointId": "account-service-ep-130",
+          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "area": "Checklist",
+          "key": "checkListPrivilege",
           "verbMismatch": false
         },
         {
@@ -49693,9 +49733,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -50105,13 +50145,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -50389,7 +50429,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -50521,9 +50561,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -50823,9 +50863,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -50988,13 +51028,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -51322,7 +51362,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -51434,9 +51474,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -52409,9 +52449,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -52574,13 +52614,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -52908,7 +52948,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -53031,9 +53071,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -53196,13 +53236,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -53530,7 +53570,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -53772,7 +53812,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -54071,7 +54111,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -54177,7 +54217,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -54339,7 +54379,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -54513,9 +54553,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -54678,13 +54718,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -55012,7 +55052,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -55760,9 +55800,9 @@
           "via": "CandidateVerificationService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -55842,9 +55882,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -56264,13 +56304,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -56548,7 +56588,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -56641,9 +56681,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -57063,13 +57103,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -57347,7 +57387,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -57482,7 +57522,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -57621,9 +57661,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -58405,8 +58445,8 @@
           "via": "PrivilegingChecklistService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-130",
-          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "endpointId": "account-service-ep-129",
+          "path": "/users/{userId}/checklists/{checklistId}",
           "area": "Checklist",
           "key": "checkListPrivilege",
           "verbMismatch": false
@@ -58429,6 +58469,16 @@
           "path": "/user/{userId}/checklist/{checklistId}/approverSignOffDetails",
           "area": "Checklist",
           "key": "levelCompleteStatus",
+          "verbMismatch": false
+        },
+        {
+          "via": "PrivilegingChecklistService",
+          "verb": "GET",
+          "service": "account-service",
+          "endpointId": "account-service-ep-130",
+          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "area": "Checklist",
+          "key": "checkListPrivilege",
           "verbMismatch": false
         },
         {
@@ -58657,9 +58707,9 @@
           "via": "AssesseesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -58779,9 +58829,9 @@
           "via": "AssesseesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -58889,11 +58939,11 @@
           "via": "SkillAuditService",
           "verb": "POST",
           "service": "account-service",
-          "endpointId": "account-service-ep-5",
-          "path": "/audits/{auditId}",
+          "endpointId": "account-service-ep-7",
+          "path": "/audits/{auditId}:publish",
           "area": "User Audit",
           "key": "audit",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SkillAuditService",
@@ -59062,9 +59112,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -59227,13 +59277,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -59561,7 +59611,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -59692,11 +59742,11 @@
           "via": "AuditManagementService",
           "verb": "POST",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-57",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-56",
+          "path": "/audits/{auditId}:publish",
           "area": "Audit",
           "key": "indicatorAudits",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "AuditManagementService",
@@ -59752,8 +59802,8 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-59",
-          "path": "/audits/{auditId}:history",
+          "endpointId": "indicator-service-ep-49",
+          "path": "/audits/{auditId}",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -59772,8 +59822,18 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-49",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-58",
+          "path": "/audits/{auditId}:summary",
+          "area": "Audit",
+          "key": "indicatorAudits",
+          "verbMismatch": false
+        },
+        {
+          "via": "AuditManagementService",
+          "verb": "GET",
+          "service": "indicator-service",
+          "endpointId": "indicator-service-ep-59",
+          "path": "/audits/{auditId}:history",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -59862,8 +59922,8 @@
           "via": "PrivilegingReporteesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-130",
-          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "endpointId": "account-service-ep-129",
+          "path": "/users/{userId}/checklists/{checklistId}",
           "area": "Checklist",
           "key": "checkListPrivilege",
           "verbMismatch": false
@@ -59896,6 +59956,16 @@
           "path": "/checklists/{checklistUserCompetencyStatusId}/trainings",
           "area": "Checklist",
           "key": "checklist",
+          "verbMismatch": false
+        },
+        {
+          "via": "PrivilegingReporteesService",
+          "verb": "GET",
+          "service": "account-service",
+          "endpointId": "account-service-ep-130",
+          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "area": "Checklist",
+          "key": "checklistexport",
           "verbMismatch": false
         },
         {
@@ -60054,8 +60124,8 @@
           "via": "PrivilegingReporteesService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-130",
-          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "endpointId": "account-service-ep-129",
+          "path": "/users/{userId}/checklists/{checklistId}",
           "area": "Checklist",
           "key": "checkListPrivilege",
           "verbMismatch": false
@@ -60088,6 +60158,16 @@
           "path": "/checklists/{checklistUserCompetencyStatusId}/trainings",
           "area": "Checklist",
           "key": "checklist",
+          "verbMismatch": false
+        },
+        {
+          "via": "PrivilegingReporteesService",
+          "verb": "GET",
+          "service": "account-service",
+          "endpointId": "account-service-ep-130",
+          "path": "/users/{userId}/checklists/{checklistId}:export",
+          "area": "Checklist",
+          "key": "checklistexport",
           "verbMismatch": false
         },
         {
@@ -60525,11 +60605,11 @@
           "via": "CompetencyManagementService",
           "verb": "PATCH",
           "service": "account-service",
-          "endpointId": "account-service-ep-148",
-          "path": "/checklists/{checklistId}",
+          "endpointId": "account-service-ep-146",
+          "path": "/checklists/{checklistId}:publish",
           "area": "Checklist",
           "key": "checklist",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "TokenService",
@@ -60810,9 +60890,9 @@
           "via": "DashboardService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -61377,7 +61457,7 @@
           "service": "catalog-service",
           "endpointId": "catalog-service-ep-130",
           "path": "/products/{productId}/wishlist",
-          "area": "",
+          "area": "product",
           "key": "productInterested",
           "verbMismatch": false
         },
@@ -61428,9 +61508,9 @@
           "via": "UserService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "users",
           "verbMismatch": false
         },
@@ -61593,13 +61673,13 @@
         },
         {
           "via": "UserService",
-          "verb": "REQUEST",
+          "verb": "DELETE",
           "service": "account-service",
           "endpointId": "account-service-ep-385",
           "path": "/users",
           "area": "User",
           "key": "users",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "UserService",
@@ -61927,7 +62007,7 @@
           "service": "account-service",
           "endpointId": "account-service-ep-190",
           "path": "/users:notification",
-          "area": "",
+          "area": "notification",
           "key": "userApp",
           "verbMismatch": false
         },
@@ -62058,11 +62138,11 @@
           "via": "AuditManagementService",
           "verb": "POST",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-57",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-56",
+          "path": "/audits/{auditId}:publish",
           "area": "Audit",
           "key": "indicatorAudits",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "AuditManagementService",
@@ -62118,8 +62198,8 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-59",
-          "path": "/audits/{auditId}:history",
+          "endpointId": "indicator-service-ep-49",
+          "path": "/audits/{auditId}",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -62138,8 +62218,18 @@
           "via": "AuditManagementService",
           "verb": "GET",
           "service": "indicator-service",
-          "endpointId": "indicator-service-ep-49",
-          "path": "/audits/{auditId}",
+          "endpointId": "indicator-service-ep-58",
+          "path": "/audits/{auditId}:summary",
+          "area": "Audit",
+          "key": "indicatorAudits",
+          "verbMismatch": false
+        },
+        {
+          "via": "AuditManagementService",
+          "verb": "GET",
+          "service": "indicator-service",
+          "endpointId": "indicator-service-ep-59",
+          "path": "/audits/{auditId}:history",
           "area": "Audit",
           "key": "indicatorAudits",
           "verbMismatch": false
@@ -62539,11 +62629,11 @@
           "via": "SchedulerService",
           "verb": "DELETE",
           "service": "catalog-service",
-          "endpointId": "catalog-service-ep-67",
-          "path": "/sessions/{sessionId}/zoomWebinar",
+          "endpointId": "catalog-service-ep-69",
+          "path": "/sessions/{sessionId}/zoomWebinar/{panelistId}",
           "area": "Session",
           "key": "webinarDeletePanelists",
-          "verbMismatch": true
+          "verbMismatch": false
         },
         {
           "via": "SchedulerService",
@@ -62769,9 +62859,9 @@
           "via": "SchedulerService",
           "verb": "GET",
           "service": "account-service",
-          "endpointId": "account-service-ep-168",
-          "path": "/users/templates:export",
-          "area": "Upload",
+          "endpointId": "account-service-ep-368",
+          "path": "users/{id}",
+          "area": "User",
           "key": "userDetails",
           "verbMismatch": false
         },
@@ -68178,7 +68268,7 @@
         "viaService": "AssignmentService"
       }
     ],
-    "account-service-ep-168": [
+    "account-service-ep-368": [
       {
         "pageId": "page-9",
         "route": "/admin/reports",
@@ -77464,27 +77554,9 @@
         "viaService": "CompetencyManagementService"
       },
       {
-        "pageId": "page-24",
-        "route": "/admin/reports/privileging-reports",
-        "title": "Privileging Reports",
-        "viaService": "CompetencyManagementService"
-      },
-      {
         "pageId": "page-73",
         "route": "/admin/competency-mgmt/competency-settings",
         "title": "Competency Settings",
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-73",
-        "route": "/admin/competency-mgmt/competency-settings",
-        "title": "Competency Settings",
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-74",
-        "route": "/admin/competency-mgmt/competency-heat-map",
-        "title": "Competency Heat Map",
         "viaService": "CompetencyManagementService"
       },
       {
@@ -77500,27 +77572,9 @@
         "viaService": "CompetencyManagementService"
       },
       {
-        "pageId": "page-75",
-        "route": "/admin/competency-mgmt/competencies",
-        "title": "Competencies",
-        "viaService": "CompetencyManagementService"
-      },
-      {
         "pageId": "page-76",
         "route": "/admin/competency-mgmt/Skill-Library",
         "title": "Skill Library",
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-76",
-        "route": "/admin/competency-mgmt/Skill-Library",
-        "title": "Skill Library",
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-77",
-        "route": "/admin/competency-mgmt/addcompetency",
-        "title": null,
         "viaService": "CompetencyManagementService"
       },
       {
@@ -77536,18 +77590,6 @@
         "viaService": "CompetencyManagementService"
       },
       {
-        "pageId": "page-78",
-        "route": "/admin/competency-mgmt/competency-roles",
-        "title": "Competency Roles",
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-79",
-        "route": "/admin/competency-mgmt/checklists",
-        "title": "Check List",
-        "viaService": "CompetencyManagementService"
-      },
-      {
         "pageId": "page-79",
         "route": "/admin/competency-mgmt/checklists",
         "title": "Check List",
@@ -77560,27 +77602,9 @@
         "viaService": "CompetencyManagementService"
       },
       {
-        "pageId": "page-80",
-        "route": "/admin/competency-mgmt/checklist-flow",
-        "title": "Checklist",
-        "viaService": "CompetencyManagementService"
-      },
-      {
         "pageId": "page-133",
         "route": "/store_old/catalogProductDetails/:id",
         "title": null,
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-133",
-        "route": "/store_old/catalogProductDetails/:id",
-        "title": null,
-        "viaService": "CompetencyManagementService"
-      },
-      {
-        "pageId": "page-194",
-        "route": "/task-list",
-        "title": "Task List",
         "viaService": "CompetencyManagementService"
       },
       {
@@ -77727,6 +77751,74 @@
       }
     ],
     "account-service-ep-140": [
+      {
+        "pageId": "page-24",
+        "route": "/admin/reports/privileging-reports",
+        "title": "Privileging Reports",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-73",
+        "route": "/admin/competency-mgmt/competency-settings",
+        "title": "Competency Settings",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-74",
+        "route": "/admin/competency-mgmt/competency-heat-map",
+        "title": "Competency Heat Map",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-75",
+        "route": "/admin/competency-mgmt/competencies",
+        "title": "Competencies",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-76",
+        "route": "/admin/competency-mgmt/Skill-Library",
+        "title": "Skill Library",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-77",
+        "route": "/admin/competency-mgmt/addcompetency",
+        "title": null,
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-78",
+        "route": "/admin/competency-mgmt/competency-roles",
+        "title": "Competency Roles",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-79",
+        "route": "/admin/competency-mgmt/checklists",
+        "title": "Check List",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-80",
+        "route": "/admin/competency-mgmt/checklist-flow",
+        "title": "Checklist",
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-133",
+        "route": "/store_old/catalogProductDetails/:id",
+        "title": null,
+        "viaService": "CompetencyManagementService"
+      },
+      {
+        "pageId": "page-194",
+        "route": "/task-list",
+        "title": "Task List",
+        "viaService": "CompetencyManagementService"
+      }
+    ],
+    "account-service-ep-146": [
       {
         "pageId": "page-24",
         "route": "/admin/reports/privileging-reports",
@@ -78592,7 +78684,7 @@
         "viaService": "TrainingReportsCommonService"
       }
     ],
-    "catalog-service-ep-165": [
+    "catalog-service-ep-164": [
       {
         "pageId": "page-28",
         "route": "/admin/training-reports/coverage-report/active-user-leaderboard",
@@ -81648,7 +81740,7 @@
         "viaService": "TrainingReportsCommonService"
       }
     ],
-    "catalog-service-ep-164": [
+    "catalog-service-ep-165": [
       {
         "pageId": "page-28",
         "route": "/admin/training-reports/coverage-report/active-user-leaderboard",
@@ -85454,27 +85546,9 @@
         "viaService": "SchedulerService"
       },
       {
-        "pageId": "page-46",
-        "route": "/admin/training-reports/assignment-reports",
-        "title": "Assignment Reports",
-        "viaService": "SchedulerService"
-      },
-      {
         "pageId": "page-60",
         "route": "/admin/content-mgmt/course-catalog",
         "title": null,
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-60",
-        "route": "/admin/content-mgmt/course-catalog",
-        "title": null,
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-61",
-        "route": "/admin/training-mgmt/my-trainings",
-        "title": "My Trainings",
         "viaService": "SchedulerService"
       },
       {
@@ -85490,27 +85564,9 @@
         "viaService": "SchedulerService"
       },
       {
-        "pageId": "page-64",
-        "route": "/admin/user-mgmt/users",
-        "title": "Users",
-        "viaService": "SchedulerService"
-      },
-      {
         "pageId": "page-66",
         "route": "/admin/content-mgmt/question-library",
         "title": "Question-library",
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-66",
-        "route": "/admin/content-mgmt/question-library",
-        "title": "Question-library",
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-70",
-        "route": "/admin/user-mgmt/groups",
-        "title": "User Groups",
         "viaService": "SchedulerService"
       },
       {
@@ -85526,18 +85582,6 @@
         "viaService": "SchedulerService"
       },
       {
-        "pageId": "page-74",
-        "route": "/admin/competency-mgmt/competency-heat-map",
-        "title": "Competency Heat Map",
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-108",
-        "route": "/admin/sessions/list-view",
-        "title": "Session - List View",
-        "viaService": "SchedulerService"
-      },
-      {
         "pageId": "page-108",
         "route": "/admin/sessions/list-view",
         "title": "Session - List View",
@@ -85550,27 +85594,9 @@
         "viaService": "SchedulerService"
       },
       {
-        "pageId": "page-110",
-        "route": "/admin/sessions/new-session",
-        "title": "New Session",
-        "viaService": "SchedulerService"
-      },
-      {
         "pageId": "page-111",
         "route": "/admin/sessions/:id",
         "title": "Edit Session",
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-111",
-        "route": "/admin/sessions/:id",
-        "title": "Edit Session",
-        "viaService": "SchedulerService"
-      },
-      {
-        "pageId": "page-118",
-        "route": "/admin/tna/recommendations-received",
-        "title": "TNA Page",
         "viaService": "SchedulerService"
       },
       {
@@ -85583,6 +85609,74 @@
         "pageId": "page-215",
         "route": "/",
         "title": "Survey and Feedback",
+        "viaService": "SchedulerService"
+      }
+    ],
+    "catalog-service-ep-69": [
+      {
+        "pageId": "page-46",
+        "route": "/admin/training-reports/assignment-reports",
+        "title": "Assignment Reports",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-60",
+        "route": "/admin/content-mgmt/course-catalog",
+        "title": null,
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-61",
+        "route": "/admin/training-mgmt/my-trainings",
+        "title": "My Trainings",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-64",
+        "route": "/admin/user-mgmt/users",
+        "title": "Users",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-66",
+        "route": "/admin/content-mgmt/question-library",
+        "title": "Question-library",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-70",
+        "route": "/admin/user-mgmt/groups",
+        "title": "User Groups",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-74",
+        "route": "/admin/competency-mgmt/competency-heat-map",
+        "title": "Competency Heat Map",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-108",
+        "route": "/admin/sessions/list-view",
+        "title": "Session - List View",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-110",
+        "route": "/admin/sessions/new-session",
+        "title": "New Session",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-111",
+        "route": "/admin/sessions/:id",
+        "title": "Edit Session",
+        "viaService": "SchedulerService"
+      },
+      {
+        "pageId": "page-118",
+        "route": "/admin/tna/recommendations-received",
+        "title": "TNA Page",
         "viaService": "SchedulerService"
       },
       {
@@ -93334,7 +93428,7 @@
         "viaService": "ExportHistoryService"
       }
     ],
-    "catalog-service-ep-420": [
+    "reports-service-ep-9": [
       {
         "pageId": "page-70",
         "route": "/admin/user-mgmt/groups",
@@ -96036,27 +96130,9 @@
         "viaService": "SkillAuditService"
       },
       {
-        "pageId": "page-91",
-        "route": "/admin/audit-mgmt/skill-audit",
-        "title": "Assessment & Certification",
-        "viaService": "SkillAuditService"
-      },
-      {
         "pageId": "page-92",
         "route": "/admin/audit-mgmt/new-audit",
         "title": "Assessment & Certification",
-        "viaService": "SkillAuditService"
-      },
-      {
-        "pageId": "page-92",
-        "route": "/admin/audit-mgmt/new-audit",
-        "title": "Assessment & Certification",
-        "viaService": "SkillAuditService"
-      },
-      {
-        "pageId": "page-187",
-        "route": "/assessees/new-assessment",
-        "title": "New Assessment",
         "viaService": "SkillAuditService"
       },
       {
@@ -96125,6 +96201,26 @@
       }
     ],
     "account-service-ep-13": [
+      {
+        "pageId": "page-91",
+        "route": "/admin/audit-mgmt/skill-audit",
+        "title": "Assessment & Certification",
+        "viaService": "SkillAuditService"
+      },
+      {
+        "pageId": "page-92",
+        "route": "/admin/audit-mgmt/new-audit",
+        "title": "Assessment & Certification",
+        "viaService": "SkillAuditService"
+      },
+      {
+        "pageId": "page-187",
+        "route": "/assessees/new-assessment",
+        "title": "New Assessment",
+        "viaService": "SkillAuditService"
+      }
+    ],
+    "account-service-ep-7": [
       {
         "pageId": "page-91",
         "route": "/admin/audit-mgmt/skill-audit",
@@ -96922,22 +97018,10 @@
         "viaService": "AuditManagementService"
       }
     ],
-    "indicator-service-ep-57": [
+    "indicator-service-ep-56": [
       {
         "pageId": "page-125",
         "route": "/admin/indicator-audit-mgmt/audits",
-        "title": "Audits",
-        "viaService": "AuditManagementService"
-      },
-      {
-        "pageId": "page-125",
-        "route": "/admin/indicator-audit-mgmt/audits",
-        "title": "Audits",
-        "viaService": "AuditManagementService"
-      },
-      {
-        "pageId": "page-126",
-        "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
         "title": "Audits",
         "viaService": "AuditManagementService"
       },
@@ -96954,25 +97038,7 @@
         "viaService": "AuditManagementService"
       },
       {
-        "pageId": "page-127",
-        "route": "/admin/indicator-audit-mgmt/:id",
-        "title": null,
-        "viaService": "AuditManagementService"
-      },
-      {
         "pageId": "page-191",
-        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
-        "title": null,
-        "viaService": "AuditManagementService"
-      },
-      {
-        "pageId": "page-191",
-        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
-        "title": null,
-        "viaService": "AuditManagementService"
-      },
-      {
-        "pageId": "page-210",
         "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
         "title": null,
         "viaService": "AuditManagementService"
@@ -96985,6 +97051,38 @@
       }
     ],
     "indicator-service-ep-62": [
+      {
+        "pageId": "page-125",
+        "route": "/admin/indicator-audit-mgmt/audits",
+        "title": "Audits",
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-126",
+        "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
+        "title": "Audits",
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-127",
+        "route": "/admin/indicator-audit-mgmt/:id",
+        "title": null,
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-191",
+        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+        "title": null,
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-210",
+        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+        "title": null,
+        "viaService": "AuditManagementService"
+      }
+    ],
+    "indicator-service-ep-57": [
       {
         "pageId": "page-125",
         "route": "/admin/indicator-audit-mgmt/audits",
@@ -97112,7 +97210,7 @@
         "viaService": "AuditManagementService"
       }
     ],
-    "indicator-service-ep-59": [
+    "indicator-service-ep-49": [
       {
         "pageId": "page-125",
         "route": "/admin/indicator-audit-mgmt/audits",
@@ -97176,7 +97274,39 @@
         "viaService": "AuditManagementService"
       }
     ],
-    "indicator-service-ep-49": [
+    "indicator-service-ep-58": [
+      {
+        "pageId": "page-125",
+        "route": "/admin/indicator-audit-mgmt/audits",
+        "title": "Audits",
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-126",
+        "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
+        "title": "Audits",
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-127",
+        "route": "/admin/indicator-audit-mgmt/:id",
+        "title": null,
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-191",
+        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+        "title": null,
+        "viaService": "AuditManagementService"
+      },
+      {
+        "pageId": "page-210",
+        "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+        "title": null,
+        "viaService": "AuditManagementService"
+      }
+    ],
+    "indicator-service-ep-59": [
       {
         "pageId": "page-125",
         "route": "/admin/indicator-audit-mgmt/audits",
@@ -98776,7 +98906,7 @@
         "viaService": "PrivilegingChecklistService"
       }
     ],
-    "account-service-ep-130": [
+    "account-service-ep-129": [
       {
         "pageId": "page-135",
         "route": "/dashboard",
@@ -98817,6 +98947,32 @@
       }
     ],
     "account-service-ep-157": [
+      {
+        "pageId": "page-135",
+        "route": "/dashboard",
+        "title": "Dashboard",
+        "viaService": "PrivilegingChecklistService"
+      },
+      {
+        "pageId": "page-185",
+        "route": "/privileging-checkList",
+        "title": "Privileging CheckList",
+        "viaService": "PrivilegingChecklistService"
+      },
+      {
+        "pageId": "page-192",
+        "route": "/privileging-reportees",
+        "title": "Privileging Reportees",
+        "viaService": "PrivilegingReporteesService"
+      },
+      {
+        "pageId": "page-193",
+        "route": "/privileging-reportees/privilegeuser",
+        "title": "User Info",
+        "viaService": "PrivilegingReporteesService"
+      }
+    ],
+    "account-service-ep-130": [
       {
         "pageId": "page-135",
         "route": "/dashboard",
@@ -99891,204 +100047,6 @@
         "path": "/exports/{id}/files",
         "area": "Export",
         "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "assessment-service",
-        "serviceName": "Assessment",
-        "endpointId": "assessment-service-ep-59",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Assessment Report",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "account-service",
-        "serviceName": "Account",
-        "endpointId": "account-service-ep-234",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "catalog-service",
-        "serviceName": "Catalog",
-        "endpointId": "catalog-service-ep-421",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      }
-    ],
-    "assessment-service-ep-59": [
-      {
-        "service": "reports-service",
-        "serviceName": "Reports",
-        "endpointId": "reports-service-ep-9",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "exam-service",
-        "serviceName": "Exam",
-        "endpointId": "exam-service-ep-7",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export History",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "account-service",
-        "serviceName": "Account",
-        "endpointId": "account-service-ep-234",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "catalog-service",
-        "serviceName": "Catalog",
-        "endpointId": "catalog-service-ep-421",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      }
-    ],
-    "account-service-ep-234": [
-      {
-        "service": "reports-service",
-        "serviceName": "Reports",
-        "endpointId": "reports-service-ep-9",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "exam-service",
-        "serviceName": "Exam",
-        "endpointId": "exam-service-ep-7",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export History",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "assessment-service",
-        "serviceName": "Assessment",
-        "endpointId": "assessment-service-ep-59",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Assessment Report",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "catalog-service",
-        "serviceName": "Catalog",
-        "endpointId": "catalog-service-ep-421",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      }
-    ],
-    "catalog-service-ep-421": [
-      {
-        "service": "reports-service",
-        "serviceName": "Reports",
-        "endpointId": "reports-service-ep-9",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "exam-service",
-        "serviceName": "Exam",
-        "endpointId": "exam-service-ep-7",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export History",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "assessment-service",
-        "serviceName": "Assessment",
-        "endpointId": "assessment-service-ep-59",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Assessment Report",
-        "summary": "get File Download Url",
-        "pages": []
-      },
-      {
-        "service": "account-service",
-        "serviceName": "Account",
-        "endpointId": "account-service-ep-234",
-        "method": "GET",
-        "path": "/exports/{id}/files",
-        "area": "Export",
-        "summary": "get File Download Url",
-        "pages": []
-      }
-    ],
-    "reports-service-ep-10": [
-      {
-        "service": "exam-service",
-        "serviceName": "Exam",
-        "endpointId": "exam-service-ep-5",
-        "method": "GET",
-        "path": "/exports",
-        "area": "Export",
-        "summary": "get Exports By Resource Type",
-        "pages": []
-      },
-      {
-        "service": "assessment-service",
-        "serviceName": "Assessment",
-        "endpointId": "assessment-service-ep-58",
-        "method": "GET",
-        "path": "/exports",
-        "area": "Assessment Report",
-        "summary": "list Exports",
-        "pages": []
-      },
-      {
-        "service": "account-service",
-        "serviceName": "Account",
-        "endpointId": "account-service-ep-233",
-        "method": "GET",
-        "path": "/exports",
-        "area": "Export",
-        "summary": "list Exports",
-        "pages": []
-      },
-      {
-        "service": "catalog-service",
-        "serviceName": "Catalog",
-        "endpointId": "catalog-service-ep-420",
-        "method": "GET",
-        "path": "/exports",
-        "area": "Export",
-        "summary": "list Exports",
         "pages": [
           {
             "pageId": "page-70",
@@ -100163,6 +100121,423 @@
             "viaService": "ExportHistoryService"
           }
         ]
+      },
+      {
+        "service": "assessment-service",
+        "serviceName": "Assessment",
+        "endpointId": "assessment-service-ep-59",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Assessment Report",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "account-service",
+        "serviceName": "Account",
+        "endpointId": "account-service-ep-234",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "catalog-service",
+        "serviceName": "Catalog",
+        "endpointId": "catalog-service-ep-421",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      }
+    ],
+    "assessment-service-ep-59": [
+      {
+        "service": "reports-service",
+        "serviceName": "Reports",
+        "endpointId": "reports-service-ep-9",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": [
+          {
+            "pageId": "page-70",
+            "route": "/admin/user-mgmt/groups",
+            "title": "User Groups",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-94",
+            "route": "/admin/export-history/users",
+            "title": "Users Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-95",
+            "route": "/admin/export-history/reports-and-training-records",
+            "title": "Reports and Training Records Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-96",
+            "route": "/admin/export-history/assignment-reports",
+            "title": "Assignment Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-97",
+            "route": "/admin/export-history/competency",
+            "title": "Competency Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-98",
+            "route": "/admin/export-history/individual-evaluation",
+            "title": "Individual Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-99",
+            "route": "/admin/export-history/group-evaluation",
+            "title": "Group Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-100",
+            "route": "/admin/export-history/microlearning",
+            "title": "Micro Evaluation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-101",
+            "route": "/admin/export-history/microlearning-learner-topic-details",
+            "title": "Micro Evaluation Learner Topic Details",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-102",
+            "route": "/admin/export-history/trainings",
+            "title": "Trainings Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-114",
+            "route": "/admin/automation/rule-creation",
+            "title": "Rule Creation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-115",
+            "route": "/admin/automation/:id",
+            "title": "Rule Details",
+            "viaService": "ExportHistoryService"
+          }
+        ]
+      },
+      {
+        "service": "exam-service",
+        "serviceName": "Exam",
+        "endpointId": "exam-service-ep-7",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export History",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "account-service",
+        "serviceName": "Account",
+        "endpointId": "account-service-ep-234",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "catalog-service",
+        "serviceName": "Catalog",
+        "endpointId": "catalog-service-ep-421",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      }
+    ],
+    "account-service-ep-234": [
+      {
+        "service": "reports-service",
+        "serviceName": "Reports",
+        "endpointId": "reports-service-ep-9",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": [
+          {
+            "pageId": "page-70",
+            "route": "/admin/user-mgmt/groups",
+            "title": "User Groups",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-94",
+            "route": "/admin/export-history/users",
+            "title": "Users Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-95",
+            "route": "/admin/export-history/reports-and-training-records",
+            "title": "Reports and Training Records Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-96",
+            "route": "/admin/export-history/assignment-reports",
+            "title": "Assignment Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-97",
+            "route": "/admin/export-history/competency",
+            "title": "Competency Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-98",
+            "route": "/admin/export-history/individual-evaluation",
+            "title": "Individual Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-99",
+            "route": "/admin/export-history/group-evaluation",
+            "title": "Group Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-100",
+            "route": "/admin/export-history/microlearning",
+            "title": "Micro Evaluation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-101",
+            "route": "/admin/export-history/microlearning-learner-topic-details",
+            "title": "Micro Evaluation Learner Topic Details",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-102",
+            "route": "/admin/export-history/trainings",
+            "title": "Trainings Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-114",
+            "route": "/admin/automation/rule-creation",
+            "title": "Rule Creation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-115",
+            "route": "/admin/automation/:id",
+            "title": "Rule Details",
+            "viaService": "ExportHistoryService"
+          }
+        ]
+      },
+      {
+        "service": "exam-service",
+        "serviceName": "Exam",
+        "endpointId": "exam-service-ep-7",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export History",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "assessment-service",
+        "serviceName": "Assessment",
+        "endpointId": "assessment-service-ep-59",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Assessment Report",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "catalog-service",
+        "serviceName": "Catalog",
+        "endpointId": "catalog-service-ep-421",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      }
+    ],
+    "catalog-service-ep-421": [
+      {
+        "service": "reports-service",
+        "serviceName": "Reports",
+        "endpointId": "reports-service-ep-9",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": [
+          {
+            "pageId": "page-70",
+            "route": "/admin/user-mgmt/groups",
+            "title": "User Groups",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-94",
+            "route": "/admin/export-history/users",
+            "title": "Users Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-95",
+            "route": "/admin/export-history/reports-and-training-records",
+            "title": "Reports and Training Records Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-96",
+            "route": "/admin/export-history/assignment-reports",
+            "title": "Assignment Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-97",
+            "route": "/admin/export-history/competency",
+            "title": "Competency Reports",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-98",
+            "route": "/admin/export-history/individual-evaluation",
+            "title": "Individual Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-99",
+            "route": "/admin/export-history/group-evaluation",
+            "title": "Group Evaluation Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-100",
+            "route": "/admin/export-history/microlearning",
+            "title": "Micro Evaluation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-101",
+            "route": "/admin/export-history/microlearning-learner-topic-details",
+            "title": "Micro Evaluation Learner Topic Details",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-102",
+            "route": "/admin/export-history/trainings",
+            "title": "Trainings Export History",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-114",
+            "route": "/admin/automation/rule-creation",
+            "title": "Rule Creation",
+            "viaService": "ExportHistoryService"
+          },
+          {
+            "pageId": "page-115",
+            "route": "/admin/automation/:id",
+            "title": "Rule Details",
+            "viaService": "ExportHistoryService"
+          }
+        ]
+      },
+      {
+        "service": "exam-service",
+        "serviceName": "Exam",
+        "endpointId": "exam-service-ep-7",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export History",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "assessment-service",
+        "serviceName": "Assessment",
+        "endpointId": "assessment-service-ep-59",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Assessment Report",
+        "summary": "get File Download Url",
+        "pages": []
+      },
+      {
+        "service": "account-service",
+        "serviceName": "Account",
+        "endpointId": "account-service-ep-234",
+        "method": "GET",
+        "path": "/exports/{id}/files",
+        "area": "Export",
+        "summary": "get File Download Url",
+        "pages": []
+      }
+    ],
+    "reports-service-ep-10": [
+      {
+        "service": "exam-service",
+        "serviceName": "Exam",
+        "endpointId": "exam-service-ep-5",
+        "method": "GET",
+        "path": "/exports",
+        "area": "Export",
+        "summary": "get Exports By Resource Type",
+        "pages": []
+      },
+      {
+        "service": "assessment-service",
+        "serviceName": "Assessment",
+        "endpointId": "assessment-service-ep-58",
+        "method": "GET",
+        "path": "/exports",
+        "area": "Assessment Report",
+        "summary": "list Exports",
+        "pages": []
+      },
+      {
+        "service": "account-service",
+        "serviceName": "Account",
+        "endpointId": "account-service-ep-233",
+        "method": "GET",
+        "path": "/exports",
+        "area": "Export",
+        "summary": "list Exports",
+        "pages": []
+      },
+      {
+        "service": "catalog-service",
+        "serviceName": "Catalog",
+        "endpointId": "catalog-service-ep-420",
+        "method": "GET",
+        "path": "/exports",
+        "area": "Export",
+        "summary": "list Exports",
+        "pages": []
       }
     ],
     "exam-service-ep-5": [
@@ -100277,80 +100652,7 @@
         "path": "/exports",
         "area": "Export",
         "summary": "list Exports",
-        "pages": [
-          {
-            "pageId": "page-70",
-            "route": "/admin/user-mgmt/groups",
-            "title": "User Groups",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-94",
-            "route": "/admin/export-history/users",
-            "title": "Users Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-95",
-            "route": "/admin/export-history/reports-and-training-records",
-            "title": "Reports and Training Records Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-96",
-            "route": "/admin/export-history/assignment-reports",
-            "title": "Assignment Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-97",
-            "route": "/admin/export-history/competency",
-            "title": "Competency Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-98",
-            "route": "/admin/export-history/individual-evaluation",
-            "title": "Individual Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-99",
-            "route": "/admin/export-history/group-evaluation",
-            "title": "Group Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-100",
-            "route": "/admin/export-history/microlearning",
-            "title": "Micro Evaluation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-101",
-            "route": "/admin/export-history/microlearning-learner-topic-details",
-            "title": "Micro Evaluation Learner Topic Details",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-102",
-            "route": "/admin/export-history/trainings",
-            "title": "Trainings Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-114",
-            "route": "/admin/automation/rule-creation",
-            "title": "Rule Creation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-115",
-            "route": "/admin/automation/:id",
-            "title": "Rule Details",
-            "viaService": "ExportHistoryService"
-          }
-        ]
+        "pages": []
       }
     ],
     "assessment-service-ep-58": [
@@ -100465,80 +100767,7 @@
         "path": "/exports",
         "area": "Export",
         "summary": "list Exports",
-        "pages": [
-          {
-            "pageId": "page-70",
-            "route": "/admin/user-mgmt/groups",
-            "title": "User Groups",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-94",
-            "route": "/admin/export-history/users",
-            "title": "Users Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-95",
-            "route": "/admin/export-history/reports-and-training-records",
-            "title": "Reports and Training Records Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-96",
-            "route": "/admin/export-history/assignment-reports",
-            "title": "Assignment Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-97",
-            "route": "/admin/export-history/competency",
-            "title": "Competency Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-98",
-            "route": "/admin/export-history/individual-evaluation",
-            "title": "Individual Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-99",
-            "route": "/admin/export-history/group-evaluation",
-            "title": "Group Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-100",
-            "route": "/admin/export-history/microlearning",
-            "title": "Micro Evaluation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-101",
-            "route": "/admin/export-history/microlearning-learner-topic-details",
-            "title": "Micro Evaluation Learner Topic Details",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-102",
-            "route": "/admin/export-history/trainings",
-            "title": "Trainings Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-114",
-            "route": "/admin/automation/rule-creation",
-            "title": "Rule Creation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-115",
-            "route": "/admin/automation/:id",
-            "title": "Rule Details",
-            "viaService": "ExportHistoryService"
-          }
-        ]
+        "pages": []
       }
     ],
     "account-service-ep-233": [
@@ -100653,80 +100882,7 @@
         "path": "/exports",
         "area": "Export",
         "summary": "list Exports",
-        "pages": [
-          {
-            "pageId": "page-70",
-            "route": "/admin/user-mgmt/groups",
-            "title": "User Groups",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-94",
-            "route": "/admin/export-history/users",
-            "title": "Users Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-95",
-            "route": "/admin/export-history/reports-and-training-records",
-            "title": "Reports and Training Records Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-96",
-            "route": "/admin/export-history/assignment-reports",
-            "title": "Assignment Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-97",
-            "route": "/admin/export-history/competency",
-            "title": "Competency Reports",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-98",
-            "route": "/admin/export-history/individual-evaluation",
-            "title": "Individual Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-99",
-            "route": "/admin/export-history/group-evaluation",
-            "title": "Group Evaluation Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-100",
-            "route": "/admin/export-history/microlearning",
-            "title": "Micro Evaluation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-101",
-            "route": "/admin/export-history/microlearning-learner-topic-details",
-            "title": "Micro Evaluation Learner Topic Details",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-102",
-            "route": "/admin/export-history/trainings",
-            "title": "Trainings Export History",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-114",
-            "route": "/admin/automation/rule-creation",
-            "title": "Rule Creation",
-            "viaService": "ExportHistoryService"
-          },
-          {
-            "pageId": "page-115",
-            "route": "/admin/automation/:id",
-            "title": "Rule Details",
-            "viaService": "ExportHistoryService"
-          }
-        ]
+        "pages": []
       }
     ],
     "catalog-service-ep-420": [
@@ -102434,7 +102590,26 @@
         "path": "/audits/{auditId}:publish",
         "area": "User Audit",
         "summary": "publish Audit",
-        "pages": []
+        "pages": [
+          {
+            "pageId": "page-91",
+            "route": "/admin/audit-mgmt/skill-audit",
+            "title": "Assessment & Certification",
+            "viaService": "SkillAuditService"
+          },
+          {
+            "pageId": "page-92",
+            "route": "/admin/audit-mgmt/new-audit",
+            "title": "Assessment & Certification",
+            "viaService": "SkillAuditService"
+          },
+          {
+            "pageId": "page-187",
+            "route": "/assessees/new-assessment",
+            "title": "New Assessment",
+            "viaService": "SkillAuditService"
+          }
+        ]
       }
     ],
     "account-service-ep-7": [
@@ -102446,7 +102621,38 @@
         "path": "/audits/{auditId}:publish",
         "area": "Audit",
         "summary": "publish Audit",
-        "pages": []
+        "pages": [
+          {
+            "pageId": "page-125",
+            "route": "/admin/indicator-audit-mgmt/audits",
+            "title": "Audits",
+            "viaService": "AuditManagementService"
+          },
+          {
+            "pageId": "page-126",
+            "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
+            "title": "Audits",
+            "viaService": "AuditManagementService"
+          },
+          {
+            "pageId": "page-127",
+            "route": "/admin/indicator-audit-mgmt/:id",
+            "title": null,
+            "viaService": "AuditManagementService"
+          },
+          {
+            "pageId": "page-191",
+            "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+            "title": null,
+            "viaService": "AuditManagementService"
+          },
+          {
+            "pageId": "page-210",
+            "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
+            "title": null,
+            "viaService": "AuditManagementService"
+          }
+        ]
       }
     ],
     "indicator-service-ep-54": [
@@ -102558,27 +102764,9 @@
             "viaService": "SkillAuditService"
           },
           {
-            "pageId": "page-91",
-            "route": "/admin/audit-mgmt/skill-audit",
-            "title": "Assessment & Certification",
-            "viaService": "SkillAuditService"
-          },
-          {
             "pageId": "page-92",
             "route": "/admin/audit-mgmt/new-audit",
             "title": "Assessment & Certification",
-            "viaService": "SkillAuditService"
-          },
-          {
-            "pageId": "page-92",
-            "route": "/admin/audit-mgmt/new-audit",
-            "title": "Assessment & Certification",
-            "viaService": "SkillAuditService"
-          },
-          {
-            "pageId": "page-187",
-            "route": "/assessees/new-assessment",
-            "title": "New Assessment",
             "viaService": "SkillAuditService"
           },
           {
@@ -102607,18 +102795,6 @@
             "viaService": "AuditManagementService"
           },
           {
-            "pageId": "page-125",
-            "route": "/admin/indicator-audit-mgmt/audits",
-            "title": "Audits",
-            "viaService": "AuditManagementService"
-          },
-          {
-            "pageId": "page-126",
-            "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
-            "title": "Audits",
-            "viaService": "AuditManagementService"
-          },
-          {
             "pageId": "page-126",
             "route": "/admin/indicator-audit-mgmt/new-indicator-audit",
             "title": "Audits",
@@ -102631,25 +102807,7 @@
             "viaService": "AuditManagementService"
           },
           {
-            "pageId": "page-127",
-            "route": "/admin/indicator-audit-mgmt/:id",
-            "title": null,
-            "viaService": "AuditManagementService"
-          },
-          {
             "pageId": "page-191",
-            "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
-            "title": null,
-            "viaService": "AuditManagementService"
-          },
-          {
-            "pageId": "page-191",
-            "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
-            "title": null,
-            "viaService": "AuditManagementService"
-          },
-          {
-            "pageId": "page-210",
             "route": "/admin/indicator-audit-mgmt/audit-preview/:auditResponseSummaryId/:auditName/:auditDate/:auditor/:auditee/:department/:compliance/:nonCompliance",
             "title": null,
             "viaService": "AuditManagementService"
@@ -104805,10 +104963,22 @@
             "viaService": "TrainingReportsCommonService"
           },
           {
+            "pageId": "page-29",
+            "route": "/admin/training-reports/training-hours-report",
+            "title": "Training-hour-dashboard",
+            "viaService": "TrainingHoursService"
+          },
+          {
+            "pageId": "page-30",
+            "route": "/admin/training-reports/training-hours-report/training-hour-dashboard",
+            "title": "Training-hour-dashboard",
+            "viaService": "TrainingHoursService"
+          },
+          {
             "pageId": "page-31",
             "route": "/admin/training-reports/training-hours-report/training-hour-leaderboard",
             "title": "Training-hour-leaderboard",
-            "viaService": "TrainingReportsCommonService"
+            "viaService": "TrainingHoursService"
           },
           {
             "pageId": "page-32",
@@ -106822,30 +106992,6 @@
         ]
       }
     ],
-    "account-service-ep-170": [
-      {
-        "service": "catalog-service",
-        "serviceName": "Catalog",
-        "endpointId": "catalog-service-ep-289",
-        "method": "GET",
-        "path": "/tenantDashboardSummary",
-        "area": null,
-        "summary": "get Tenant Dashboard Summary",
-        "pages": []
-      }
-    ],
-    "catalog-service-ep-289": [
-      {
-        "service": "account-service",
-        "serviceName": "Account",
-        "endpointId": "account-service-ep-170",
-        "method": "GET",
-        "path": "/tenantDashboardSummary",
-        "area": null,
-        "summary": "get Tenant Dashboard Summary",
-        "pages": []
-      }
-    ],
     "account-service-ep-175": [
       {
         "service": "catalog-service",
@@ -107055,6 +107201,30 @@
         "path": "/products/{id}/competencies",
         "area": "Competency",
         "summary": "create Competency Role Mapped Institution",
+        "pages": []
+      }
+    ],
+    "account-service-ep-170": [
+      {
+        "service": "catalog-service",
+        "serviceName": "Catalog",
+        "endpointId": "catalog-service-ep-289",
+        "method": "GET",
+        "path": "/tenantDashboardSummary",
+        "area": "product",
+        "summary": "get Tenant Dashboard Summary",
+        "pages": []
+      }
+    ],
+    "catalog-service-ep-289": [
+      {
+        "service": "account-service",
+        "serviceName": "Account",
+        "endpointId": "account-service-ep-170",
+        "method": "GET",
+        "path": "/tenantDashboardSummary",
+        "area": "dashboard",
+        "summary": "get Tenant Dashboard Summary",
         "pages": []
       }
     ],
@@ -107471,9 +107641,9 @@
   },
   "stats": {
     "totalPages": 219,
-    "totalCalls": 6094,
-    "resolvedCalls": 5853,
-    "matchRate": "96.0",
+    "totalCalls": 6103,
+    "resolvedCalls": 5862,
+    "matchRate": "96.1",
     "totalEndpointKeys": 397
   }
 }

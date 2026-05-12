@@ -45,17 +45,24 @@ function isPlaceholder(seg) {
   return false;
 }
 
+/** Split a segment into [base, colonSuffix] so `{auditId}:publish` → ['{auditId}', ':publish']. */
+function segmentParts(seg) {
+  const i = seg.indexOf(':');
+  if (i < 0) return [seg, ''];
+  return [seg.slice(0, i), seg.slice(i)];
+}
+
 /** True if a frontend path is compatible with a catalogue path under template matching. */
 function pathMatches(frontendSegs, catalogueSegs) {
   if (frontendSegs.length !== catalogueSegs.length) return false;
   for (let i = 0; i < frontendSegs.length; i++) {
-    const f = frontendSegs[i];
-    const c = catalogueSegs[i];
-    if (isPlaceholder(c) || isPlaceholder(f)) continue;
-    if (f === c) continue;
-    // Some catalogue paths have colon-verb suffix like `/foo:export`. The frontend may
-    // also encode an enum value or a placeholder mid-path. We allow exact-string match
-    // only when neither side is a placeholder.
+    const [fBase, fSuffix] = segmentParts(frontendSegs[i]);
+    const [cBase, cSuffix] = segmentParts(catalogueSegs[i]);
+    // Colon-verb suffix (`:export`, `:publish`, …) must match exactly on both sides —
+    // otherwise `/audits/{id}` would incorrectly match `/audits/{auditId}:publish`.
+    if (fSuffix !== cSuffix) return false;
+    if (isPlaceholder(cBase) || isPlaceholder(fBase)) continue;
+    if (fBase === cBase) continue;
     return false;
   }
   return true;
