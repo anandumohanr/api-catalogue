@@ -760,7 +760,7 @@ function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) 
     detailCollector[e.id] = bodyHTML;
   }
 
-  return `<details class="endpoint" id="${escapeAttr(e.id)}"${detailCollector ? ' data-deferred-detail="1"' : ''}${e._areaName ? ` data-area="${escapeAttr(e._areaName)}"` : ''}>
+  return `<details class="endpoint" id="${escapeAttr(e.id)}" data-method="${e.method}"${detailCollector ? ' data-deferred-detail="1"' : ''}${e._areaName ? ` data-area="${escapeAttr(e._areaName)}"` : ''}>
   <summary>
     <span class="verb-band ${e.method}" aria-hidden="true"></span>
     <span class="verb ${e.method}">${e.method}</span>

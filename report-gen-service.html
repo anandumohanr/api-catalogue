@@ -689,6 +689,12 @@ table.t td:nth-child(2) {
 .endpoint > summary:hover .copy-path { opacity: 1; }
 .endpoint .copy-path:hover { color: var(--ink); border-color: var(--rule-strong); }
 .endpoint .copy-path.copied { color: var(--post); border-color: var(--post); opacity: 1; }
+/* Per-method color tokens — inherited by children, used for expanded state theming */
+.endpoint[data-method="GET"]    { --m-color: var(--get);    --m-bg: var(--get-bg); }
+.endpoint[data-method="POST"]   { --m-color: var(--post);   --m-bg: var(--post-bg); }
+.endpoint[data-method="PUT"]    { --m-color: var(--put);    --m-bg: var(--put-bg); }
+.endpoint[data-method="PATCH"]  { --m-color: var(--patch);  --m-bg: var(--patch-bg); }
+.endpoint[data-method="DELETE"] { --m-color: var(--delete); --m-bg: var(--delete-bg); }
 .ep-badges { display: flex; gap: 6px; align-items: center; }
 .ep-used-badge {
   font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 10px;
@@ -702,20 +708,53 @@ table.t td:nth-child(2) {
 }
 .endpoint .body {
   padding: 14px 18px 18px 86px;
-  background: var(--panel-soft);
-  border-top: 1px solid var(--rule-soft);
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 5%, var(--bg));
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 40%, transparent);
 }
 .endpoint-loading {
   display: none;
   padding: var(--s-3) var(--s-4) var(--s-3) 86px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--panel-soft);
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 4%, var(--bg));
   color: var(--ink-faint);
   font-size: var(--t-sm);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 35%, transparent);
 }
 .endpoint[open] > .endpoint-loading { display: block; }
 .endpoint .body > *:first-child { margin-top: 0; }
-.endpoint[open] > summary { background: var(--panel-soft); }
+.endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 8%, var(--panel-soft));
+}
+.endpoint[open] {
+  margin-bottom: 2px;
+  box-shadow: 0 3px 10px -3px rgba(0,0,0,0.08);
+}
+/* Dark mode: use panel-soft as base for more visible tinting (bg is near-black) */
+:root[data-theme="dark"] .endpoint[open] {
+  box-shadow: 0 3px 14px -3px rgba(0,0,0,0.45);
+}
+:root[data-theme="dark"] .endpoint .body {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 11%, var(--panel));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 55%, transparent);
+}
+:root[data-theme="dark"] .endpoint-loading {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 9%, var(--panel));
+}
+:root[data-theme="dark"] .endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 15%, var(--panel-soft));
+}
+/* Section headings inside expanded panels — method-accented left marker */
+.endpoint .body h4 {
+  display: flex; align-items: center; gap: 7px;
+}
+.endpoint .body h4::before {
+  content: ''; width: 3px; height: 11px;
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 75%, transparent);
+  border-radius: 2px; flex-shrink: 0;
+}
+/* Active tab inherits method color */
+.endpoint[open] .ep-tab.is-active { color: var(--m-color, var(--ink)); }
 .endpoint .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 
 /* tags */
@@ -3085,7 +3124,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>7</b> endpoints</span>
     <span class="area-source">ChatController</span>
   </header>
-  <details class="endpoint" id="report-gen-service-ep-3" data-deferred-detail="1" data-area="Chat">
+  <details class="endpoint" id="report-gen-service-ep-3" data-method="POST" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3106,7 +3145,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-7" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-7" data-method="POST" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3127,7 +3166,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-8" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-8" data-method="POST" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3148,7 +3187,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-9" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-9" data-method="GET" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3169,7 +3208,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-6" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-6" data-method="POST" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3190,7 +3229,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-4" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-4" data-method="GET" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3211,7 +3250,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-5" data-deferred-detail="1" data-area="Chat">
+<details class="endpoint" id="report-gen-service-ep-5" data-method="POST" data-deferred-detail="1" data-area="Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3240,7 +3279,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>2</b> endpoints</span>
     <span class="area-source">LearnerChatController</span>
   </header>
-  <details class="endpoint" id="report-gen-service-ep-2" data-deferred-detail="1" data-area="Learner Chat">
+  <details class="endpoint" id="report-gen-service-ep-2" data-method="POST" data-deferred-detail="1" data-area="Learner Chat">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3261,7 +3300,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="report-gen-service-ep-1" data-deferred-detail="1" data-area="Learner Chat">
+<details class="endpoint" id="report-gen-service-ep-1" data-method="GET" data-deferred-detail="1" data-area="Learner Chat">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3290,7 +3329,7 @@ main.doc.explorer, main.doc.health {
 </footer>
 </main>
 </div>
-<div class="build-stamp">Generated&nbsp;2026-05-12 09:58 UTC</div>
+<div class="build-stamp">Generated&nbsp;2026-05-12 10:34 UTC</div>
 
 <div class="palette-backdrop" id="palette-backdrop"></div>
 <div class="palette" id="palette" role="dialog" aria-label="Search APIs and pages">

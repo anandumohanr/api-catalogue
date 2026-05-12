@@ -689,6 +689,12 @@ table.t td:nth-child(2) {
 .endpoint > summary:hover .copy-path { opacity: 1; }
 .endpoint .copy-path:hover { color: var(--ink); border-color: var(--rule-strong); }
 .endpoint .copy-path.copied { color: var(--post); border-color: var(--post); opacity: 1; }
+/* Per-method color tokens — inherited by children, used for expanded state theming */
+.endpoint[data-method="GET"]    { --m-color: var(--get);    --m-bg: var(--get-bg); }
+.endpoint[data-method="POST"]   { --m-color: var(--post);   --m-bg: var(--post-bg); }
+.endpoint[data-method="PUT"]    { --m-color: var(--put);    --m-bg: var(--put-bg); }
+.endpoint[data-method="PATCH"]  { --m-color: var(--patch);  --m-bg: var(--patch-bg); }
+.endpoint[data-method="DELETE"] { --m-color: var(--delete); --m-bg: var(--delete-bg); }
 .ep-badges { display: flex; gap: 6px; align-items: center; }
 .ep-used-badge {
   font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 10px;
@@ -702,20 +708,53 @@ table.t td:nth-child(2) {
 }
 .endpoint .body {
   padding: 14px 18px 18px 86px;
-  background: var(--panel-soft);
-  border-top: 1px solid var(--rule-soft);
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 5%, var(--bg));
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 40%, transparent);
 }
 .endpoint-loading {
   display: none;
   padding: var(--s-3) var(--s-4) var(--s-3) 86px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--panel-soft);
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 4%, var(--bg));
   color: var(--ink-faint);
   font-size: var(--t-sm);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 35%, transparent);
 }
 .endpoint[open] > .endpoint-loading { display: block; }
 .endpoint .body > *:first-child { margin-top: 0; }
-.endpoint[open] > summary { background: var(--panel-soft); }
+.endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 8%, var(--panel-soft));
+}
+.endpoint[open] {
+  margin-bottom: 2px;
+  box-shadow: 0 3px 10px -3px rgba(0,0,0,0.08);
+}
+/* Dark mode: use panel-soft as base for more visible tinting (bg is near-black) */
+:root[data-theme="dark"] .endpoint[open] {
+  box-shadow: 0 3px 14px -3px rgba(0,0,0,0.45);
+}
+:root[data-theme="dark"] .endpoint .body {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 11%, var(--panel));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 55%, transparent);
+}
+:root[data-theme="dark"] .endpoint-loading {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 9%, var(--panel));
+}
+:root[data-theme="dark"] .endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 15%, var(--panel-soft));
+}
+/* Section headings inside expanded panels — method-accented left marker */
+.endpoint .body h4 {
+  display: flex; align-items: center; gap: 7px;
+}
+.endpoint .body h4::before {
+  content: ''; width: 3px; height: 11px;
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 75%, transparent);
+  border-radius: 2px; flex-shrink: 0;
+}
+/* Active tab inherits method color */
+.endpoint[open] .ep-tab.is-active { color: var(--m-color, var(--ink)); }
 .endpoint .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 
 /* tags */
@@ -3146,7 +3185,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>51</b> endpoints</span>
     <span class="area-source">AssessmentController</span>
   </header>
-  <details class="endpoint" id="assessment-service-ep-39" data-deferred-detail="1" data-area="Assessment">
+  <details class="endpoint" id="assessment-service-ep-39" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3167,7 +3206,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-25" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-25" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3188,7 +3227,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-21" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-21" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3209,7 +3248,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-24" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-24" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3230,7 +3269,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-23" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-23" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3251,7 +3290,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-28" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-28" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3272,7 +3311,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-30" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-30" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3293,7 +3332,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-38" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-38" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3314,7 +3353,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-19" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-19" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3335,7 +3374,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-34" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-34" data-method="PUT" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PUT" aria-hidden="true"></span>
     <span class="verb PUT">PUT</span>
@@ -3356,7 +3395,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-18" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-18" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3377,7 +3416,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-40" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-40" data-method="DELETE" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band DELETE" aria-hidden="true"></span>
     <span class="verb DELETE">DELETE</span>
@@ -3398,7 +3437,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-4" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-4" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3419,7 +3458,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-3" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-3" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3440,7 +3479,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-5" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-5" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3461,7 +3500,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-2" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-2" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3482,7 +3521,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-35" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-35" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3503,7 +3542,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-31" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-31" data-method="PUT" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PUT" aria-hidden="true"></span>
     <span class="verb PUT">PUT</span>
@@ -3524,7 +3563,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-20" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-20" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3545,7 +3584,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-1" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-1" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3566,7 +3605,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-46" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-46" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3587,7 +3626,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-47" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-47" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3608,7 +3647,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-45" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-45" data-method="DELETE" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band DELETE" aria-hidden="true"></span>
     <span class="verb DELETE">DELETE</span>
@@ -3629,7 +3668,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-43" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-43" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3650,7 +3689,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-44" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-44" data-method="POST" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -3671,7 +3710,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-7" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-7" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3692,7 +3731,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-17" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-17" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3713,7 +3752,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-6" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-6" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3734,7 +3773,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-10" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-10" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3755,7 +3794,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-8" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-8" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3776,7 +3815,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-16" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-16" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3797,7 +3836,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-15" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-15" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3818,7 +3857,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-11" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-11" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3839,7 +3878,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-9" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-9" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3860,7 +3899,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-42" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-42" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3881,7 +3920,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-27" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-27" data-method="DELETE" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band DELETE" aria-hidden="true"></span>
     <span class="verb DELETE">DELETE</span>
@@ -3902,7 +3941,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-26" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-26" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3923,7 +3962,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-36" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-36" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3944,7 +3983,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-49" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-49" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3965,7 +4004,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-48" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-48" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -3986,7 +4025,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-51" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-51" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4007,7 +4046,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-50" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-50" data-method="PATCH" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PATCH" aria-hidden="true"></span>
     <span class="verb PATCH">PATCH</span>
@@ -4028,7 +4067,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-32" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-32" data-method="PUT" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PUT" aria-hidden="true"></span>
     <span class="verb PUT">PUT</span>
@@ -4049,7 +4088,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-29" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-29" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4070,7 +4109,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-33" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-33" data-method="DELETE" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band DELETE" aria-hidden="true"></span>
     <span class="verb DELETE">DELETE</span>
@@ -4091,7 +4130,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-14" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-14" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4112,7 +4151,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-13" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-13" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4133,7 +4172,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-37" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-37" data-method="DELETE" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band DELETE" aria-hidden="true"></span>
     <span class="verb DELETE">DELETE</span>
@@ -4154,7 +4193,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-41" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-41" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4175,7 +4214,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-12" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-12" data-method="GET" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4196,7 +4235,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-22" data-deferred-detail="1" data-area="Assessment">
+<details class="endpoint" id="assessment-service-ep-22" data-method="PUT" data-deferred-detail="1" data-area="Assessment">
   <summary>
     <span class="verb-band PUT" aria-hidden="true"></span>
     <span class="verb PUT">PUT</span>
@@ -4225,7 +4264,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>8</b> endpoints</span>
     <span class="area-source">AssessmentReportController</span>
   </header>
-  <details class="endpoint" id="assessment-service-ep-57" data-deferred-detail="1" data-area="Assessment Report">
+  <details class="endpoint" id="assessment-service-ep-57" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4246,7 +4285,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-54" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-54" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4267,7 +4306,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-53" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-53" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4288,7 +4327,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-56" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-56" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4309,7 +4348,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-55" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-55" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4330,7 +4369,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-59" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-59" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4351,7 +4390,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-58" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-58" data-method="GET" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -4372,7 +4411,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="assessment-service-ep-52" data-deferred-detail="1" data-area="Assessment Report">
+<details class="endpoint" id="assessment-service-ep-52" data-method="POST" data-deferred-detail="1" data-area="Assessment Report">
   <summary>
     <span class="verb-band POST" aria-hidden="true"></span>
     <span class="verb POST">POST</span>
@@ -4401,7 +4440,7 @@ main.doc.explorer, main.doc.health {
 </footer>
 </main>
 </div>
-<div class="build-stamp">Generated&nbsp;2026-05-12 09:58 UTC</div>
+<div class="build-stamp">Generated&nbsp;2026-05-12 10:34 UTC</div>
 
 <div class="palette-backdrop" id="palette-backdrop"></div>
 <div class="palette" id="palette" role="dialog" aria-label="Search APIs and pages">

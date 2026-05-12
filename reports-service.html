@@ -689,6 +689,12 @@ table.t td:nth-child(2) {
 .endpoint > summary:hover .copy-path { opacity: 1; }
 .endpoint .copy-path:hover { color: var(--ink); border-color: var(--rule-strong); }
 .endpoint .copy-path.copied { color: var(--post); border-color: var(--post); opacity: 1; }
+/* Per-method color tokens — inherited by children, used for expanded state theming */
+.endpoint[data-method="GET"]    { --m-color: var(--get);    --m-bg: var(--get-bg); }
+.endpoint[data-method="POST"]   { --m-color: var(--post);   --m-bg: var(--post-bg); }
+.endpoint[data-method="PUT"]    { --m-color: var(--put);    --m-bg: var(--put-bg); }
+.endpoint[data-method="PATCH"]  { --m-color: var(--patch);  --m-bg: var(--patch-bg); }
+.endpoint[data-method="DELETE"] { --m-color: var(--delete); --m-bg: var(--delete-bg); }
 .ep-badges { display: flex; gap: 6px; align-items: center; }
 .ep-used-badge {
   font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 10px;
@@ -702,20 +708,53 @@ table.t td:nth-child(2) {
 }
 .endpoint .body {
   padding: 14px 18px 18px 86px;
-  background: var(--panel-soft);
-  border-top: 1px solid var(--rule-soft);
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 5%, var(--bg));
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 40%, transparent);
 }
 .endpoint-loading {
   display: none;
   padding: var(--s-3) var(--s-4) var(--s-3) 86px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--panel-soft);
+  border-top: 1px solid color-mix(in srgb, var(--m-color, var(--rule-soft)) 15%, var(--rule-soft));
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 4%, var(--bg));
   color: var(--ink-faint);
   font-size: var(--t-sm);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 35%, transparent);
 }
 .endpoint[open] > .endpoint-loading { display: block; }
 .endpoint .body > *:first-child { margin-top: 0; }
-.endpoint[open] > summary { background: var(--panel-soft); }
+.endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 8%, var(--panel-soft));
+}
+.endpoint[open] {
+  margin-bottom: 2px;
+  box-shadow: 0 3px 10px -3px rgba(0,0,0,0.08);
+}
+/* Dark mode: use panel-soft as base for more visible tinting (bg is near-black) */
+:root[data-theme="dark"] .endpoint[open] {
+  box-shadow: 0 3px 14px -3px rgba(0,0,0,0.45);
+}
+:root[data-theme="dark"] .endpoint .body {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 11%, var(--panel));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--m-color, var(--rule-strong)) 55%, transparent);
+}
+:root[data-theme="dark"] .endpoint-loading {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 9%, var(--panel));
+}
+:root[data-theme="dark"] .endpoint[open] > summary {
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 15%, var(--panel-soft));
+}
+/* Section headings inside expanded panels — method-accented left marker */
+.endpoint .body h4 {
+  display: flex; align-items: center; gap: 7px;
+}
+.endpoint .body h4::before {
+  content: ''; width: 3px; height: 11px;
+  background: color-mix(in srgb, var(--m-color, var(--rule-strong)) 75%, transparent);
+  border-radius: 2px; flex-shrink: 0;
+}
+/* Active tab inherits method color */
+.endpoint[open] .ep-tab.is-active { color: var(--m-color, var(--ink)); }
 .endpoint .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 
 /* tags */
@@ -3108,7 +3147,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>3</b> endpoints</span>
     <span class="area-source">AssignmentReportController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-14" data-deferred-detail="1" data-area="Assignment Report">
+  <details class="endpoint" id="reports-service-ep-14" data-method="GET" data-deferred-detail="1" data-area="Assignment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3129,7 +3168,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-13" data-deferred-detail="1" data-area="Assignment Report">
+<details class="endpoint" id="reports-service-ep-13" data-method="GET" data-deferred-detail="1" data-area="Assignment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3150,7 +3189,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-12" data-deferred-detail="1" data-area="Assignment Report">
+<details class="endpoint" id="reports-service-ep-12" data-method="GET" data-deferred-detail="1" data-area="Assignment Report">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3179,7 +3218,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>1</b> endpoint</span>
     <span class="area-source">EtlLogsController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-11" data-deferred-detail="1" data-area="Etl Logs">
+  <details class="endpoint" id="reports-service-ep-11" data-method="GET" data-deferred-detail="1" data-area="Etl Logs">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3208,7 +3247,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>2</b> endpoints</span>
     <span class="area-source">ExportController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-9" data-deferred-detail="1" data-area="Export">
+  <details class="endpoint" id="reports-service-ep-9" data-method="GET" data-deferred-detail="1" data-area="Export">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3229,7 +3268,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-10" data-deferred-detail="1" data-area="Export">
+<details class="endpoint" id="reports-service-ep-10" data-method="GET" data-deferred-detail="1" data-area="Export">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3258,7 +3297,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>2</b> endpoints</span>
     <span class="area-source">LearnerComplianceController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-8" data-deferred-detail="1" data-area="Learner Compliance">
+  <details class="endpoint" id="reports-service-ep-8" data-method="GET" data-deferred-detail="1" data-area="Learner Compliance">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3279,7 +3318,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-7" data-deferred-detail="1" data-area="Learner Compliance">
+<details class="endpoint" id="reports-service-ep-7" data-method="GET" data-deferred-detail="1" data-area="Learner Compliance">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3308,7 +3347,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>3</b> endpoints</span>
     <span class="area-source">SessionCompletionController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-5" data-deferred-detail="1" data-area="Session Completion">
+  <details class="endpoint" id="reports-service-ep-5" data-method="GET" data-deferred-detail="1" data-area="Session Completion">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3329,7 +3368,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-4" data-deferred-detail="1" data-area="Session Completion">
+<details class="endpoint" id="reports-service-ep-4" data-method="GET" data-deferred-detail="1" data-area="Session Completion">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3350,7 +3389,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-6" data-deferred-detail="1" data-area="Session Completion">
+<details class="endpoint" id="reports-service-ep-6" data-method="GET" data-deferred-detail="1" data-area="Session Completion">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3379,7 +3418,7 @@ main.doc.explorer, main.doc.health {
     <span class="area-meta"><b>3</b> endpoints</span>
     <span class="area-source">TrainingSummaryController</span>
   </header>
-  <details class="endpoint" id="reports-service-ep-3" data-deferred-detail="1" data-area="Training Summary">
+  <details class="endpoint" id="reports-service-ep-3" data-method="GET" data-deferred-detail="1" data-area="Training Summary">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3400,7 +3439,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-2" data-deferred-detail="1" data-area="Training Summary">
+<details class="endpoint" id="reports-service-ep-2" data-method="GET" data-deferred-detail="1" data-area="Training Summary">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3421,7 +3460,7 @@ main.doc.explorer, main.doc.health {
   </summary>
   <div class="endpoint-loading">Open to load endpoint details.</div>
 </details>
-<details class="endpoint" id="reports-service-ep-1" data-deferred-detail="1" data-area="Training Summary">
+<details class="endpoint" id="reports-service-ep-1" data-method="GET" data-deferred-detail="1" data-area="Training Summary">
   <summary>
     <span class="verb-band GET" aria-hidden="true"></span>
     <span class="verb GET">GET</span>
@@ -3450,7 +3489,7 @@ main.doc.explorer, main.doc.health {
 </footer>
 </main>
 </div>
-<div class="build-stamp">Generated&nbsp;2026-05-12 09:58 UTC</div>
+<div class="build-stamp">Generated&nbsp;2026-05-12 10:34 UTC</div>
 
 <div class="palette-backdrop" id="palette-backdrop"></div>
 <div class="palette" id="palette" role="dialog" aria-label="Search APIs and pages">
