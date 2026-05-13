@@ -93,6 +93,10 @@ function tailCandidatesForPrefix(url, prefix) {
   if (!prefixMatches(url, prefix)) return [];
   const tail = url.slice(prefix.length) || '/';
   const out = [];
+  // Exact-match case: URL has no suffix after the prefix (e.g. /trainingProgramReports with
+  // prefix /trainingProgramReports). The tail is '/' which won't match the endpoint — also
+  // try the full url so root-level endpoints without a class @RequestMapping resolve correctly.
+  if (url === prefix) out.push(url);
   const m = prefix.match(/^(\/[^/]+)(\/v\d+)$/);
   const versionedTail = m ? joinPath(m[2], tail) : null;
 
@@ -170,6 +174,12 @@ function buildEndpointGroups(svcIndexes) {
   return { byMethodPath };
 }
 
+function usagePageCount(pages) {
+  const seen = new Set();
+  for (const p of pages || []) seen.add(p.route || p.pageId);
+  return seen.size;
+}
+
 function lookupPath(buckets, frontendTail) {
   const { count, segs } = splitPath(frontendTail || '/');
   const bucket = buckets.get(count) || [];
@@ -231,52 +241,154 @@ function buildXref() {
     }
   }
 
-  // Build serviceClass → calls index
-  const serviceClassToCalls = new Map();   // ServiceClass → [{ verb, key, endpointId? }]
+  function resolveFrontendCall(call) {
+    if (!call.endpointKey) {
+      return { verb: call.verb, unresolved: true, line: call.line, expr: call.expr || call.literalUrl, method: call.method || null };
+    }
+    const r = call.urlPattern ? resolveUrl(call.urlPattern) : keyResolution[call.endpointKey];
+    if (!r || r.unrouted) {
+      return { verb: call.verb, key: call.endpointKey, urlPath: r?.urlPath, unrouted: true, method: call.method || null };
+    }
+    // Pick the matching method+path from candidates
+    const match = r.candidates.find(cand => cand.method === call.verb)
+               || r.candidates[0];
+    if (!match) {
+      return { verb: call.verb, key: call.endpointKey, urlPath: r.urlPath, service: r.service, noPathMatch: true, method: call.method || null };
+    }
+    return {
+      verb: call.verb,
+      key: call.endpointKey,
+      urlPath: r.urlPath,
+      service: r.service,
+      endpointId: match.id,
+      cataloguePath: match.path,
+      area: match.area,
+      verbMismatch: match.method !== call.verb,
+      method: call.method || null,
+      line: call.line || null
+    };
+  }
+
+  // Build serviceClass → calls indexes. The page join uses the method index so a
+  // page only inherits endpoints from service methods it actually calls.
+  const serviceClassToCalls = new Map();       // ServiceClass → [{ verb, key, endpointId? }]
+  const serviceClassToMethodCalls = new Map(); // ServiceClass → Map<methodName, calls[]>
   for (const s of frontend.services) {
     for (const c of s.classes) {
       const arr = [];
+      const methodMap = new Map();
       for (const call of c.calls) {
-        if (!call.endpointKey) {
-          arr.push({ verb: call.verb, unresolved: true, line: call.line, expr: call.expr || call.literalUrl });
-          continue;
-        }
-        const r = call.urlPattern ? resolveUrl(call.urlPattern) : keyResolution[call.endpointKey];
-        if (!r || r.unrouted) {
-          arr.push({ verb: call.verb, key: call.endpointKey, urlPath: r?.urlPath, unrouted: true });
-          continue;
-        }
-        // Pick the matching method+path from candidates
-        const match = r.candidates.find(cand => cand.method === call.verb)
-                   || r.candidates[0];
-        if (!match) {
-          arr.push({ verb: call.verb, key: call.endpointKey, urlPath: r.urlPath, service: r.service, noPathMatch: true });
-        } else {
-          arr.push({
-            verb: call.verb,
-            key: call.endpointKey,
-            urlPath: r.urlPath,
-            service: r.service,
-            endpointId: match.id,
-            cataloguePath: match.path,
-            area: match.area,
-            verbMismatch: match.method !== call.verb
-          });
+        const resolved = resolveFrontendCall(call);
+        arr.push(resolved);
+        if (resolved.method) {
+          const byMethod = methodMap.get(resolved.method) || [];
+          byMethod.push(resolved);
+          methodMap.set(resolved.method, byMethod);
         }
       }
       serviceClassToCalls.set(c.class, arr);
+      serviceClassToMethodCalls.set(c.class, methodMap);
     }
   }
 
-  // Build component → set of services it injects
-  const componentToServices = new Map();
+  // Build component → service method calls + template child components.
+  const componentToInfo = new Map();
+  const selectorToComponent = new Map();
   for (const c of frontend.components) {
     for (const cls of c.classes) {
-      componentToServices.set(cls.class, { injects: cls.injects, file: c.file });
+      const info = {
+        injects: cls.injects || [],
+        serviceVars: cls.serviceVars || [],
+        serviceCalls: cls.serviceCalls || [],
+        selector: cls.selector || null,
+        childSelectors: cls.childSelectors || [],
+        childComponents: [],
+        file: c.file
+      };
+      componentToInfo.set(cls.class, info);
+      if (info.selector) selectorToComponent.set(info.selector, cls.class);
     }
   }
+  for (const info of componentToInfo.values()) {
+    info.childComponents = (info.childSelectors || [])
+      .map(sel => selectorToComponent.get(sel))
+      .filter(Boolean);
+  }
 
-  // Build pages: route → component → injects → calls (deduped & merged)
+  const componentCallCache = new Map();
+  const componentMemberCache = new Map();
+
+  function annotateCall(call, svcCall, componentName) {
+    return {
+      ...call,
+      viaService: svcCall.serviceClass,
+      viaMethod: svcCall.method,
+      viaComponent: componentName,
+      viaVar: svcCall.serviceVar,
+      sourceLine: svcCall.line || null
+    };
+  }
+
+  function componentCalls(componentName, visiting = new Set()) {
+    if (componentCallCache.has(componentName)) return componentCallCache.get(componentName);
+    if (visiting.has(componentName)) return [];
+    visiting.add(componentName);
+    const info = componentToInfo.get(componentName);
+    const out = [];
+    if (info) {
+      for (const svcCall of info.serviceCalls || []) {
+        const methodCalls = serviceClassToMethodCalls.get(svcCall.serviceClass)?.get(svcCall.method) || [];
+        for (const call of methodCalls) out.push(annotateCall(call, svcCall, componentName));
+      }
+      for (const child of info.childComponents || []) {
+        out.push(...componentCalls(child, visiting));
+      }
+    }
+    visiting.delete(componentName);
+    componentCallCache.set(componentName, out);
+    return out;
+  }
+
+  function componentMembers(componentName, visiting = new Set()) {
+    if (componentMemberCache.has(componentName)) return componentMemberCache.get(componentName);
+    if (visiting.has(componentName)) return [];
+    visiting.add(componentName);
+    const info = componentToInfo.get(componentName);
+    const out = [];
+    if (info) {
+      out.push(componentName);
+      for (const child of info.childComponents || []) out.push(...componentMembers(child, visiting));
+    }
+    visiting.delete(componentName);
+    const deduped = [...new Set(out)];
+    componentMemberCache.set(componentName, deduped);
+    return deduped;
+  }
+
+  function viaLabel(call) {
+    return call.viaMethod ? `${call.viaService}.${call.viaMethod}` : call.viaService;
+  }
+
+  function mergePageCall(map, key, rec, label) {
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, { ...rec, via: label, vias: [label] });
+      return;
+    }
+    if (label && !existing.vias.includes(label)) existing.vias.push(label);
+    existing.via = existing.vias.join(', ');
+  }
+
+  function addEndpointUsage(endpointUsage, usageSeen, endpointId, rec) {
+    const usageKey = `${endpointId}|${rec.pageId}|${rec.viaService || ''}|${rec.viaMethod || ''}|${rec.viaComponent || ''}`;
+    if (usageSeen.has(usageKey)) return;
+    usageSeen.add(usageKey);
+    const lst = endpointUsage.get(endpointId) || [];
+    lst.push(rec);
+    endpointUsage.set(endpointId, lst);
+  }
+
+  // Build pages: route → active route components + template children → called service methods → endpoint calls.
   const pages = [];
   const endpointUsage = new Map();     // endpointId → [{ pageId, route, title }]
   const unroutedUsage = new Map();     // urlPath → count
@@ -284,62 +396,77 @@ function buildXref() {
   let pageIdSeq = 0;
   for (const r of frontend.routes) {
     const pageId = 'page-' + (++pageIdSeq);
-    const compInfo = componentToServices.get(r.component);
-    const injects = compInfo ? compInfo.injects : [];
-    const componentFile = compInfo ? compInfo.file : null;
+    const activeComponents = [...new Set([...(r.componentChain || []), r.component, ...(r.guards || [])].filter(Boolean))];
+    const componentFile = componentToInfo.get(r.component)?.file || null;
+    const pageComponents = [...new Set(activeComponents.flatMap(c => componentMembers(c)))];
+    const injects = [...new Set(pageComponents.flatMap(c => componentToInfo.get(c)?.injects || []))];
 
-    const apiCalls = [];
-    const seen = new Set();
-    const unresolvedLocal = [];
+    const apiByKey = new Map();
+    const usageSeen = new Set();
 
-    for (const svcCls of injects) {
-      const calls = serviceClassToCalls.get(svcCls) || [];
-      for (const call of calls) {
+    for (const componentName of activeComponents) {
+      for (const call of componentCalls(componentName)) {
         if (call.unresolved) continue;
+        const label = viaLabel(call);
         if (call.unrouted) {
           unroutedUsage.set(call.urlPath, (unroutedUsage.get(call.urlPath) || 0) + 1);
-          const key = `unrouted|${call.verb}|${call.urlPath}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            apiCalls.push({ via: svcCls, verb: call.verb, urlPath: call.urlPath, key: call.key, unrouted: true });
-          }
+          mergePageCall(apiByKey, `unrouted|${call.verb}|${call.urlPath}`, {
+            verb: call.verb,
+            urlPath: call.urlPath,
+            key: call.key,
+            unrouted: true,
+            viaService: call.viaService,
+            viaMethod: call.viaMethod,
+            viaComponent: call.viaComponent
+          }, label);
           continue;
         }
         if (call.noPathMatch || !call.endpointId) {
           // Routed to a known service but path doesn't match any catalogued endpoint
           // (likely stale frontend entry or recently-removed backend route).
-          const key = `nopath|${call.verb}|${call.urlPath}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            apiCalls.push({ via: svcCls, verb: call.verb, service: call.service, urlPath: call.urlPath, key: call.key, noPathMatch: true });
-          }
+          mergePageCall(apiByKey, `nopath|${call.verb}|${call.urlPath}`, {
+            verb: call.verb,
+            service: call.service,
+            urlPath: call.urlPath,
+            key: call.key,
+            noPathMatch: true,
+            viaService: call.viaService,
+            viaMethod: call.viaMethod,
+            viaComponent: call.viaComponent
+          }, label);
           continue;
         }
-        const key = `${call.endpointId}|${call.verb}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-        apiCalls.push({
-          via: svcCls,
+        mergePageCall(apiByKey, `${call.endpointId}|${call.verb}`, {
           verb: call.verb,
           service: call.service,
           endpointId: call.endpointId,
           path: call.cataloguePath,
           area: call.area,
           key: call.key,
-          verbMismatch: call.verbMismatch || false
+          verbMismatch: call.verbMismatch || false,
+          viaService: call.viaService,
+          viaMethod: call.viaMethod,
+          viaComponent: call.viaComponent
+        }, label);
+        addEndpointUsage(endpointUsage, usageSeen, call.endpointId, {
+          pageId,
+          route: r.path,
+          title: r.title,
+          viaService: call.viaService,
+          viaMethod: call.viaMethod,
+          viaComponent: call.viaComponent
         });
-        // reverse index
-        const lst = endpointUsage.get(call.endpointId) || [];
-        lst.push({ pageId, route: r.path, title: r.title, viaService: svcCls });
-        endpointUsage.set(call.endpointId, lst);
       }
     }
+    const apiCalls = Array.from(apiByKey.values());
 
     pages.push({
       id: pageId,
       route: r.path,
       title: r.title || null,
       component: r.component,
+      componentChain: r.componentChain || (r.component ? [r.component] : []),
+      pageComponents,
       componentFile,
       guards: r.guards || [],
       apiCalls,
@@ -372,7 +499,7 @@ function buildXref() {
         endpointId: e.endpointId,
         area: e.area,
         summary: e.summary,
-        pageCount: e.pages.length
+        pageCount: usagePageCount(e.pages)
       }))
     });
     for (const e of entries) {

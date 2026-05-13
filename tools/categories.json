@@ -195,7 +195,11 @@
     "Kpi",
     "New Issue Release",
     "Health",
-    "Planner Upload"
+    "Planner Upload",
+    "User Device Instances",
+    "Product Activity",
+    "Assignment",
+    "product"
   ],
   "dashboardAreas": [
     "Dashboard",
@@ -206,7 +210,8 @@
     "Test Instance",
     "Journal",
     "Profile",
-    "Search"
+    "Search",
+    "Checklist"
   ],
   "categoryDescriptions": {
     "pre-login":     "Authentication and onboarding endpoints reachable without an active session — login, registration, OTP, token refresh, password reset.",

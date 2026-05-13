@@ -85,6 +85,30 @@ function stripComments(src) {
         out += src[i]; i++;
       }
       if (i < n) { out += src[i]; i++; }
+    } else if (c === '/') {
+      // Check for regex literal: / is regex when NOT preceded by ), ], or word/$ char.
+      let j = out.length - 1;
+      while (j >= 0 && (out[j] === ' ' || out[j] === '\t')) j--;
+      const prev = j >= 0 ? out[j] : '';
+      const isDiv = prev === ')' || prev === ']' || /[\w$]/.test(prev);
+      if (!isDiv && d !== '/' && d !== '*') {
+        // Regex literal — output verbatim (preserves length, prevents quote misparse)
+        out += c; i++;  // opening /
+        while (i < n && src[i] !== '/' && src[i] !== '\n') {
+          if (src[i] === '\\' && i + 1 < n) { out += src[i] + src[i + 1]; i += 2; }
+          else if (src[i] === '[') {
+            out += src[i++];
+            while (i < n && src[i] !== ']') {
+              if (src[i] === '\\' && i + 1 < n) { out += src[i] + src[i + 1]; i += 2; }
+              else { out += src[i++]; }
+            }
+            if (i < n) { out += src[i++]; }  // closing ]
+          }
+          else { out += src[i++]; }
+        }
+        if (i < n && src[i] === '/') { out += src[i++]; }  // closing /
+        while (i < n && /[gimsuy]/.test(src[i])) { out += src[i++]; }  // flags
+      } else { out += c; i++; }
     } else { out += c; i++; }
   }
   return out;
@@ -108,9 +132,88 @@ function matchBracket(src, open) {
         if (src[i] === '\\') i++;
         i++;
       }
+    } else if (c === '/') {
+      // Skip regex literals: / is a regex start when preceded by an operator-like token
+      // (not by ), ], identifier char, or digit which would make it division).
+      let j = i - 1;
+      while (j >= 0 && (src[j] === ' ' || src[j] === '\t')) j--;
+      const prev = j >= 0 ? src[j] : '';
+      const isDiv = prev === ')' || prev === ']' || /[\w$]/.test(prev);
+      if (!isDiv && src[i + 1] !== '/' && src[i + 1] !== '*') {
+        i++; // skip opening /
+        while (i < src.length && src[i] !== '/') {
+          if (src[i] === '\\') i++;              // escaped char
+          else if (src[i] === '[') {             // character class [...]
+            i++;
+            while (i < src.length && src[i] !== ']') { if (src[i] === '\\') i++; i++; }
+          }
+          i++;
+        }
+        // i now points at closing /; loop i++ will advance past it
+      }
     }
   }
   return -1;
+}
+
+function isKeywordMethodName(name) {
+  return /^(if|for|while|switch|catch|function|return|do|else|try|finally)$/.test(name);
+}
+
+function isTopLevelInClassBody(src, pos) {
+  let depth = 0;
+  for (let i = 0; i < pos; i++) {
+    const c = src[i];
+    if (c === '"' || c === "'" || c === '`') {
+      const q = c; i++;
+      while (i < pos && src[i] !== q) {
+        if (src[i] === '\\') i++;
+        i++;
+      }
+      continue;
+    }
+    if (c === '{') depth++;
+    else if (c === '}') depth = Math.max(0, depth - 1);
+  }
+  return depth === 0;
+}
+
+function collectClassMethods(body) {
+  const methods = [];
+
+  const add = (name, matchIndex, openBrace) => {
+    if (!name || isKeywordMethodName(name) || !isTopLevelInClassBody(body, matchIndex)) return;
+    const end = matchBracket(body, openBrace);
+    if (end < 0) return;
+    methods.push({ name, start: openBrace + 1, end });
+  };
+
+  const normalRe = /(?:^|[;\n}]\s*)(?:(?:public|private|protected|static|async|override)\s+)*([A-Za-z_]\w*)\s*(?:<[^>{}]*>)?\s*\([^()]*\)\s*(?::[^{};]+)?\s*\{/g;
+  let m;
+  while ((m = normalRe.exec(body)) !== null) {
+    const open = normalRe.lastIndex - 1;
+    add(m[1], m.index + m[0].indexOf(m[1]), open);
+    normalRe.lastIndex = open + 1;
+  }
+
+  const arrowRe = /(?:^|[;\n}]\s*)(?:(?:public|private|protected|static|readonly|override)\s+)*([A-Za-z_]\w*)\s*=\s*(?:async\s*)?(?:\([^()]*\)|[A-Za-z_]\w*)\s*=>\s*\{/g;
+  while ((m = arrowRe.exec(body)) !== null) {
+    const open = arrowRe.lastIndex - 1;
+    add(m[1], m.index + m[0].indexOf(m[1]), open);
+    arrowRe.lastIndex = open + 1;
+  }
+
+  return methods.sort((a, b) => a.start - b.start);
+}
+
+function methodAt(methods, pos) {
+  let best = null;
+  for (const m of methods || []) {
+    if (m.start <= pos && pos < m.end) {
+      if (!best || m.start > best.start) best = m;
+    }
+  }
+  return best;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -154,6 +257,7 @@ function parseServiceFile(file, themeDir, endpointMap) {
     const bodyEnd = matchBracket(src, bodyStart);
     if (bodyEnd < 0) continue;
     const body = src.slice(bodyStart + 1, bodyEnd);
+    const methods = collectClassMethods(body);
     const calls = [];
 
     const callRe = /this\.http\.(get|post|put|patch|delete|head|options|request)\s*(?:<[^>]*>)?\s*\(/g;
@@ -234,19 +338,20 @@ function parseServiceFile(file, themeDir, endpointMap) {
       if (refs.length === 0) refs = collectEndpointRefs(scopeText, endpointMap, false);
 
       const lineNum = lineOf(raw, mm.index + bodyStart + 1);
+      const method = methodAt(methods, mm.index);
       if (refs.length === 0) {
         const literal = urlExpr.match(/^['"`]([^'"`]+)['"`]\s*$/);
         if (literal && literal[1].startsWith('/')) {
-          calls.push({ verb, endpointKey: null, literalUrl: literal[1], line: lineNum });
+          calls.push({ verb, endpointKey: null, literalUrl: literal[1], line: lineNum, method: method?.name || null });
         } else {
-          calls.push({ verb, endpointKey: null, expr: urlExpr.trim().slice(0, 120), line: lineNum, unresolved: true });
+          calls.push({ verb, endpointKey: null, expr: urlExpr.trim().slice(0, 120), line: lineNum, unresolved: true, method: method?.name || null });
         }
       } else {
-        for (const r of refs) calls.push({ verb, endpointKey: r.key, transforms: r.transforms, urlPattern: r.urlPattern, line: lineNum });
+        for (const r of refs) calls.push({ verb, endpointKey: r.key, transforms: r.transforms, urlPattern: r.urlPattern, line: lineNum, method: method?.name || null });
       }
     }
 
-    out.classes.push({ class: className, calls });
+    out.classes.push({ class: className, calls, methods: methods.map(m => m.name) });
   }
   return out.classes.length ? out : null;
 }
@@ -516,6 +621,57 @@ function collectEndpointRefs(expr, endpointMap, derivePattern = true) {
 // 3) *.component.ts (and guards/resolvers) → injection map
 // ─────────────────────────────────────────────────────────────────────────
 
+function findDecoratorArgsBefore(src, classIndex, name) {
+  const before = src.slice(0, classIndex);
+  const marker = '@' + name;
+  const idx = before.lastIndexOf(marker);
+  if (idx < 0) return null;
+  const open = src.indexOf('(', idx + marker.length);
+  if (open < 0 || open > classIndex) return null;
+  const close = matchBracket(src, open);
+  if (close < 0 || close > classIndex) return null;
+  return src.slice(open + 1, close);
+}
+
+function parseComponentMeta(src, classIndex, file, themeDir) {
+  const args = findDecoratorArgsBefore(src, classIndex, 'Component');
+  if (!args) return {};
+  const selector = args.match(/\bselector\s*:\s*['"`]([^'"`]+)['"`]/)?.[1] || null;
+  const templateUrl = args.match(/\btemplateUrl\s*:\s*['"`]([^'"`]+)['"`]/)?.[1] || null;
+  const inline = args.match(/\btemplate\s*:\s*`([\s\S]*?)`/)?.[1]
+              || args.match(/\btemplate\s*:\s*['"]([\s\S]*?)['"]/)?.[1]
+              || null;
+  let template = inline;
+  let templateFile = null;
+  if (!template && templateUrl) {
+    const abs = path.resolve(path.dirname(file), templateUrl);
+    template = readSafe(abs);
+    if (template) templateFile = path.relative(themeDir, abs);
+  }
+  return { selector, templateUrl, templateFile, template: template || null };
+}
+
+function collectServiceMethodCalls(body, serviceVars, raw, bodyStart) {
+  const calls = [];
+  const seen = new Set();
+  for (const v of serviceVars || []) {
+    const re = new RegExp(`\\bthis\\.${v.name}\\s*\\.\\s*([A-Za-z_]\\w*)\\s*\\(`, 'g');
+    let m;
+    while ((m = re.exec(body)) !== null) {
+      const key = `${v.name}|${m[1]}|${m.index}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      calls.push({
+        serviceVar: v.name,
+        serviceClass: v.type,
+        method: m[1],
+        line: lineOf(raw, bodyStart + 1 + m.index)
+      });
+    }
+  }
+  return calls.sort((a, b) => a.line - b.line);
+}
+
 function parseComponentFile(file, themeDir, knownServices) {
   const raw = readSafe(file);
   if (!/\bclass\s+[A-Za-z_]\w*\b/.test(raw)) return null;
@@ -530,22 +686,29 @@ function parseComponentFile(file, themeDir, knownServices) {
     const bodyEnd = matchBracket(src, bodyStart);
     if (bodyEnd < 0) continue;
     const body = src.slice(bodyStart + 1, bodyEnd);
+    const meta = parseComponentMeta(src, cm.index, file, themeDir);
 
     // first constructor() in the class body
     const ctorMatch = body.match(/\bconstructor\s*\(/);
-    if (!ctorMatch) continue;
-    const ctorOpen = ctorMatch.index + ctorMatch[0].length - 1;
-    const ctorClose = matchBracket(body, ctorOpen);
-    if (ctorClose < 0) continue;
-    const params = body.slice(ctorOpen + 1, ctorClose);
+    let params = '';
+    if (ctorMatch) {
+      const ctorOpen = ctorMatch.index + ctorMatch[0].length - 1;
+      const ctorClose = matchBracket(body, ctorOpen);
+      if (ctorClose >= 0) params = body.slice(ctorOpen + 1, ctorClose);
+    }
 
     // each parameter: [private|public|protected|readonly] name: Type
     const injects = [];
+    const serviceVars = [];
     for (const p of splitTopLevel(params, ',')) {
-      const t = parseCtorParam(p);
-      if (t && knownServices.has(t)) injects.push(t);
+      const parsed = parseCtorParam(p);
+      if (parsed && knownServices.has(parsed.type)) {
+        injects.push(parsed.type);
+        serviceVars.push(parsed);
+      }
     }
-    if (injects.length) classes.push({ class: className, injects });
+    const serviceCalls = collectServiceMethodCalls(body, serviceVars, raw, bodyStart);
+    if (injects.length || meta.selector) classes.push({ class: className, injects, serviceVars, serviceCalls, ...meta });
   }
   return classes.length ? { file: path.relative(themeDir, file), classes } : null;
 }
@@ -575,10 +738,25 @@ function splitTopLevel(s, sep) {
 function parseCtorParam(decl) {
   // strip decorators (`@Inject(...) `) and modifiers
   let s = decl.replace(/^@\w+\([^)]*\)\s*/, '').trim();
-  s = s.replace(/^(public|private|protected|readonly|static)\s+/, '').trim();
+  s = s.replace(/^(?:(?:public|private|protected|readonly|static)\s+)+/, '').trim();
   // pattern: name: Type[<...>] [= default]
-  const m = s.match(/^[A-Za-z_]\w*\s*:\s*([A-Za-z_]\w*)/);
-  return m ? m[1] : null;
+  const m = s.match(/^([A-Za-z_]\w*)\??\s*:\s*([A-Za-z_]\w*)/);
+  return m ? { name: m[1], type: m[2] } : null;
+}
+
+function escapeRegExp(s) {
+  return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function findChildSelectors(template, selectors) {
+  const out = [];
+  if (!template) return out;
+  for (const selector of selectors) {
+    if (!selector || selector.startsWith('[') || selector.includes(',')) continue;
+    const re = new RegExp(`<\\s*${escapeRegExp(selector)}(?:\\s|>|/)`, 'i');
+    if (re.test(template)) out.push(selector);
+  }
+  return out.sort();
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -720,18 +898,20 @@ function findRoutingSibling(moduleFile) {
 
 function flattenRoutes(rootRoutes, rootFile, themeDir, visited = new Set()) {
   const out = [];
-  const recurse = (routes, prefix, file) => {
+  const recurse = (routes, prefix, file, activeComponents = []) => {
     for (const r of routes) {
       if (r.redirectTo != null && !r.component && !r.loadChildren) continue;
       const segment = (r.path == null ? '' : r.path).replace(/^\/+|\/+$/g, '');
       const fullPath = '/' + [prefix, segment].filter(Boolean).join('/');
       const cleanPath = fullPath.replace(/\/{2,}/g, '/').replace(/^\/$/, '/') || '/';
+      const componentChain = r.component ? [...activeComponents, r.component] : activeComponents;
 
       if (r.component) {
         out.push({
           path: cleanPath,
           title: r.title,
           component: r.component,
+          componentChain,
           guards: r.guards || [],
           file
         });
@@ -741,11 +921,11 @@ function flattenRoutes(rootRoutes, rootFile, themeDir, visited = new Set()) {
         if (childRoutingFile && !visited.has(childRoutingFile)) {
           visited.add(childRoutingFile);
           const child = parseRoutingModule(childRoutingFile, themeDir);
-          if (child) recurse(child.routes, [prefix, segment].filter(Boolean).join('/'), child.file);
+          if (child) recurse(child.routes, [prefix, segment].filter(Boolean).join('/'), child.file, componentChain);
         }
       }
       if (r.children && r.children.length) {
-        recurse(r.children, [prefix, segment].filter(Boolean).join('/'), file);
+        recurse(r.children, [prefix, segment].filter(Boolean).join('/'), file, componentChain);
       }
     }
   };
@@ -783,6 +963,18 @@ function parseTheme(themeDir) {
   for (const f of componentLike) {
     const cmp = parseComponentFile(f, themeDir, serviceClassNames);
     if (cmp) components.push(cmp);
+  }
+  const knownSelectors = [];
+  for (const cmp of components) {
+    for (const cls of cmp.classes) {
+      if (cls.selector) knownSelectors.push(cls.selector);
+    }
+  }
+  for (const cmp of components) {
+    for (const cls of cmp.classes) {
+      cls.childSelectors = findChildSelectors(cls.template, knownSelectors.filter(s => s !== cls.selector));
+      delete cls.template;
+    }
   }
 
   // 4) routes. Start at the root app-routing.module.ts and recursively follow loadChildren.

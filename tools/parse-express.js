@@ -86,8 +86,12 @@ function inferTags(method, routePath) {
 }
 
 function parseMounts(sourceDir) {
-  const routesFile = path.join(sourceDir, 'api', 'handler', 'routes.js');
-  if (!fs.existsSync(routesFile)) return [];
+  const candidates = [
+    path.join(sourceDir, 'api', 'handler', 'routes.js'),
+    path.join(sourceDir, 'api', 'routes.js'),
+  ];
+  const routesFile = candidates.find(f => fs.existsSync(f));
+  if (!routesFile) return [];
   const text = fs.readFileSync(routesFile, 'utf8');
   const routesDir = path.dirname(routesFile);
   const mounts = [];

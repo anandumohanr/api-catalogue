@@ -212,6 +212,12 @@ function renderEnvelope(envelope, dataTypeLabel) {
   </div>`;
 }
 
+function usagePageCount(usage) {
+  const seen = new Set();
+  for (const u of usage || []) seen.add(u.route || u.pageId);
+  return seen.size;
+}
+
 function buildGlobalIndex(services, xref) {
   const out = [];
   const usage = (xref && xref.endpointUsage) || {};
@@ -220,7 +226,7 @@ function buildGlobalIndex(services, xref) {
     if (!s.spec) continue;
     for (const a of s.spec.areas) {
       for (const e of a.endpoints) {
-        const usageCount = (usage[e.id] || []).length;
+        const usageCount = usagePageCount(usage[e.id]);
         out.push({
           svcId:   s.id, svcName: s.displayName,
           area:    a.name, method: e.method,
@@ -289,7 +295,7 @@ function buildCatalogueData(services, xref, totals) {
     const svcMethods = {};
     for (const a of s.spec.areas || []) {
       for (const e of a.endpoints || []) {
-        const used = (usage[e.id] || []).length;
+        const used = usagePageCount(usage[e.id]);
         const siblingUsed = used ? 0 : twinUsagePageCount(twins[e.id]);
         const auth = canonicalAuth(e.auth);
         const schema = schemaStatus(e);
@@ -414,7 +420,30 @@ function buildEpXref(xref) {
   if (!xref || !xref.endpointUsage) return {};
   const out = {};
   for (const [epId, usages] of Object.entries(xref.endpointUsage)) {
-    out[epId] = usages.map(u => ({ pageId: u.pageId, route: u.route, title: u.title || null, via: u.viaService }));
+    const byRoute = new Map();
+    for (const u of usages) {
+      const via = u.viaMethod ? `${u.viaService}.${u.viaMethod}` : u.viaService;
+      const rec = byRoute.get(u.route);
+      if (!rec) {
+        byRoute.set(u.route, {
+          pageId: u.pageId,
+          route: u.route,
+          title: u.title || null,
+          vias: new Set([via].filter(Boolean)),
+          components: new Set([u.viaComponent].filter(Boolean))
+        });
+      } else {
+        if (via) rec.vias.add(via);
+        if (u.viaComponent) rec.components.add(u.viaComponent);
+      }
+    }
+    out[epId] = Array.from(byRoute.values()).map(u => ({
+      pageId: u.pageId,
+      route: u.route,
+      title: u.title,
+      via: Array.from(u.vias).join(', '),
+      viaComponent: Array.from(u.components).join(', ') || null
+    }));
   }
   return out;
 }
@@ -469,8 +498,9 @@ function dedupeUsageByRoute(usage) {
   const dedup = new Map();
   for (const u of usage || []) {
     const k = u.route;
-    if (!dedup.has(k)) dedup.set(k, { route: u.route, title: u.title, vias: new Set([u.viaService]), pageId: u.pageId });
-    else dedup.get(k).vias.add(u.viaService);
+    const via = u.viaMethod ? `${u.viaService}.${u.viaMethod}` : u.viaService;
+    if (!dedup.has(k)) dedup.set(k, { route: u.route, title: u.title, vias: new Set([via]), pageId: u.pageId });
+    else dedup.get(k).vias.add(via);
   }
   return Array.from(dedup.values()).sort((a, b) => a.route.localeCompare(b.route));
 }
@@ -478,7 +508,7 @@ function dedupeUsageByRoute(usage) {
 function twinUsagePageCount(twins) {
   const seen = new Set();
   for (const t of twins || []) {
-    for (const p of t.pages || []) seen.add(p.pageId || p.route);
+    for (const p of t.pages || []) seen.add(p.route || p.pageId);
   }
   return seen.size;
 }
@@ -653,7 +683,7 @@ function renderEndpoint(e, hasPaginationSection, usage, twins, detailCollector) 
   const categoryBadge = e.category && e.category !== 'uncategorized'
     ? `<a class="ep-cat-badge cat-${e.category}" href="${escapeAttr(categoryHref(e.category))}" title="${escapeAttr(e.categoryReason || '')}" onclick="event.stopPropagation()">${escapeHtml(CATEGORY_LABELS[e.category])}</a>`
     : '';
-  const usageCount = (usage || []).length;
+  const usageCount = usagePageCount(usage);
   const siblingUsageCount = usageCount > 0 ? 0 : twinUsagePageCount(twins);
   const usageBadge = usageCount > 0
     ? `<span class="ep-used-badge" title="Consumed by ${usageCount} UI page${usageCount === 1 ? '' : 's'}">${usageCount} page${usageCount === 1 ? '' : 's'}</span>`
@@ -1218,32 +1248,18 @@ ${tocHTML}
   });
 }
 
-function methodBreakdown(spec) {
-  const counts = {};
-  for (const a of (spec.areas || [])) for (const e of a.endpoints) counts[e.method] = (counts[e.method] || 0) + 1;
-  const order = ['GET','POST','PUT','PATCH','DELETE'];
-  return order.filter(m => counts[m]).map(m => ({ method: m, count: counts[m] }));
-}
-
-function computeOrphanBuckets(services, xref) {
-  const used = (xref && xref.endpointUsage) || {};
-  const twins = (xref && xref.endpointTwins) || {};
-  let sibling = 0, internal = 0, review = 0;
-  for (const s of services) {
-    if (!s.spec) continue;
-    for (const a of s.spec.areas) {
-      for (const e of a.endpoints) {
-        if (used[e.id] && used[e.id].length) continue;
-        const siblingPages = twinUsagePageCount(twins[e.id]);
-        const hay = `${e.path} ${e.summary || ''} ${a.name || ''}`.toLowerCase();
-        if (siblingPages) sibling++;
-        else if (/(export|import|etl|backfill|schema|scheduler|trigger|batch|upload|files?)/i.test(hay)) internal++;
-        else review++;
-      }
+function usageBreakdown(spec, xref) {
+  const usage = (xref && xref.endpointUsage) || {};
+  let used = 0, total = 0;
+  for (const a of (spec.areas || [])) {
+    for (const e of a.endpoints) {
+      total++;
+      if (usage[e.id] && usage[e.id].length > 0) used++;
     }
   }
-  return { sibling, internal, review };
+  return { used, unused: total - used, total };
 }
+
 
 function renderIndex(services, totals, xref) {
   const totalPages = (xref && xref.pages) ? xref.pages.length : 0;
@@ -1314,11 +1330,12 @@ function renderIndex(services, totals, xref) {
     const areas = sp ? sp.totalAreas : 0;
     const blurb = s.blurb || sp?.description || '';
     const initial = s.displayName.charAt(0);
-    const total = eps || 1;
-    const methods = sp ? methodBreakdown(sp) : [];
-    const segs = methods.map(m =>
-      `<span class="dr-method-seg ${m.method}" style="width:${(m.count / total * 100).toFixed(1)}%" title="${m.method} ${m.count}"></span>`
-    ).join('');
+    const ub = sp ? usageBreakdown(sp, xref) : { used: 0, unused: 0, total: 1 };
+    const ubTotal = ub.total || 1;
+    const segs = [
+      `<span class="dr-method-seg USED"   style="width:${(ub.used   / ubTotal * 100).toFixed(1)}%"></span>`,
+      `<span class="dr-method-seg UNUSED" style="width:${(ub.unused / ubTotal * 100).toFixed(1)}%"></span>`,
+    ].join('');
     return `<a class="h2-dir-row" href="${escapeAttr(s.id)}.html">
       <span class="dr-mark">${escapeHtml(initial)}</span>
       <span class="dr-name">
@@ -1326,8 +1343,8 @@ function renderIndex(services, totals, xref) {
         <span class="art">${escapeHtml(sp?.artifactId || s.dir)}</span>
       </span>
       <span class="dr-blurb">${escapeHtml(blurb)}</span>
-      <span class="dr-methods" aria-label="Method breakdown">${segs}</span>
-      <span class="dr-stats"><b>${eps}</b>&nbsp;endpoints<span>${areas} areas</span></span>
+      <span class="dr-methods" aria-label="EUP UI usage breakdown">${segs}</span>
+      <span class="dr-stats"><b>${eps}</b>&nbsp;endpoints<span><b>${ub.used}</b> used · <span class="unused-lbl">${ub.unused} not used</span></span></span>
       <svg class="i dr-go"><use href="#i-arrow-right"/></svg>
     </a>`;
   }).join('');
@@ -1344,10 +1361,6 @@ function renderIndex(services, totals, xref) {
 </section>`;
 
   const orphanCount = totals.endpoints - Object.keys((xref && xref.endpointUsage) || {}).length;
-  const orphanBuckets = computeOrphanBuckets(services, xref);
-  const uncatCount = (totals.categories && totals.categories.uncategorized) || 0;
-  const catTotal = totals.endpoints;
-  const catCoveredPct = catTotal ? Math.round((catTotal - uncatCount) / catTotal * 100) : 0;
 
   const health = `
 <section class="h2-section" id="health">
@@ -1363,16 +1376,10 @@ function renderIndex(services, totals, xref) {
       <span class="gauge-sub">${pageStats.exact} of ${pageStats.totalCalls} calls match method + path</span>
     </div>
     <a class="gauge gauge--link" href="orphans.html">
-      <span class="gauge-title">Endpoint orphans</span>
-      <span class="gauge-num">${orphanCount.toLocaleString()}</span>
+      <span class="gauge-title">Not used in EUP UI</span>
+      <span class="gauge-num">${orphanCount.toLocaleString()}<em> / ${totals.endpoints.toLocaleString()}</em></span>
       <span class="gauge-bar"><span class="gauge-fill gauge-fill--warn" style="width:${Math.min(orphanCount/totals.endpoints*100,100).toFixed(1)}%"></span></span>
-      <span class="gauge-sub">${orphanBuckets.sibling} sibling-used · ${orphanBuckets.internal} internal · ${orphanBuckets.review} needs review</span>
-    </a>
-    <a class="gauge gauge--link" href="apis.html?category=uncategorized">
-      <span class="gauge-title">Category coverage</span>
-      <span class="gauge-num">${catCoveredPct}<em>%</em></span>
-      <span class="gauge-bar"><span class="gauge-fill${catCoveredPct < 80 ? ' gauge-fill--warn' : ''}" style="width:${catCoveredPct}%"></span></span>
-      <span class="gauge-sub">${uncatCount} of ${catTotal} endpoints uncategorized</span>
+      <span class="gauge-sub">${(totals.endpoints - orphanCount).toLocaleString()} used in EUP UI · ${orphanCount.toLocaleString()} not used</span>
     </a>
   </div>
 </section>`;

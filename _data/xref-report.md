@@ -1,12 +1,12 @@
 # UI ↔ API cross-reference build report
 
-Generated: 2026-05-12 09:38
+Generated: 2026-05-13 03:42
 
 ## Headline numbers
 
 - Pages: **219**
-- Total API call references across all pages: **6103**
-- Resolved to a catalogued endpoint: **5862** (96.1%)
+- Total API call references across all pages: **1497**
+- Resolved to a catalogued endpoint: **1497** (100.0%)
 - Endpoint keys in endpoints.ts: 397
 
 ## Per-prefix routing
@@ -15,39 +15,29 @@ Generated: 2026-05-12 09:38
 |---|---:|---|
 | `/account/v1` | 110 | yes |
 | `/account/v2` | 1 | yes |
-| `/analytics/v1` | 4 | NO — no catalogued service uses this prefix |
+| `/analytics/v1` | 4 | yes |
 | `/assessment/v1` | 16 | yes |
 | `/catalog/v1` | 198 | yes |
 | `/catalog/v2` | 11 | yes |
 | `/exam/v1` | 23 | yes |
 | `/indicator/v1` | 15 | yes |
 | `/notification/v1` | 1 | yes |
-| `/reader/v1` | 2 | NO — no catalogued service uses this prefix |
+| `/reader/v1` | 2 | yes |
 | `/report-gen/v1` | 6 | yes |
 | `/reports/v1` | 8 | yes |
 | `/site/v1` | 1 | NO — no catalogued service uses this prefix |
-| `/trainingProgramReports` | 1 | NO — no catalogued service uses this prefix |
-
-## Top unrouted endpoint URLs (frontend uses, no catalogued service)
-
-- `/reader/v1/ip`  · 119 references
-- `/analytics/v1/kpiUsers`  · 59 references
-- `/analytics/v1/kpiSessionSummary`  · 42 references
-- `/reader/v1/scormReports`  · 14 references
-- `/trainingProgramReports`  · 10 references
-- `/analytics/v1/kpiActiveUsersByUserIds`  · 6 references
-- `/analytics/v1/kpiActiveUsers`  · 3 references
+| `/trainingProgramReports` | 1 | yes |
 
 ## Heaviest API consumers (top service classes by call count)
 
 | Service class | Calls | Resolved |
 |---|---:|---:|
-| UserService | 77 | 76 |
-| TrainingReportsCommonService | 69 | 67 |
+| UserService | 77 | 77 |
+| TrainingReportsCommonService | 69 | 69 |
 | SchedulerService | 67 | 67 |
 | CompetencyManagementV2Service | 49 | 48 |
-| TrainingReportsService | 46 | 43 |
-| DashboardService | 38 | 37 |
+| TrainingReportsService | 46 | 46 |
+| DashboardService | 38 | 38 |
 | CompetencyManagementService | 35 | 35 |
 | UploadService | 28 | 28 |
 | QualityManagementService | 26 | 26 |
@@ -60,109 +50,109 @@ Generated: 2026-05-12 09:38
 
 ## Path-match misses (key in endpoints.ts but no matching catalogue path)
 
-- `GET /assessment/v1/assessmentUsers/{assessmentUserId}/self-rating-comments` · 10 UI references · keys: `assessmentUsers` · routed service: `assessment-service`
+_None._
 
 ## Same METHOD + path implemented more than once
 
-Found 39 duplicate method/path groups. These are kept as direct-service matches, but the rendered endpoint cards show sibling usage so near-identical implementations are not mistaken for parser misses.
+Found 113 duplicate method/path groups. These are kept as direct-service matches, but the rendered endpoint cards show sibling usage so near-identical implementations are not mistaken for parser misses.
 
 - `GET /tenantSettings`
   - `exam-service` · `exam-service-ep-87` · 0 UI pages
-  - `account-service` · `account-service-ep-321` · 116 UI pages
-  - `catalog-service` · `catalog-service-ep-592` · 10 UI pages
+  - `account-service` · `account-service-ep-321` · 26 UI pages
+  - `catalog-service` · `catalog-service-ep-592` · 1 UI page
 - `GET /imports/{importId}/files`
-  - `exam-service` · `exam-service-ep-14` · 17 UI pages
-  - `account-service` · `account-service-ep-236` · 17 UI pages
-  - `catalog-service` · `catalog-service-ep-196` · 20 UI pages
-- `GET /learnerComplianceReport`
-  - `reports-service` · `reports-service-ep-7` · 25 UI pages
-  - `catalog-service` · `catalog-service-ep-163` · 25 UI pages
-- `GET /sessionProgressionReport`
-  - `reports-service` · `reports-service-ep-4` · 25 UI pages
-  - `catalog-service` · `catalog-service-ep-172` · 25 UI pages
-- `GET /sessionReportSummary`
-  - `reports-service` · `reports-service-ep-6` · 25 UI pages
-  - `catalog-service` · `catalog-service-ep-169` · 25 UI pages
-- `GET /leaderboards`
-  - `account-service` · `account-service-ep-398` · 10 UI pages
-  - `catalog-service` · `catalog-service-ep-541` · 34 UI pages
-- `GET /imports/{importId}`
-  - `exam-service` · `exam-service-ep-13` · 17 UI pages
-  - `assessment-service` · `assessment-service-ep-36` · 9 UI pages
-  - `account-service` · `account-service-ep-238` · 17 UI pages
-- `GET /assignmentReports:export`
-  - `reports-service` · `reports-service-ep-14` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-538` · 42 UI pages
-- `POST /questionsImport`
-  - `exam-service` · `exam-service-ep-12` · 17 UI pages
-  - `catalog-service` · `catalog-service-ep-198` · 17 UI pages
-- `GET /reportHistory/{reportHistoryId}`
-  - `exam-service` · `exam-service-ep-84` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-164` · 27 UI pages
-- `GET /assignmentReports`
-  - `reports-service` · `reports-service-ep-12` · 25 UI pages
-  - `catalog-service` · `catalog-service-ep-534` · 0 UI pages
-- `GET /trainingReports`
-  - `reports-service` · `reports-service-ep-2` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-170` · 25 UI pages
-- `GET /trainingStatusSummary`
-  - `reports-service` · `reports-service-ep-1` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-160` · 25 UI pages
-- `GET /imports`
-  - `exam-service` · `exam-service-ep-11` · 1 UI page
-  - `account-service` · `account-service-ep-237` · 2 UI pages
-  - `catalog-service` · `catalog-service-ep-195` · 20 UI pages
-- `GET /audits`
-  - `indicator-service` · `indicator-service-ep-45` · 7 UI pages
-  - `account-service` · `account-service-ep-1` · 8 UI pages
-- `GET /exports`
-  - `reports-service` · `reports-service-ep-10` · 12 UI pages
-  - `exam-service` · `exam-service-ep-5` · 0 UI pages
-  - `assessment-service` · `assessment-service-ep-58` · 0 UI pages
-  - `account-service` · `account-service-ep-233` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-420` · 0 UI pages
+  - `exam-service` · `exam-service-ep-14` · 7 UI pages
+  - `account-service` · `account-service-ep-236` · 8 UI pages
+  - `catalog-service` · `catalog-service-ep-196` · 10 UI pages
 - `GET /exports/{id}/files`
-  - `reports-service` · `reports-service-ep-9` · 12 UI pages
+  - `reports-service` · `reports-service-ep-9` · 13 UI pages
   - `exam-service` · `exam-service-ep-7` · 0 UI pages
   - `assessment-service` · `assessment-service-ep-59` · 0 UI pages
   - `account-service` · `account-service-ep-234` · 0 UI pages
   - `catalog-service` · `catalog-service-ep-421` · 0 UI pages
+- `GET /reportHistory/{reportHistoryId}`
+  - `exam-service` · `exam-service-ep-84` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-164` · 12 UI pages
+- `GET /imports/{importId}`
+  - `exam-service` · `exam-service-ep-13` · 1 UI page
+  - `assessment-service` · `assessment-service-ep-36` · 2 UI pages
+  - `account-service` · `account-service-ep-238` · 6 UI pages
+- `GET /leaderboards`
+  - `account-service` · `account-service-ep-398` · 2 UI pages
+  - `catalog-service` · `catalog-service-ep-541` · 6 UI pages
+- `GET /exports`
+  - `reports-service` · `reports-service-ep-10` · 7 UI pages
+  - `exam-service` · `exam-service-ep-5` · 0 UI pages
+  - `assessment-service` · `assessment-service-ep-58` · 0 UI pages
+  - `account-service` · `account-service-ep-233` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-420` · 0 UI pages
+- `GET /audits`
+  - `indicator-service` · `indicator-service-ep-45` · 3 UI pages
+  - `account-service` · `account-service-ep-1` · 3 UI pages
+- `GET /imports`
+  - `exam-service` · `exam-service-ep-11` · 1 UI page
+  - `account-service` · `account-service-ep-237` · 2 UI pages
+  - `catalog-service` · `catalog-service-ep-195` · 3 UI pages
+- `GET /assessments`
+  - `assessment-service` · `assessment-service-ep-20` · 5 UI pages
+  - `catalog-service` · `catalog-service-ep-243` · 0 UI pages
+- `GET /audits/{auditId}/auditors`
+  - `indicator-service` · `indicator-service-ep-54` · 2 UI pages
+  - `account-service` · `account-service-ep-3` · 3 UI pages
+- `GET /v1/kpiUsers`
+  - `analytics-service` · `analytics-service-ep-135` · 5 UI pages
+  - `analytics-service` · `analytics-service-ep-136` · 0 UI pages
+- `GET /assignmentReports:export`
+  - `reports-service` · `reports-service-ep-14` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-538` · 4 UI pages
+- `GET /audit/{auditId}/question`
+  - `indicator-service` · `indicator-service-ep-47` · 2 UI pages
+  - `account-service` · `account-service-ep-15` · 2 UI pages
+- `DELETE /audit/{auditId}/question`
+  - `indicator-service` · `indicator-service-ep-62` · 2 UI pages
+  - `account-service` · `account-service-ep-16` · 1 UI page
+- `DELETE /audits/{auditId}`
+  - `indicator-service` · `indicator-service-ep-57` · 2 UI pages
+  - `account-service` · `account-service-ep-5` · 1 UI page
+- `GET /audits/{auditId}`
+  - `indicator-service` · `indicator-service-ep-49` · 0 UI pages
+  - `account-service` · `account-service-ep-6` · 3 UI pages
+- `GET /v1/kpiSessionSummary`
+  - `analytics-service` · `analytics-service-ep-153` · 3 UI pages
+  - `analytics-service` · `analytics-service-ep-154` · 0 UI pages
+- `POST /audits/{auditId}:publish`
+  - `indicator-service` · `indicator-service-ep-56` · 2 UI pages
+  - `account-service` · `account-service-ep-7` · 1 UI page
+- `POST /v1/kpiActiveUsersByUserIds`
+  - `analytics-service` · `analytics-service-ep-139` · 3 UI pages
+  - `analytics-service` · `analytics-service-ep-140` · 0 UI pages
+- `PUT /audit/{auditId}/question`
+  - `indicator-service` · `indicator-service-ep-46` · 2 UI pages
+  - `account-service` · `account-service-ep-13` · 1 UI page
 - `GET /products/{id}/competencies`
   - `account-service` · `account-service-ep-120` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-237` · 12 UI pages
-- `GET /audits/{auditId}`
-  - `indicator-service` · `indicator-service-ep-49` · 5 UI pages
-  - `account-service` · `account-service-ep-6` · 6 UI pages
-- `GET /audits/{auditId}/auditors`
-  - `indicator-service` · `indicator-service-ep-54` · 5 UI pages
-  - `account-service` · `account-service-ep-3` · 6 UI pages
-- `POST /products/{id}/competencies`
-  - `account-service` · `account-service-ep-119` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-236` · 11 UI pages
-- `GET /assessments`
-  - `assessment-service` · `assessment-service-ep-20` · 9 UI pages
-  - `catalog-service` · `catalog-service-ep-243` · 0 UI pages
-- `DELETE /audit/{auditId}/question`
-  - `indicator-service` · `indicator-service-ep-62` · 5 UI pages
-  - `account-service` · `account-service-ep-16` · 3 UI pages
-- `DELETE /audits/{auditId}`
-  - `indicator-service` · `indicator-service-ep-57` · 5 UI pages
-  - `account-service` · `account-service-ep-5` · 3 UI pages
-- `GET /audit/{auditId}/question`
-  - `indicator-service` · `indicator-service-ep-47` · 5 UI pages
-  - `account-service` · `account-service-ep-15` · 3 UI pages
-- `POST /audits/{auditId}:publish`
-  - `indicator-service` · `indicator-service-ep-56` · 5 UI pages
-  - `account-service` · `account-service-ep-7` · 3 UI pages
-- `PUT /audit/{auditId}/question`
-  - `indicator-service` · `indicator-service-ep-46` · 5 UI pages
-  - `account-service` · `account-service-ep-13` · 3 UI pages
-- `DELETE /assets`
-  - `exam-service` · `exam-service-ep-1` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-389` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-237` · 2 UI pages
+- `GET /v1/kpiActiveUsers`
+  - `analytics-service` · `analytics-service-ep-137` · 2 UI pages
+  - `analytics-service` · `analytics-service-ep-138` · 0 UI pages
+- `POST /questionsImport`
+  - `exam-service` · `exam-service-ep-12` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-198` · 1 UI page
+- `GET /assignmentReports`
+  - `reports-service` · `reports-service-ep-12` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-534` · 0 UI pages
 - `GET /health`
   - `report-gen-service` · `report-gen-service-ep-9` · 1 UI page
   - `notification-service` · `notification-service-ep-3` · 0 UI pages
-- `DELETE /institutions`
-  - `account-service` · `account-service-ep-261` · 0 UI pages
-  - `catalog-service` · `catalog-service-ep-314` · 0 UI pages
+- `GET /learnerComplianceReport`
+  - `reports-service` · `reports-service-ep-7` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-163` · 0 UI pages
+- `GET /sessionProgressionReport`
+  - `reports-service` · `reports-service-ep-4` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-172` · 0 UI pages
+- `GET /sessionReportSummary`
+  - `reports-service` · `reports-service-ep-6` · 1 UI page
+  - `catalog-service` · `catalog-service-ep-169` · 0 UI pages
+- `GET /trainingReports`
+  - `reports-service` · `reports-service-ep-2` · 0 UI pages
+  - `catalog-service` · `catalog-service-ep-170` · 1 UI page

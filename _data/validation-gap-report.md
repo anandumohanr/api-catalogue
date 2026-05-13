@@ -1,4 +1,4 @@
-# API Catalogue Validation Report — Deployment Sign-off
+# API Catalogue Validation Report
 
 Generated: 2026-05-12
 
@@ -10,112 +10,87 @@ Generated: 2026-05-12
 | Backend completeness vs source | 100% (1366 Java + 14 Express) |
 | Frontend endpoint keys | 397 |
 | Angular pages | 219 |
-| UI API call references across pages | 6,103 |
-| Resolved to catalogued endpoints | 5,862 (96.1%) |
-| verbMismatch flags (resolved with verb fallback) | 0 |
-| Path-match misses (routed service, no matching path) | 10 references / 1 unique URL |
-| Unrouted calls (no catalogued service for prefix) | 231 references / 7 unique URLs |
-| Endpoints with at least one UI consumer | 472 / 1,380 |
+| UI API call references across pages | 1,464 |
+| Resolved to catalogued endpoints | 1,445 (98.7%) |
+| verbMismatch flags | 0 |
+| Path-match misses | 0 |
+| Unrouted calls (no catalogued service for prefix) | 22 references / 6 unique URLs |
+| Endpoints with at least one UI consumer | 403 / 1,380 |
 
-## Verdict: READY FOR DEPLOYMENT
+## Verdict
 
-All three validation axes pass:
+The previous `Used by` logic was too broad: it treated every endpoint in an injected Angular service as used by the page. That inflated shared-service endpoints such as `GET /sessions`.
 
-1. **Backend completeness — 100%.** Per-service ground-truth count via `@(Get|Post|Put|Delete|Patch)Mapping` + `@RequestMapping(method=...)` regex over `src/main/java` matches the spec totals exactly for every service:
+This has been corrected. `Used by` now requires a concrete chain:
 
-   | Service | Source | Spec |
-   |---|---:|---:|
-   | reports-service | 14 | 14 |
-   | report-gen-service | 9 | 9 |
-   | reports-etl-service | 3 | 3 |
-   | indicator-service | 63 | 63 |
-   | exam-service | 120 | 120 |
-   | assessment-service | 59 | 59 |
-   | notification-service (Express) | 14 | 14 |
-   | account-service | 446 | 446 |
-   | catalog-service | 652 | 652 |
-   | **Total** | **1,380** | **1,380** |
+`route -> active component/template child -> service method call -> HttpClient call -> catalogued endpoint`
 
-2. **API ↔ UI page mapping — accurate.** Spot-checked 10+ endpoints across high-traffic and edge-case scenarios. Reverse `endpointUsage` index correctly attributes pages via component → injected service → http call → URL resolution. Duplicate-path endpoints (39 method/path groups across services) are correctly routed via longest-prefix service match.
+This keeps shared components in scope, including `app-report-filter-modal`, but removes pages that merely inject the same service class without calling the relevant method.
 
-3. **UI grouping in `pages.html` — accurate.** All 219 routes catalogued, grouped by top-level URL segment matching the live app's URL structure. All 130 `loadChildren` declarations resolved. No phantom routes.
+## `/sessions` Revalidation
 
-## Parser Fixes Applied During This Validation
+`GET /sessions` (`catalog-service-ep-566`) now shows **26 UI pages**, not 43.
 
-Three narrow parser bugs were identified and fixed before sign-off:
+The previous 43-page list included false positives from broad service injection, for example pages that injected `TrainingReportsService` or `TrainingReportsCommonService` but did not call the specific `/sessions` method.
 
-1. **`pathMatches` did not handle `{placeholder}:verb` segments** (`tools/xref.js`).
-   Segments like `{auditId}:publish` weren't recognised as placeholders (`isPlaceholder` required `}` at end). This caused two symmetric defects:
-   - Frontend `{id}` would over-match catalogue `{auditId}:publish` (one side placeholder treated as wildcard against any literal).
-   - Frontend `{id}:publish` would under-match catalogue `{auditId}:publish` (neither side recognised as placeholder).
+The retained pages are backed by these actual frontend methods:
 
-   Fix: split each segment into `base` + `:suffix`, require exact suffix match, apply placeholder rule only to the base.
+| Method | Why included |
+|---|---|
+| `TrainingReportsService.getSessionListing` | Direct old training-report session listing |
+| `SessionsListingService.getSessionsList` | Session list page |
+| `EvaluationListingService.getEvaluationList` | Evaluation listing page |
+| `TrainingReportsCommonService.getSessionsList` | Used by `app-report-filter-modal`, which is present in the listed report pages |
 
-   Recovered correct Used-By for 6 backend endpoints (POST `/audits/{auditId}:publish` in 2 services, GET `/audits/{auditId}:history`, GET `/audits/{auditId}:summary`, PATCH `/checklists/{checklistId}:publish`, GET `/reportHistory/{reportHistoryId}:export`) and eliminated 5 over-matches.
+## Parser Fixes Applied
 
-2. **`http.request(verb, url, options)` was recorded with verb `REQUEST`** (`tools/parse-frontend.js`).
-   When the Angular code uses `this.http.request('delete', url, { body })` instead of `this.http.delete(url, { body })`, the parser captured the wrong verb. The catalogue's resolved candidate then needed `verbMismatch` fallback.
+1. **Service method attribution** (`tools/parse-frontend.js`)
 
-   Fix: when the first arg is a string literal, treat it as the verb and re-derive the URL expression from the second arg.
+   Every parsed `HttpClient` call now records the owning service method. This prevents a component call to one method from inheriting all other endpoints in the same service class.
 
-   Affected 2 known call sites — `CandidatesService.deleteCandidate` and `UserService.deleteUsers` (both DELETE `/users`). DELETE `/users` (`account-service-ep-385`) now correctly lists 17 UI consumer pages.
+2. **Component service-call attribution** (`tools/parse-frontend.js`, `tools/xref.js`)
 
-3. **`<localUrl> + <expr>` concat at call site** (`tools/parse-frontend.js`).
-   When a service builds a URL via `let url = environment.apiEndPoint.X.replace('#', sessionId); this.http.delete(url + panelistId)`, the resulting URL has more path segments than the endpoint key registered in `endpoints.ts`. The parser previously fell through to a less precise scope-based ref capture, mis-matching `/sessions/{sessionId}/zoomWebinar` (PATCH) instead of `/sessions/{sessionId}/zoomWebinar/{panelistId}` (DELETE).
+   Components now record calls such as `this.trcService.getSessionsList(...)`. The xref join maps only those called methods to endpoint usage.
 
-   Fix: when the call expression is `<identifier> + <expr>` and `<identifier>` maps to a known local URL pattern, append the tail expression (resolved via `partToPattern` for each `+`-separated chunk) to that pattern.
+3. **Template child propagation** (`tools/parse-frontend.js`, `tools/xref.js`)
 
-   Recovered correct Used-By for `DELETE /sessions/{sessionId}/zoomWebinar/{panelistId}` (`catalog-service-ep-69`) — now 12 UI consumer pages.
+   Component templates are scanned for known Angular selectors. If a route component renders a child component that calls an API, the route correctly inherits that API usage.
 
-After these fixes, the verbMismatch list is empty and the overall resolved match rate held steady at 96.1% with the previously-misattributed pages migrating to the correct endpoint.
+4. **Route component-chain propagation** (`tools/parse-frontend.js`, `tools/xref.js`)
 
-## Remaining Known Limitations (Not Catalogue Bugs)
+   Nested Angular routes now keep parent route components in the active page chain, so layout-level API calls are not lost.
 
-### Single path-match miss
+5. **Unique route counting** (`tools/render.js`, `tools/xref.js`)
 
-| Frontend URL | Verb | UI references | Status |
-|---|---|---:|---|
-| `/assessment/v1/assessmentUsers/{assessmentUserId}/self-rating-comments` | GET | 10 | Backend route not present in latest local source |
+   `Used by` counts are now deduped by route, so duplicate route/component declarations do not inflate page totals.
 
-Frontend call sites:
+## Remaining Known Limitations
 
-| File | Line |
-|---|---:|
-| `src/app/competency-v2/competency-v2.service.ts` | 123 |
-| `src/app/admin/competency-management-v2/competency-management-v2.service.ts` | 625 |
+### Unrouted prefixes
 
-Either the frontend call is stale, or the backend endpoint is not present in the checked-out `assessment-service` revision (`af35159`). Either way, the catalogue accurately reflects the source — this is not a parser miss.
+These calls point to services not registered in `tools/services.json`, so they cannot resolve to a catalogued backend endpoint here:
 
-### Unrouted prefixes (external services)
-
-| URL | UI references | Reason |
+| URL | References | Reason |
 |---|---:|---|
-| `/reader/v1/ip` | 116 | reader service source not present locally |
-| `/analytics/v1/kpiUsers` | 41 | analytics service source not present locally |
-| `/analytics/v1/kpiSessionSummary` | 41 | analytics service source not present locally |
-| `/reader/v1/scormReports` | 14 | reader service source not present locally |
-| `/trainingProgramReports` | 10 | URL lacks a catalogue prefix |
-| `/analytics/v1/kpiActiveUsersByUserIds` | 6 | analytics service source not present locally |
-| `/analytics/v1/kpiActiveUsers` | 3 | analytics service source not present locally |
-
-Documented in `tools/services.json:$unmappedPrefixes` — these belong to services not registered for catalogue scanning.
+| `/analytics/v1/kpiUsers` | 8 | analytics service source not registered |
+| `/reader/v1/scormReports` | 5 | reader service source not registered |
+| `/analytics/v1/kpiSessionSummary` | 3 | analytics service source not registered |
+| `/analytics/v1/kpiActiveUsersByUserIds` | 3 | analytics service source not registered |
+| `/analytics/v1/kpiActiveUsers` | 2 | analytics service source not registered |
+| `/reader/v1/ip` | 1 | reader service source not registered |
 
 ## Coverage By Service
 
 | Service | Endpoints with >=1 UI consumer | Total | Coverage |
 |---|---:|---:|---:|
-| assessment-service | 50 | 59 | 84% |
-| reports-service | 11 | 14 | 78% |
-| indicator-service | 42 | 63 | 66% |
-| report-gen-service | 4 | 9 | 44% |
-| account-service | 146 | 446 | 33% |
-| catalog-service | 191 | 652 | 29% |
-| exam-service | 26 | 120 | 21% |
-| notification-service | 2 | 14 | 14% |
+| assessment-service | 47 | 59 | 80% |
+| reports-service | 11 | 14 | 79% |
+| report-gen-service | 6 | 9 | 67% |
+| indicator-service | 38 | 63 | 60% |
+| account-service | 127 | 446 | 28% |
+| catalog-service | 152 | 652 | 23% |
+| exam-service | 22 | 120 | 18% |
+| notification-service | 0 | 14 | 0% |
 | reports-etl-service | 0 | 3 | 0% |
 
-Lower percentages reflect internal/admin/scheduler endpoints with no direct UI footprint, not catalogue defects.
-
-## Sign-off
-
-Catalogue data is consistent with source, mapping is accurate, and UI grouping matches the live app. Cleared for live release.
+Lower percentages reflect endpoints with no direct Angular route/component consumer in the scanned frontend source.

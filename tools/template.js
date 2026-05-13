@@ -1968,7 +1968,7 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
   overflow: hidden;
 }
 .h2-dir-row .dr-methods {
-  display: flex; gap: 3px; align-items: center; height: 8px;
+  display: flex; gap: 0; align-items: center; height: 8px;
   background: var(--panel-soft); border-radius: var(--r-pill); overflow: hidden;
   min-width: 100px;
 }
@@ -1978,6 +1978,8 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
 .h2-dir-row .dr-method-seg.PUT    { background: var(--put); }
 .h2-dir-row .dr-method-seg.PATCH  { background: var(--patch); }
 .h2-dir-row .dr-method-seg.DELETE { background: var(--delete); }
+.h2-dir-row .dr-method-seg.USED   { background: var(--post); border-radius: var(--r-pill) 0 0 var(--r-pill); }
+.h2-dir-row .dr-method-seg.UNUSED { background: #f59e0b; opacity: .55; }
 .h2-dir-row .dr-stats {
   display: flex; flex-direction: column; gap: 2px;
   font-family: 'JetBrains Mono', monospace; font-size: var(--t-xs);
@@ -1985,6 +1987,7 @@ main.doc.home { display: block; padding: 0; max-width: 100%; }
   white-space: nowrap;
 }
 .h2-dir-row .dr-stats b { color: var(--ink); font-weight: 600; }
+.h2-dir-row .dr-stats .unused-lbl { color: #d97706; }
 .h2-dir-row .dr-go {
   color: var(--ink-faint);
   transition: transform var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);

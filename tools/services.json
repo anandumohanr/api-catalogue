@@ -1,6 +1,8 @@
 {
   "$comment": "Services scanned by build.js. order = sidebar order on the index page. frontendPrefix(es) match URLs in the Angular endpoints.ts; xref.js strips them and matches the path tail against the service spec.",
   "services": [
+    { "id": "analytics-service",   "dir": "medlern-analytics-api",         "displayName": "Analytics",     "blurb": "KPI metrics, user activity, session summaries, and reporting analytics.", "frontendPrefix": ["/analytics/v1"], "parser": "express" },
+    { "id": "reader-service",      "dir": "medlern-reader-service",         "displayName": "Reader",        "blurb": "eBook reader, SCORM tracking, highlights, bookmarks, and launch tracking.", "frontendPrefix": ["/reader/v1"] },
     { "id": "reports-service",      "dir": "medlern_reports_service",      "displayName": "Reports",       "blurb": "Tabular reporting service — compliance, training, sessions, exports.", "frontendPrefix": ["/reports/v1"] },
     { "id": "report-gen-service",   "dir": "medlern-report-gen-service",   "displayName": "Report Gen",    "blurb": "Asynchronous report generation orchestrator.",                          "frontendPrefix": ["/report-gen/v1"] },
     { "id": "reports-etl-service",  "dir": "medlern-reports-etl-service",  "displayName": "Reports ETL",   "blurb": "ETL ingestion of reporting data; mostly schedulers.",                   "frontendPrefix": [] },
@@ -9,9 +11,9 @@
     { "id": "assessment-service",   "dir": "medlern-assessment-service",   "displayName": "Assessment",    "blurb": "Assessment authoring and grading.",                                     "frontendPrefix": ["/assessment/v1"] },
     { "id": "notification-service", "dir": "medlern-notification-service", "displayName": "Notification",  "blurb": "Notifications, activity feeds, announcements, device registrations.",    "frontendPrefix": ["/notification/v1"], "parser": "express" },
     { "id": "account-service",      "dir": "medlern-account-service",      "displayName": "Account",       "blurb": "Identity, institutions, users, organisations.",                         "frontendPrefix": ["/account/v1", "/account/v2"] },
-    { "id": "catalog-service",      "dir": "medlern-catalog-service",      "displayName": "Catalog",       "blurb": "Course / product catalogue and learner-facing browsing.",               "frontendPrefix": ["/catalog/v1", "/catalog/v2"] }
+    { "id": "catalog-service",      "dir": "medlern-catalog-service",      "displayName": "Catalog",       "blurb": "Course / product catalogue and learner-facing browsing.",               "frontendPrefix": ["/catalog/v1", "/catalog/v2", "/trainingProgramReports"] }
   ],
   "$unmappedPrefixes": [
-    "/analytics/v1", "/reader/v1", "/site/v1"
+    "/site/v1"
   ]
 }
