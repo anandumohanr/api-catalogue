@@ -85,6 +85,71 @@ git push
 
 Run this from the repo root (`api-catalogue/`), not from `tools/`. GitHub Pages updates within a minute or two of the push. When the user says "push the changes to live" or similar, run these three commands.
 
+## Maintenance
+
+When asked to **"Maintain the API catalogue"**, run this procedure in order:
+
+### 1. Detect new services
+
+List all sibling directories that could be new backend services:
+
+```bash
+ls ../../ | grep medlern-
+```
+
+Compare against the `dir` values in `tools/services.json`. Any directory that is not already registered AND contains `src/main/java` (Java) or `src/` with `.ts` files (Node/Express) is a candidate new service. For each:
+- Open a controller file to infer the base URL path (`@RequestMapping` or Express `router.get/post`)
+- Add an entry to `tools/services.json` with `id`, `dir`, `displayName`, `blurb`, `frontendPrefix`
+- Use lowercase kebab-case for `id` — it becomes the HTML filename and endpoint ID prefix (`<id>-ep-N`)
+
+### 2. Run the build
+
+```bash
+cd tools && node build.js
+```
+
+`[skip] <id>: <path> not found` lines are expected for repos not checked out — not errors. Watch for:
+- `[categorize] ... uncategorized=N` — if N > 0, needs category config work (step 4)
+- `[xref] ... % routed` — if below 95%, check for unrouted prefixes
+
+### 3. Analyse _data/xref-report.md
+
+**Unrouted prefixes** (rows showing `NO` in "Per-prefix routing"):
+- In `tools/services.json:$unmappedPrefixes` → already acknowledged, no action
+- Otherwise → add a `frontendPrefix` to the right service entry, or add to `$unmappedPrefixes`
+
+**Path-match misses**: do NOT auto-fix — flag each one to the developer. These indicate stale frontend constants or renamed backend routes that need a human decision.
+
+**Duplicate method+path groups**: informational only, no action needed.
+
+### 4. Fix uncategorized endpoints
+
+If `uncategorized > 0`:
+- Find affected endpoints in `_data/<serviceId>.spec.json` and group by area name and path prefix
+- Determine category: `auth == null` + login/register paths → `preLoginAreas`; `/admin/` paths → `adminAreas`; learner-facing → `dashboardAreas`
+- Add to `tools/categories.json` (prefer area lists and regex patterns over `overrides`)
+- Fast re-render: `cd tools && node build.js --no-parse --no-frontend`
+
+### 5. Rebuild if config changed
+
+If `services.json` was modified: `cd tools && node build.js` (full rebuild)
+If only `categories.json` changed: `cd tools && node build.js --no-parse --no-frontend`
+
+### 6. Commit and push
+
+From the repo root:
+```bash
+git add -u
+git commit -m "Rebuild"
+git push
+```
+
+### Edge cases — flag to developer, do not auto-fix
+
+- **Service removed**: if a `dir` in `services.json` no longer exists as a sibling, flag it — the entry may need removing, but confirm first (it might just not be checked out locally)
+- **Service renamed**: if a new sibling looks like a rename of an existing entry, flag both rather than silently adding a duplicate
+- **Path-match misses**: always flag, never silently fix
+
 ## End-to-end pipeline
 
 `build.js` runs six stages sequentially. Each writes to `_data/`; later stages read from earlier stages, so they can be skipped via flags once intermediates are cached.
